@@ -39,9 +39,10 @@
                                             <td>{{"17/11/2016"}}</td>
                                             <td>{{"Vorige reservaties verliepen prima!"}}</td>
                                             <td>
-                                                <button type="button" class="btn btn-success">Accept</button>
-                                                <!--<button type="button" class="btn btn-primary">Accept</button>-->
+                                                <button type="button" class="btn btn-primary">Accept</button>
                                                 <button type="button" class="btn btn-secondary">Reject</button>
+                                                <!--<button type="button" class="btn btn-success">Accept</button>-->
+                                                <!--<button type="button" class="btn btn-danger">Danger</button>-->
                                             </td>
                                         </tr>
                                     </tbody>
