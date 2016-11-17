@@ -1,42 +1,20 @@
 <?php
 
-namespace groepelf\reservatie\Http;
+namespace Reservation\Controllers;
+
 use App\Http\Controllers\Controller;
 use App\Models\Asset;
+use App\Models\User;
 
 class ReservationController extends Controller
 {
-	public function getIndex(){
-		return '<h1>Het werkt!</h1>';
-	}
 	
-	
-	public function getUnassignedAssets(){
-		   $var =  Asset::all();
-		   $save = array();
-		   $localvar = 0;
-		    for ($i=0; $i < count($var); $i++) { 
-		    	if ($var[$i]["assigned_to"] == null  ){
-		    	$save[$localvar] = $var[$i];
-		    	$localvar += 1;
-		   		}
-		    }
-		    return $save;
-	}
+	public function getAvailableAssets()
+	{
+		$assets = Asset::select()->whereNotIn('id', function($query) {
+			$query->table('reservation_assets')->select('asset_id')->get();
+		})->get();
 
-	public function getAssetsAssignedToSpecificUser($id){
-	 	    $var =  Asset::all();
-		    $save = array();
-		    $localvar = 0;
-		    $id = intval($id);
-		 	for ($i=0; $i < count($var); $i++) { 
-		    	if ($var[$i]["assigned_to"] == $id){
-		    		$save[$localvar] = $var[$i];
-		    		$localvar += 1;
-		   		}
-		    }
-		    return $save;	
+		return $assets;
 	}
-	
-
 }
