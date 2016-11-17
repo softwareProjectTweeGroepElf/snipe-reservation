@@ -1,0 +1,15 @@
+{
+    "name": "tristan/reservatie",
+    "description": "Een reservatie module",
+    "license": "MIT",
+    "autoload": {
+    	"psr-4":{
+    		"groepelf\\reservatie\\": "src/"
+    	}
+    },
+    "minimum-stability": "dev",
+    "require": {
+
+    	"illuminate/support": "-5"
+    }
+}
