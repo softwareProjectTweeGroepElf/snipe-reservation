@@ -14,6 +14,19 @@ use App\Models\Location;
 
 });
 
+/* --- Reservations API --- */
+Route::get('reservations', function(){
+    return view('teacher');
+});
+
+/*Route::group([ 'prefix' => 'reservations' ], function () {
+
+    Route::get('list', [ 'as' => 'api.reservations.list', 'uses' => 'AccessoriesController@getDatatable' ]);
+    Route::get('reservations/view', array('as' =>'api.reservations.view', 'uses' => 'AccessoriesController@getDataView'));
+
+});*/
+
+
 /*
 |--------------------------------------------------------------------------
 | Admin API Routes
