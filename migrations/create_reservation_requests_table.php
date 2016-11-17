@@ -18,6 +18,7 @@ class CreateReservationRequestsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('asset_id');
+            $table->enum('status', [ 'DENIED', 'PENDING', 'ACCEPTED' ] );
             $table->timestamps();
         });
     }
