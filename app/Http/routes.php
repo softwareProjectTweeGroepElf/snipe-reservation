@@ -2,22 +2,16 @@
 use App\Models\Statuslabel;
 use App\Models\Location;
 
-  
-    Route::group([ 'prefix'  => 'api/v1' ], function() {
+
+Route::group([ 'prefix'  => 'api/v1' ], function() {
     /*--- Get All Assets Route ---*/
     Route::get('assets/all', 'ApiController@getAllAssets');
-    Route::get('assets/id/{id}', 'ApiController@getAssetsById');
-    Route::get('assets/create', 'ApiController@createAsset');
-    Route::get('assets/update/{id}', 'ApiController@updateAsset');
-    Route::get('assets/delete/{id}', 'ApiController@deleteAssetById');
-    Route::get('assets/search/{variable}/{value}', 'ApiController@getAssetsFiltered');   
-
 });
 
 /*
 |--------------------------------------------------------------------------
 | Admin API Routes
-|--------------------------------------------------------------------------ById
+|--------------------------------------------------------------------------
 */
 Route::group([ 'prefix' => 'api', 'middleware' => 'auth' ], function () {
 
@@ -1004,3 +998,7 @@ Route::group(['middleware' => 'web'], function () {
 Route::get('home', function () {
     return redirect('/');
 });
+
+Route::get('Studentloanout','StudentloansController@getIndex');
+
+

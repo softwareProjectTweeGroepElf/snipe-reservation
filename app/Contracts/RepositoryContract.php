@@ -15,7 +15,7 @@ interface RepositoryContract
 
     public function delete($id);
 
-    public function update($object,$id);
+    public function update($object);
 
     public function getById($id);
 
