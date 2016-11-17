@@ -8,6 +8,7 @@
  */
 
 use Illuminate\Database\Migrations\Migration;
+
 class CreateRolesTable extends Migration
 {
     public function up()

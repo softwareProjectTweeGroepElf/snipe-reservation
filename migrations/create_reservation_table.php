@@ -6,7 +6,7 @@
  * Date: 17/11/2016
  * Time: 23:01
  */
-use \Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateReservationTable extends Migration
 {
