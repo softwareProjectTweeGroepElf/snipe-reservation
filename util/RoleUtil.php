@@ -10,11 +10,24 @@ namespace Reservation\Util;
 
 class RoleUtil
 {
-    public static function checkUserRole($role_id, $user = null) // will automatically try to get user from Auth if no $user is provided
+
+    public static function isUserReviewer($user = null)
     {
+        $reviewerId = config('reservation.REVIEWER_ROLE_ID');
+
         if($user)
-            return ($user->role->id == $role_id);
+            return ($user->role->id == $reviewerId);
         else
-            return (Auth::user()->role->id == $role_id);
+            return (Auth::user()->role->id == $reviewerId);
+    }
+
+    public static function isUserLeasingService($user = null)
+    {
+        $leasingServiceId = config('reservation.LEASING_SERVICE_ROLE_ID');
+
+        if($user)
+            return ($user->role->id == $leasingServiceId);
+        else
+            return (Auth::user()->role->id == $leasingServiceId);
     }
 }
