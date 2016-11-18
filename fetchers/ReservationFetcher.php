@@ -20,4 +20,16 @@ class ReservationFetcher
 
         return $assets;
     }
+
+    public static function getReservationRequests()
+    {
+        return DB::table('reservation_requests')->get();
+    }
+
+    public static function getLeasedAssets()
+    {
+        return DB::table('reservation_assets')->get();
+    }
+
+
 }
