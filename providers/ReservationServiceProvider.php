@@ -8,11 +8,8 @@ class ReservationServiceProvider extends ServiceProvider
 	public function register()
 	{
 		$this->app->bind('Reservation', function($app){
-		return new Reservation();
-
+			return new Reservation();
 		});
-
-
 	}
 	public function boot()
 	{
@@ -21,8 +18,11 @@ class ReservationServiceProvider extends ServiceProvider
 		}
 
 		$this->loadMigrationsFrom('../migrations');
+        $this->loadViewsFrom('../views', 'Reservation');
 
-        $this->loadViewsFrom('/views', 'Reservation');
+		$this->publishes([
+			'../config/reservation.php' => config_path('reservation.php'),
+		]);
 	}
 
 
