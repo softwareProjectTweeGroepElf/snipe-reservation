@@ -27,7 +27,7 @@ class ReservationController extends Controller
 
 	public function getReservationRequests()
 	{
-		if (RoleUtil::checkUserRole(2))
+		if (RoleUtil::isUserReviewer())
 			return redirect()->back();
 		else
 			return view('reservationrequests')->with('requests', ReservationFetcher::getReservationRequests());
@@ -35,11 +35,11 @@ class ReservationController extends Controller
 
 	public function getLeasingService()
 	{
-		if (RoleUtil::checkUserRole(3))
+		if (RoleUtil::isUserLeasingService())
 			return redirect()->back();
 		else
 		return view('leasingservice')->with([
-			['leasedAssets', ReservationFetcher::getLeasedAssets()],
+			['leasedAssets' => ReservationFetcher::getLeasedAssets()],
 		]); // will add more variables to send
 	}
 }
