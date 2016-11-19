@@ -13,7 +13,7 @@ class RoleUtil
 
     public static function isUserReviewer($user = null)
     {
-        $reviewerId = config('reservation.REVIEWER_ROLE_ID');
+        $reviewerIds = config('reservation.REVIEWER_ROLE_ID');
 
         if($user)
             return ($user->role->id == $reviewerId);
@@ -23,11 +23,11 @@ class RoleUtil
 
     public static function isUserLeasingService($user = null)
     {
-        $leasingServiceId = config('reservation.LEASING_SERVICE_ROLE_ID');
+        $leasingServiceIds = config('reservation.LEASING_SERVICE_ROLE_ID');
 
         if($user)
-            return ($user->role->id == $leasingServiceId);
+            return (in_array($user->role->id, $leasingServiceIds));
         else
-            return (Auth::user()->role->id == $leasingServiceId);
+            return (in_array(Auth::user()->role->id, $leasingServiceIds));
     }
 }
