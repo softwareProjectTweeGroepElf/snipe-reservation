@@ -14,14 +14,14 @@ class ReservationServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		if (! $this->app->routesAreCached()) {
-			require '../routes/routes.php';
+			require __DIR__ . '../routes/routes.php';
 		}
 
-		$this->loadMigrationsFrom('../migrations');
-        $this->loadViewsFrom('../views', 'Reservation');
+		$this->loadMigrationsFrom(__DIR__ . '../migrations');
+        $this->loadViewsFrom(__DIR__ . '../views', 'Reservation');
 
 		$this->publishes([
-			'../config/reservation.php' => config_path('reservation.php'),
+			__DIR__ . '../config/reservation.php' => config_path('reservation.php'),
 		]);
 	}
 
