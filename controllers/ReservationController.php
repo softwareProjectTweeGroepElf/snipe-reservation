@@ -42,4 +42,50 @@ class ReservationController extends Controller
 			['leasedAssets' => ReservationFetcher::getLeasedAssets()],
 		]); // will add more variables to send
 	}
+
+
+	public function postReservationRequest(Request $request)
+	{
+		
+		if(DB::table('reservation_requests')->insert([
+	        'user_id'=> $request->input('user_id'),
+    	    'asset_id' => $request->input('asset_id')   
+        ]))
+   		{
+       		return true;
+ 	  	}
+		return false;
+		
+		/*
+		if (reservation_requests::create(Request::All())){
+			return true;
+		}
+		return false;
+		*/
+	}
+
+	public function postReservation(Request $request)
+	{
+		if (!RoleUtil::isUserLeasingService()){
+			return redirect()->back();
+		}
+		else{
+			if(DB::table('reservation_assets')->insert([
+			        'user_id'=> $request->input('user_id'),
+	        	    'asset_id' => $request->input('asset_id'),
+	        	    'from' => date('Y-m-d', strtotime($request->input('from'))),
+	           		'until' => date('Y-m-d', strtotime($request->input('until')))  
+	            ]))
+	        {
+	            return true;
+	        }
+			return false;
+		}
+
+		/*if (reservation_assets::create(Request::All())){
+			return true;
+		}
+		return false; */
+	}
+
 }
