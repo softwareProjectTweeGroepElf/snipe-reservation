@@ -16,6 +16,6 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        
+         "laravel/laravel": "^4.3"
     }
 }
