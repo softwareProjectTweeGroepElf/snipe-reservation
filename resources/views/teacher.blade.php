@@ -29,6 +29,7 @@
                                             <td>{{ "Naam aanvrager" }}</td>
                                             <td>{{"Datum van aanvraag"}}</td>
                                             <td> {{"Reservatie-info"}}</td>
+                                            <td> {{"Actions"}}</td>
                                         </tr>
                                         <tr>
                                             <td>{{"Sam Van Roy"}}</td>

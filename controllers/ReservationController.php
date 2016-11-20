@@ -42,4 +42,8 @@ class ReservationController extends Controller
 			['leasedAssets' => ReservationFetcher::getLeasedAssets()],
 		]); // will add more variables to send
 	}
+
+	public function getViewTeacher(){
+	    return view('teacher');
+    }
 }
