@@ -8,7 +8,8 @@
             "email": "tanguy.deleu@student.ehb.be"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
-        "laravel/laravel": "^5.3"
+        
     }
 }
