@@ -31,14 +31,11 @@
                                             <td> {{"Reservatie-info"}}</td>
                                             <td> {{"Actions"}}</td>
                                         </tr>
-                                        @foreach($reservations as $reservationrequests)
+                                        @foreach($reservations as $reservation)
                                         <tr>
-                                            <td>{{$reservationrequest->user_id}}</td>
-                                            <td>{{$reservationrequest->created_at}}</td>
-                                            <td></td>
-                                            <td>{{"Sam Van Roy"}}</td>
-                                            <td>{{"17/11/2016"}}</td>
-                                            <td>{{"Vorige reservaties verliepen prima!"}}</td>
+                                            <td>{{User::find($reservation->user_id)->name}}</td>
+                                            <td>{{$reservation->created_at}}</td>
+                                            <td>{{$reservation->subject}}</td>
                                             <td>
                                                 <button type="button" class="btn btn-primary">Accept</button>
                                                 <button type="button" class="btn btn-secondary">Reject</button>

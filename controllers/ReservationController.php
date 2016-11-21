@@ -53,4 +53,10 @@ class ReservationController extends Controller
         else
             return redirect()->back();
     }
+
+    public function acceptReservation(Request $request){
+        $reservation = DB::table('reservation_requests')->where('id', $request->reservation_id)->first();
+        DB::table('reservation_assets')->insert(['user_id' => $reservation->user_id, 'asset_id' => $reservation->asset_id, 'from' => $reservation->from, 'until' => $reservation->until]);
+        DB::table('reservation_requests')->where('id', $request->reservation_id)->delete();
+    }
 }
