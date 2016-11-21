@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 {{-- Page title --}}
 @section('title')
-    {{ trans('general.asset_report') }}
+    {{ trans('general.reservation_report') }}
     @parent
 @stop
 
@@ -21,23 +21,29 @@ use Carbon\Carbon;
                             <table
                                     data-url="{{route('api.users.list')}}"
                                     user="user"
-                                    name="maintenances"
+                                    name="reservation"
                                     id="table"
                                     class="table table-striped"
-                                    data-url="{{route('api.asset_maintenances.list') }}"
+                                    data-url="{{route('api.reservation_request.list') }}"
                                     data-cookie="true"
                                     data-click-to-select="true"
-                                    data-cookie-id-table="maintenancesTable-{{ config('version.hash_version') }}">
+                                    data-cookie-id-table="reservationTable-{{ config('version.hash_version') }}">
                                 <thead>
                                 <tr>
 
-                                    <th data-sortable="true" data-field="id" data-visible="false">{{ trans('general.id') }}</th>
-                                    <th data-sortable="false" data-field="name" data-visible="user_name">{{ trans('users') }}</th>
-                                    <th data-sortable="false" data-field="asset_name">{{ trans('admin/asset_maintenances/table.asset_name') }}</th>
-                                    <th data-sortable="false" data-field="supplier">{{ trans('admin/asset_maintenances/table.supplier_name') }}</th>
-                                    <th data-searchable="true" data-sortable="false" data-field="start_date">{{ trans('admin/asset_maintenances/form.start_date') }}</th>
-                                    <th data-searchable="true" data-sortable="true" data-field="end_date">{{ trans('admin/asset_maintenances/form.completion_date') }}</th>
-                                     </tr>
+
+
+                                    <th data-sortable="true"  data-field="id" data-visible="false">     </th>
+
+                                    <th data-sortable="false" data-field="name" data-visible="user_name">{{ trans('user') }}</th>
+                                    @where(reservation_request/table.asset_userId==user/userId)
+                                    <th data-sortable="false" data-field="asset_name">{{ trans('reservation_request/table.asset_name') }}</th>
+                                    <th data-sortable="true" data-field="id" data-visible="false">{{ trans('reservation_request/table.asset_Id') }}</th>
+                                    <th data-sortable="false" data-field="supplier">{{ trans('reservation_request/table.supplier_name') }}</th>
+                                    <th data-searchable="true" data-sortable="false" data-field="start_date">{{ trans('reservation_request/table.form.start_date') }}</th>
+                                    <th data-searchable="true" data-sortable="true" data-field="end_date">{{ trans('reservation_request/table.form.completion_date') }}</th>
+                                    @stop
+                                </tr>
                                 </thead>
                             </table>
 
