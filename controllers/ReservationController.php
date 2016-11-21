@@ -65,4 +65,22 @@ class ReservationController extends Controller
         DB::table('reservation_archive')->insert(['user_id' => $reservation->user_id, 'asset_id' => $reservation->asset_id, 'from' => $reservation->from, 'until' => $reservation->until, 'status' => 'DENIED']);
         DB::table('reservation_requests')->where('id', $request->reservation_id)->delete();
     }
+
+    public function checkEndDateReservation(){
+        $today = getdate();
+        $reservation = DB::table('reservation_assets')->where('id');
+    }
+
+    public function getAllEndDateReservations(){
+        $today = getdate();
+        /*$reservation = DB::table('reservation_assets')->where([
+            ['until'[year], $today[year]],
+            ['until'[mon], $today[mon]],
+            ['until'[mday], $today[mday]],
+            ])->get();*/
+        $reservation = DB::table('reservation_assets')
+            ->whereDate('until', $today);
+
+
+    }
 }
