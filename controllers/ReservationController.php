@@ -44,7 +44,7 @@ class ReservationController extends Controller
 	}
 
 	public function getViewTeacher(){
-	    return view('teacher');
+	    return view('view.teacher');
     }
 
     public function getAllReservations(){
@@ -78,8 +78,11 @@ class ReservationController extends Controller
             ['until'[mon], $today[mon]],
             ['until'[mday], $today[mday]],
             ])->get();*/
-        $reservation = DB::table('reservation_assets')
-            ->whereDate('until', $today);
+
+        $reservations = DB::table('reservation_assets')
+            ->whereDate('until', $today)
+            ->get();
+        return $reservations;
 
 
     }
