@@ -1,0 +1,14 @@
+{
+    "name": "sp2gr11/reservation",
+    "description": "Reservation package for SnipeIT project.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Deleu Tanguy",
+            "email": "tanguy.deleu@student.ehb.be"
+        }
+    ],
+    "require": {
+        "laravel/laravel": "^5.3"
+    }
+}
