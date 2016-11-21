@@ -18,7 +18,7 @@ class CheckOutUtil
         strtotime($currentDate);
 
         $expectedCheckin=$currentDate+604800;
-
+        //This is the amount of seconds in one week.
 
 
 
