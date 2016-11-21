@@ -37,8 +37,18 @@
                                             <td>{{$reservation->created_at}}</td>
                                             <td>{{$reservation->subject}}</td>
                                             <td>
-                                                <button type="button" class="btn btn-primary">Accept</button>
-                                                <button type="button" class="btn btn-secondary">Reject</button>
+                                                <input type="button" class="btn btn-primary" value="Accept" name="btnAccept">
+                                                <input type="button" class="btn btn-secondary" value="Reject" name="btnReject">
+
+                                                @if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                                                    @if (isset($_POST['btnAccept'])) {
+                                                        {{\Reservation\Controllers\ReservationController::acceptReservation($request)}}
+                                                    } @else {
+                                                        {{\Reservation\Controllers\ReservationController::rejectReservation($request)}}
+                                                    }
+                                                }
+                                                    @endif
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach
