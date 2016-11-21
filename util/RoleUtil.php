@@ -10,7 +10,10 @@ namespace Reservation\Util;
 
 class RoleUtil
 {
-
+    /**
+     * @param The user to check for, if not given will check the authenticated user instead
+     * @return True if the user is able to review reservation requests, false if not
+     */
     public static function isUserReviewer($user = null)
     {
         $reviewerIds = config('reservation.REVIEWER_ROLE_ID');
@@ -21,6 +24,10 @@ class RoleUtil
             return (RoleUtil::isUserPartOfGroup(Auth::user(), $reviewerIds));
     }
 
+    /**
+     * @param The user to check for, if not given will check the authenticated user instead
+     * @return True if the user is part of the leasing service, false if not
+     */
     public static function isUserLeasingService($user = null)
     {
         $leasingServiceIds = config('reservation.LEASING_SERVICE_ROLE_ID');
@@ -31,7 +38,12 @@ class RoleUtil
             return (RoleUtil::isUserPartOfGroup(Auth::user(), $leasingServiceIds));
     }
 
-    public static function isUserPartOfGroup($user, $groups)
+    /**
+     * @param The user to check the groups of
+     * @param array An array of group IDs to check if the User is part of any of them
+     * @return True if the user is part of any of the groups, false if not
+     */
+    public static function isUserPartOfGroup($user, array $groups)
     {
         return !empty(array_intersect($user->groups->pluck('id')->all(), $groups));
     }
