@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-    {{ trans('Reservaties') }}
+    {{ trans('Reservations') }}
 
     @parent
 @stop
@@ -31,7 +31,11 @@
                                             <td> {{"Reservatie-info"}}</td>
                                             <td> {{"Actions"}}</td>
                                         </tr>
+                                        @foreach($reservations as $reservationrequests)
                                         <tr>
+                                            <td>{{$reservationrequest->user_id}}</td>
+                                            <td>{{$reservationrequest->created_at}}</td>
+                                            <td></td>
                                             <td>{{"Sam Van Roy"}}</td>
                                             <td>{{"17/11/2016"}}</td>
                                             <td>{{"Vorige reservaties verliepen prima!"}}</td>
@@ -40,6 +44,7 @@
                                                 <button type="button" class="btn btn-secondary">Reject</button>
                                             </td>
                                         </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div> <!-- /.col-md-12 -->

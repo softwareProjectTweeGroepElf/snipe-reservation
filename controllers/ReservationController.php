@@ -46,4 +46,11 @@ class ReservationController extends Controller
 	public function getViewTeacher(){
 	    return view('teacher');
     }
+
+    public function getAllReservations(){
+        if(RoleUtil::isUserReviewer())
+            return view('view.teacher')->with('reservations', ReservationFetcher::getReservationRequests());
+        else
+            return redirect()->back();
+    }
 }
