@@ -2,6 +2,8 @@
     "name": "sp2gr11/reservation",
     "description": "Reservation package for SnipeIT project.",
     "type": "library",
+
+    "license": "MIT",
     "authors": [
         {
             "name": "Deleu Tanguy",
