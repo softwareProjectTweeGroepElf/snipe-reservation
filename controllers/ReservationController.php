@@ -42,4 +42,43 @@ class ReservationController extends Controller
 			['leasedAssets' => ReservationFetcher::getLeasedAssets()],
 		]); // will add more variables to send
 	}
+
+
+    public function calculateFine($assetId)
+    {
+        $result=DB::table('reservation_assets')->select('until')->first();
+        $currentDate= date("m.d.y");
+
+        strtotime($currentDate);
+        strtotime($result);
+
+
+        $verschil=$currentDate-$result;
+
+        $verschil=$verschil/86400;
+
+        $verschil = floor($verschil);
+        return $boeteBedrag=$verschil*50;
+    }
+
+
+    public function checkDate($assetId)
+    {
+        $result=DB::select('select expected_checkin from assets where id=$assetId');
+        $currentDate= time();
+
+        if ($result<$currentDate)
+        {
+            return "Asset Checked in";
+            //Hier moet nog de functie komen om een item in te checken.
+        }
+        else
+        {
+            $fine=calculateFine($assetId);
+            return view('teLaat')->with('fine', $fine);
+        }
+    }
+
+
+
 }
