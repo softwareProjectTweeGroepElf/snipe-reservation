@@ -4,6 +4,7 @@ namespace Reservation\Controllers;
 
 use App\Http\Controllers\Controller;
 use Reservation\Fetchers\ReservationFetcher;
+use Reservation\Util\CheckInUtil;
 use Reservation\Util\RoleUtil;
 use App\Models\Asset;
 use App\Models\User;
@@ -65,12 +66,14 @@ class ReservationController extends Controller
     public function checkDate($assetId)
     {
         $result=DB::select('select expected_checkin from assets where id=$assetId');
-        $currentDate= time();
+        $currentDate= date("m.d.y");
+
+        strtotime($currentDate);
+        strtotime($result);
 
         if ($result<$currentDate)
         {
-            return "Asset Checked in";
-            //Hier moet nog de functie komen om een item in te checken.
+            CheckInUtil::CheckIn($assetId);
         }
         else
         {

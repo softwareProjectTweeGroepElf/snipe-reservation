@@ -30,4 +30,6 @@ class RoleUtil
         else
             return (Auth::user()->role->id == $leasingServiceId);
     }
+
+
 }

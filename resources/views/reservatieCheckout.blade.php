@@ -599,9 +599,13 @@ window.snipeit = {
                       <label class="sr-only" for="tagSearch">{{ trans('general.lookup_by_tag') }}</label>
                       <input type="text" class="form-control" id="tagSearch" name="assetTag" placeholder="{{ trans('general.lookup_by_tag') }}">
                       <input type="hidden" name="topsearch" value="true">
+
+                      <label class="sr-only" for="tagSearch">{{ trans('general.lookup_by_tag') }}</label>
+                      <input type="text" class="form-control" id="tagSearch" name="assetTag" placeholder="{{ trans('general.lookup_by_tag') }}">
+                      <input type="hidden" name="topsearch" value="true">
                   </div>
                   <div class="col-xs-1">
-                      <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-search"></i></button>
+                      <button type="submit" class="btn btn-primary pull-right" onclick="CheckOutUtil.checkout($assetId,$userId)"><i class="fa fa-search"></i></button>
                   </div>
 
 
@@ -630,7 +634,7 @@ window.snipeit = {
                           <input type="hidden" name="topsearch" value="true">
                       </div>
                       <div class="col-xs-1">
-                          <button type="" class="btn btn-primary pull-right"><i class="fa fa-search"></i></button>
+                          <button type="" class="btn btn-primary pull-right" onclick="checkDate"><i class="fa fa-search"></i></button>
                       </div>
 
 
