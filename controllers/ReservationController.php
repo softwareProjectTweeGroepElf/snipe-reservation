@@ -60,7 +60,7 @@ class ReservationController extends Controller
         DB::table('reservation_requests')->where('id', $request->reservation_id)->delete();
         if(DB::table('assets')
             ->select('assigned_to')
-            ->where('id', $request->asset_id) === null)
+            ->where('id', $request->asset_id)->get() === null)
         {
         DB::table('assets')
             ->where('id', $request->asset_id)
@@ -86,29 +86,49 @@ class ReservationController extends Controller
             ['until'[mday], $today[mday]],
             ])->get();*/
 
-        $today = getdate() + strtotime("-1 days");
+        $today = getdate() + strtotime('-1 days');
         $reservations = DB::table('reservation_assets')
             ->whereDate('until', $today)
             ->get();
         return $reservations;
     }
 
-    public function sendResultDecisionTeacherToStudent($decision, $reservation){
+    public static function sendResultDecisionTeacherToStudent($decision, $reservation){
         $student_id = $reservation->user_id;
         $student = User::find($student_id);
         $student_asset_id = $reservation->asset_id;
         $student_asset = DB::table('assets')->where('id', $student_asset_id);
         $to = $student->email;
-        $subject = "Decision teacher";
+        $subject = 'Decision teacher';
+        $message = null;
         if($decision)
         {
-            $message = $student->name . "your Reservation: " .  $student_asset->name .  " is accepted!";
+            $message = $student->name . 'your Reservation: ' .  $student_asset->name .  ' is accepted!';
         }
         else{
-            $message = $student->name .  "your Reservation: " .  $student_asset->name .  " is rejected!";
+            $message = $student->name .  'your Reservation: ' .  $student_asset->name .  ' is rejected!';
         }
 
             mail($to, $subject, $message);
+    }
+
+    public function sendDailyOverviewToHeadOfTheLendingService(){
+        $today = getdate();
+        $reservations = DB::table('reservation_assets')->where('from', $today)->get();
+        //hier moet de hoofduitleendienstemailadres komen
+        $to = null;
+        $subject = 'Today\'s overview from loaned items';
+        $message = 'This is the overview from assets that will be loaned today: ';
+        foreach ($reservations as $reservation)
+        {
+            $reservation_asset_id = $reservation->asset_id;
+            $reservation_asset = DB::table('assets')->where('id', $reservation_asset_id);
+            $reservation_user_id = $reservation->user_id;
+            $reservation_user = DB::table('users')->where('id', $reservation_user_id);
+            $message =  PHP_EOL . $message . $reservation_asset->name . ' will be lent by: ' . $reservation_user;
+        }
+
+        mail($to, $subject, $message);
     }
 
     public function sendReminderMailToUsers(){
@@ -121,8 +141,8 @@ class ReservationController extends Controller
             $user_asset_id = $reservation->asset_id;
             $user_asset = DB::table('assets')->where('id', $user_asset_id);
             $to = $user->email;
-            $subject = "Automatic reminder";
-            $message = $user->name .  "your Reservation: " .  $user_asset->name .  " ends tomorrow!";
+            $subject = 'Automatic reminder';
+            $message = $user->name .  'your Reservation: ' .  $user_asset->name .  ' ends tomorrow!';
             mail($to, $subject, $message);
         }
         /*

@@ -36,6 +36,7 @@
                                             <td>{{User::find($reservation->user_id)->name}}</td>
                                             <td>{{$reservation->created_at}}</td>
                                             <td>{{$reservation->subject}}</td>
+                                            <!-- misschien moeten buttons buiten foreach geplaatst worden? -->
                                             <td>
                                                 <input type="button" class="btn btn-primary" value="Accept" name="btnAccept">
                                                 <input type="button" class="btn btn-secondary" value="Reject" name="btnReject">
@@ -43,8 +44,10 @@
                                                 @if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     @if (isset($_POST['btnAccept'])) {
                                                         {{\Reservation\Controllers\ReservationController::acceptReservation($request)}}
+                                                        {{\Reservation\Controllers\ReservationController::sendResultDecisionTeacherToStudent(true, $reservation)}}
                                                     } @else {
                                                         {{\Reservation\Controllers\ReservationController::rejectReservation($request)}}
+                                                        {{\Reservation\Controllers\ReservationController::sendResultDecisionTeacherToStudent(false, $reservation)}}
                                                     }
                                                 }
                                                     @endif
