@@ -1,12 +1,17 @@
 <?php
 
-namespace Reservation\Controllers;
+namespace sp2gr11\reservation\controllers;
 
 use App\Http\Controllers\Controller;
 use Reservation\Fetchers\ReservationFetcher;
 use Reservation\Util\RoleUtil;
 use App\Models\Asset;
 use App\Models\User;
+
+use Illuminate\Http\Request;
+//use Illuminate\Routing\Controller;
+
+
 
 class ReservationController extends Controller
 {
@@ -86,6 +91,11 @@ class ReservationController extends Controller
 			return true;
 		}
 		return false; */
+	}
+
+	public function getIndex(){
+
+		return "nice";
 	}
 
 }
