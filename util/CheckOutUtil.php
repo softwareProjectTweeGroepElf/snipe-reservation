@@ -14,7 +14,7 @@ class CheckOutUtil
     public static function checkOut($assetId,$userId)
     {
 
-        $currentDate= date("m.d.y");
+        $currentDate= date("dd.mm.yyyy");
         strtotime($currentDate);
 
         $expectedCheckin=$currentDate+604800;
