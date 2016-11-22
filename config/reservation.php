@@ -9,8 +9,8 @@
 
 return [
 
-    'REVIEWER_ROLE_ID' => 2, // The Role Id that can review reservation requests - default: 2
+    'REVIEWER_ROLE_ID' => [ 2 ], // The Role Ids that can review reservation requests - default: 2
 
-    'LEASING_SERVICE_ROLE_ID' => 3, // The Role Id that can check in/out assets - default: 3
+    'LEASING_SERVICE_ROLE_ID' => [ 3 ], // The Role Ids that can check in/out assets - default: 3
 
 ];
