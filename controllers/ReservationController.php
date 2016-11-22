@@ -94,10 +94,10 @@ class ReservationController extends Controller
         $subject = "Decision teacher";
         if($decision)
         {
-            $message = $student->name + "your Reservation: " + $student_asset->name + " is accepted!";
+            $message = $student->name . "your Reservation: " .  $student_asset->name .  " is accepted!";
         }
         else{
-            $message = $student->name + "your Reservation: " + $student_asset->name + " is rejected!";
+            $message = $student->name .  "your Reservation: " .  $student_asset->name .  " is rejected!";
         }
 
             mail($to, $subject, $message);
@@ -114,7 +114,7 @@ class ReservationController extends Controller
             $user_asset = DB::table('assets')->where('id', $user_asset_id);
             $to = $user->email;
             $subject = "Automatic reminder";
-            $message = $user->name + "your Reservation: " + $user_asset->name + " ends tomorrow!";
+            $message = $user->name .  "your Reservation: " .  $user_asset->name .  " ends tomorrow!";
             mail($to, $subject, $message);
         }
         /*
