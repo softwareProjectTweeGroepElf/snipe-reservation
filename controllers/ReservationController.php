@@ -58,6 +58,14 @@ class ReservationController extends Controller
         $reservation = DB::table('reservation_requests')->where('id', $request->reservation_id)->first();
         DB::table('reservation_assets')->insert(['user_id' => $reservation->user_id, 'asset_id' => $reservation->asset_id, 'from' => $reservation->from, 'until' => $reservation->until]);
         DB::table('reservation_requests')->where('id', $request->reservation_id)->delete();
+        if(DB::table('assets')
+            ->select('assigned_to')
+            ->where('id', $request->asset_id) === null)
+        {
+        DB::table('assets')
+            ->where('id', $request->asset_id)
+            ->update(['assigned_to' => $request->user_id]);
+        }
     }
 
     public static function rejectReservation(Request $request){
