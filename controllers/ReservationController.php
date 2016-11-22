@@ -66,19 +66,19 @@ class ReservationController extends Controller
         DB::table('reservation_requests')->where('id', $request->reservation_id)->delete();
     }
 
-    public function checkEndDateReservation(){
+    /*public function checkEndDateReservation(){
         $today = getdate();
         $reservation = DB::table('reservation_assets')->where('id');
-    }
+    }*/
 
     public function getAllEndDateReservations(){
-        $today = getdate();
         /*$reservation = DB::table('reservation_assets')->where([
             ['until'[year], $today[year]],
             ['until'[mon], $today[mon]],
             ['until'[mday], $today[mday]],
             ])->get();*/
 
+        $today = getdate() + strtotime("-1 days");
         $reservations = DB::table('reservation_assets')
             ->whereDate('until', $today)
             ->get();
@@ -92,9 +92,11 @@ class ReservationController extends Controller
         {
             $user_id = $reservation->user_id;
             $user = User::find($user_id);
+            $user_asset_id = $reservation->asset_id;
+            $user_asset = DB::table('assets')->where('id', $user_asset_id);
             $to = $user->email;
             $subject = "Automatic reminder";
-            $message = $user->name + "your Reservations ends tomorrow!";
+            $message = $user->name + "your Reservation: " + $user_asset->name + " ends tomorrow!";
             mail($to, $subject, $message);
         }
         /*
