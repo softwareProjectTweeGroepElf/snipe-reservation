@@ -85,6 +85,24 @@ class ReservationController extends Controller
         return $reservations;
     }
 
+    public function sendResultDecisionTeacherToStudent($decision, $reservation){
+        $student_id = $reservation->user_id;
+        $student = User::find($student_id);
+        $student_asset_id = $reservation->asset_id;
+        $student_asset = DB::table('assets')->where('id', $student_asset_id);
+        $to = $student->email;
+        $subject = "Decision teacher";
+        if($decision)
+        {
+            $message = $student->name + "your Reservation: " + $student_asset->name + " is accepted!";
+        }
+        else{
+            $message = $student->name + "your Reservation: " + $student_asset->name + " is rejected!";
+        }
+
+            mail($to, $subject, $message);
+    }
+
     public function sendReminderMailToUsers(){
 
         $reservations = $this->getAllEndDateReservations();
