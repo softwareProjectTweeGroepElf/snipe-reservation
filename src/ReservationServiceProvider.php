@@ -27,7 +27,7 @@ class ReservationServiceProvider extends BBaseServiceProvider
 			require __DIR__ . '../routes/routes.php';
 		}
 
-		$this->loadViewsFrom(__DIR__ . '../views', 'Reservation');
+		$this->loadViewsFrom(__DIR__ . '/views', 'reservation');
 		//$this->loadMigrationsFrom(__DIR__ . '../migrations');
   
 		$this->publishes([

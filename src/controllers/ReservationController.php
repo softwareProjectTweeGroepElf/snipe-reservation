@@ -9,6 +9,11 @@ use App\Models\Asset;
 use App\Models\User;
 
 use Illuminate\Http\Request;
+
+
+use Illuminate\Support\Facades\DB;
+
+
 //use Illuminate\Routing\Controller;
 
 
@@ -95,7 +100,21 @@ class ReservationController extends Controller
 
 	public function getIndex(){
 
-		return "nice";
+		return view('reservation::home');
 	}
+
+	public function getStudent(){
+
+		$var =  Asset::all();
+
+		for ($i=0; $i < sizeof($var); $i++) { 
+			if (!$var[$i]["assigned_to"] == null){
+				 unset($var[$i]);
+			}
+		}
+
+		return view('reservation::students')->with('assets', $var);
+	}
+
 
 }
