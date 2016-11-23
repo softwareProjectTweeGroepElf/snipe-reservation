@@ -44,12 +44,12 @@ class ReservationController extends Controller
 	}
 
 	public function getViewTeacher(){
-	    return view('view.teacher');
+	    return view('view-teacher');
     }
 
     public function getAllReservations(){
         if(RoleUtil::isUserReviewer())
-            return view('view.teacher')->with('reservations', ReservationFetcher::getReservationRequests());
+            return view('view-teacher')->with('reservations', ReservationFetcher::getReservationRequests());
         else
             return redirect()->back();
     }
@@ -92,24 +92,26 @@ class ReservationController extends Controller
             ->get();
         return $reservations;
     }
-
     public static function sendResultDecisionTeacherToStudent($decision, $reservation){
         $student_id = $reservation->user_id;
         $student = User::find($student_id);
         $student_asset_id = $reservation->asset_id;
         $student_asset = DB::table('assets')->where('id', $student_asset_id);
-        $to = $student->email;
-        $subject = 'Decision teacher';
-        $message = null;
+
+        $data['first_name'] = $student->first_name;
+        $data['last_name'] = $student->last_name;
+        $data['asset_name'] = $student_asset->name;
         if($decision)
         {
-            $message = $student->name . 'your Reservation: ' .  $student_asset->name .  ' is accepted!';
+            $data['decision'] = 'accepted';
         }
-        else{
-            $message = $student->name .  'your Reservation: ' .  $student_asset->name .  ' is rejected!';
+        else {
+            $data['decision'] = 'denied';
         }
-
-            mail($to, $subject, $message);
+        Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($student) {
+            $m->to($student->email, $student->first_name . ' ' . $student->last_name);
+            $m->subject('Decision teacher about your asset');
+        });
     }
 
     public function sendDailyOverviewToHeadOfTheLendingService(){
