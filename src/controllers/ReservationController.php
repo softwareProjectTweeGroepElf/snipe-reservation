@@ -98,6 +98,7 @@ class ReservationController extends Controller
         $student_asset_id = $reservation->asset_id;
         $student_asset = DB::table('assets')->where('id', $student_asset_id);
 
+        $data = array();
         $data['first_name'] = $student->first_name;
         $data['last_name'] = $student->last_name;
         $data['asset_name'] = $student_asset->name;
@@ -112,76 +113,53 @@ class ReservationController extends Controller
             $m->to($student->email, $student->first_name . ' ' . $student->last_name);
             $m->subject('Decision teacher about your asset');
         });
+
     }
 
     public function sendDailyOverviewToHeadOfTheLendingService(){
         $today = getdate();
         $reservations = DB::table('reservation_assets')->where('from', $today)->get();
         //hier moet de hoofduitleendienstemailadres komen
+        $reservation_asset = null;
+        $reservation_user = null;
         $to = null;
-        $subject = 'Today\'s overview from loaned items';
-        $message = 'This is the overview from assets that will be loaned today: ';
-        foreach ($reservations as $reservation)
+        /*foreach ($reservations as $reservation)
         {
             $reservation_asset_id = $reservation->asset_id;
             $reservation_asset = DB::table('assets')->where('id', $reservation_asset_id);
             $reservation_user_id = $reservation->user_id;
             $reservation_user = DB::table('users')->where('id', $reservation_user_id);
-            $message =  PHP_EOL . $message . $reservation_asset->name . ' will be lent by: ' . $reservation_user;
-        }
+            $data['first_name'] .= $reservation_user->first_name;
+            $data['last_name'] = $reservation_user->last_name;
+            $data['asset_name'] = $reservation_asset->name;
+        }*/
 
-        mail($to, $subject, $message);
+
+
+        Mail::send('emails.overviewDailyLendableAssets', $reservations ,function ($m) use ($reservation_user) {
+            //$m->to($reservation_user->email, $reservation_user->first_name . ' ' . $reservation_user->last_name);
+            $m->subject('Overview today \'s lendable assets');
+        });
     }
 
     public function sendReminderMailToUsers(){
-
         $reservations = $this->getAllEndDateReservations();
-        foreach ($reservations as $reservation)
-        {
+        $data = array();
+        foreach ($reservations as $reservation) {
             $user_id = $reservation->user_id;
             $user = User::find($user_id);
             $user_asset_id = $reservation->asset_id;
             $user_asset = DB::table('assets')->where('id', $user_asset_id);
-            $to = $user->email;
-            $subject = 'Automatic reminder';
-            $message = $user->name .  'your Reservation: ' .  $user_asset->name .  ' ends tomorrow!';
-            mail($to, $subject, $message);
+
+            $data['first_name'] = $user->first_name;
+            $data['last_name'] = $user->last_name;
+            $data['asset_name'] = $user->name;
+
+            Mail::send('emails.reminderMailUser', $data, function ($m) use ($user) {
+                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
+                $m->subject('Automatic reminder ending loan period asset');
+            });
         }
-        /*
-        //require_once 'lib/swift_required.php';
-
-        // Create the Transport
-        $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 25)
-            ->setUsername('Admin')
-            ->setPassword('Admin')
-        ;
-
-
-        You could alternatively use a different transport such as Sendmail or Mail:
-
-        // Sendmail
-        $transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
-
-        // Mail
-        $transport = Swift_MailTransport::newInstance();
-
-
-        //Create the email body message
-        $data =
-
-        // Create the Mailer using your created Transport
-        $mailer = Swift_Mailer::newInstance($transport);
-
-        // Create a message
-        $message = Swift_Message::newInstance('Web Lead')
-            ->setFrom(array('sam.van.roy@student.ehb.be' => 'Sam Van Roy'))
-            ->setTo(array( 'other@domain.org' => 'A name'))
-            ->setSubject('Automatic email from sam.van.roy@student.ehb.be')
-            ->setBody()
-        ;
-
-        // Send the message
-        $result = $mailer->send($message);
-        */
     }
+
 }
