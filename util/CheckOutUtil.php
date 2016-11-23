@@ -27,7 +27,7 @@ class CheckOutUtil
         $archived=DB::select('select archived from assets WHERE id=$assetId');
 
 
-        if($assetId==true && $requestable==true && $archived==false)
+        if($assetStatus==true && $requestable==true && $archived==false)
         {
             return "Asset already checked out.";
         }

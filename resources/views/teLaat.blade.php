@@ -590,7 +590,8 @@
             </h1>
             <br><br><br>
             <a style="font-size: larger">Het asset dat u wou inchecken is te laat terug gebracht. De student zal een boete moeten betalen.</a>
-            <a style="font-size: larger">De boete bedraagt $fine</a>
+            <a style="font-size: larger">De boete bedraagt <?php echo $fine; ?></a>
+
 
 
 

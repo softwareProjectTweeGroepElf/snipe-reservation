@@ -597,15 +597,22 @@ window.snipeit = {
               <div class="col-xs-12 col-md-12">
                   <div class="col-xs-12 form-group">
                       <label class="sr-only" for="tagSearch">{{ trans('general.lookup_by_tag') }}</label>
-                      <input type="text" class="form-control" id="tagSearch" name="assetTag" placeholder="{{ trans('general.lookup_by_tag') }}">
-                      <input type="hidden" name="topsearch" value="true">
+                      <input type="text" class="form-control" id="tagSearch" name="assetTag" placeholder="Asset ID">
+                      <input type="hidden" name="topsearch" value="<?php echo $assetId;?>">
 
                       <label class="sr-only" for="tagSearch">{{ trans('general.lookup_by_tag') }}</label>
-                      <input type="text" class="form-control" id="tagSearch" name="assetTag" placeholder="{{ trans('general.lookup_by_tag') }}">
-                      <input type="hidden" name="topsearch" value="true">
+                      <input type="text" class="form-control" id="tagSearch" name="assetTag" placeholder="User ID">
+                      <input type="hidden" name="topsearch" value="<?php echo $userId;?>">
                   </div>
                   <div class="col-xs-1">
-                      <button type="submit" class="btn btn-primary pull-right" onclick="CheckOutUtil.checkout($assetId,$userId)"><i class="fa fa-search"></i></button>
+                      <button type="submit" class="Checkout" onclick="
+                      @if($_SERVER['REQUEST_METHOD']==='POST')
+                      {isset($_POST['Checkout'])}
+                              {
+                              {{\Reservation\Util\CheckOutUtil::checkOut($assetId,$userId)}}
+                              }
+                              @endif">
+                          <i class="fa fa-search"></i></button>
                   </div>
 
 
@@ -630,11 +637,18 @@ window.snipeit = {
                   <div class="col-xs-12 col-md-12">
                       <div class="col-xs-12 form-group">
                           <label class="sr-only" for="tagSearch">{{ trans('general.lookup_by_tag') }}</label>
-                          <input type="text" class="form-control" id="tagSearch" name="assetTag" placeholder="{{ trans('general.lookup_by_tag') }}">
-                          <input type="hidden" name="topsearch" value="true">
+                          <input type="text" class="form-control" id="tagSearch" name="assetTag" placeholder="asset ID">
+                          <input type="hidden" name="topsearch" value="<?php echo $assetId;?>">
                       </div>
                       <div class="col-xs-1">
-                          <button type="" class="btn btn-primary pull-right" onclick="checkDate"><i class="fa fa-search"></i></button>
+                          <button type="submit" class="btn btn-primary pull-right" onclick="
+                          @if($_SERVER['REQUEST_METHOD']==='POST')
+                                  {isset($_POST['CheckIn'])}
+                                  {
+                                    {{\Reservation\Util\CheckInUtil::checkCurrentDate($assetId)}}
+                                  }
+                          @endif">
+                            "><i class="fa fa-search"></i></button>
                       </div>
 
 
