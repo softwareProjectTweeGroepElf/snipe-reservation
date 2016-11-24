@@ -79,14 +79,28 @@ class ReservationController extends Controller
         $reservation = DB::table('reservation_assets')->where('id');
     }*/
 
+    public function getAllAssetsReadyForLoaning(){
+        $today = getdate();
+        $reservations = DB::table('reservation_assets')
+            ->whereDate('from', $today)
+            ->get();
+        return $reservations;
+    }
+
+    public function getAllReservations1DayBeforeEndDate(){
+        $today = getdate() + strtotime('-1 days');
+        $reservations = DB::table('reservation_assets')
+            ->whereDate('until', $today)
+            ->get();
+        return $reservations;
+    }
     public function getAllEndDateReservations(){
         /*$reservation = DB::table('reservation_assets')->where([
             ['until'[year], $today[year]],
             ['until'[mon], $today[mon]],
             ['until'[mday], $today[mday]],
             ])->get();*/
-
-        $today = getdate() + strtotime('-1 days');
+        $today = getdate();
         $reservations = DB::table('reservation_assets')
             ->whereDate('until', $today)
             ->get();
@@ -119,10 +133,8 @@ class ReservationController extends Controller
     public function sendDailyOverviewToHeadOfTheLendingService(){
         $today = getdate();
         $reservations = DB::table('reservation_assets')->where('from', $today)->get();
-        //hier moet de hoofduitleendienstemailadres komen
         $reservation_asset = null;
         $reservation_user = null;
-        $to = null;
         /*foreach ($reservations as $reservation)
         {
             $reservation_asset_id = $reservation->asset_id;
@@ -134,15 +146,35 @@ class ReservationController extends Controller
             $data['asset_name'] = $reservation_asset->name;
         }*/
 
-
-
         Mail::send('emails.overviewDailyLendableAssets', $reservations ,function ($m) use ($reservation_user) {
-            //$m->to($reservation_user->email, $reservation_user->first_name . ' ' . $reservation_user->last_name);
+            $m->to(config('mail.from.address'), config('mail.from.name'));
             $m->subject('Overview today \'s lendable assets');
         });
     }
 
     public function sendReminderMailToUsers(){
+        $reservations = $this->getAllReservations1DayBeforeEndDate();
+        $data = array();
+        foreach ($reservations as $reservation) {
+            $user_id = $reservation->user_id;
+            $user = User::find($user_id);
+            $user_asset_id = $reservation->asset_id;
+            $user_asset = DB::table('assets')->where('id', $user_asset_id);
+
+            $data['first_name'] = $user->first_name;
+            $data['last_name'] = $user->last_name;
+            $data['asset_name'] = $user_asset->name;
+
+            Mail::send('emails.reminderMailUser', $data, function ($m) use ($user) {
+                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
+                $m->subject('Automatic reminder ending loan period asset');
+            });
+        }
+    }
+
+    //2e herinnering voor te zeggen dat het te laat is & dat er een boete volgt.
+
+    public function sendSecondReminderMailToUsers(){
         $reservations = $this->getAllEndDateReservations();
         $data = array();
         foreach ($reservations as $reservation) {
@@ -153,13 +185,34 @@ class ReservationController extends Controller
 
             $data['first_name'] = $user->first_name;
             $data['last_name'] = $user->last_name;
-            $data['asset_name'] = $user->name;
+            $data['asset_name'] = $user_asset->name;
 
-            Mail::send('emails.reminderMailUser', $data, function ($m) use ($user) {
+            Mail::send('emails.secondReminderMailUser', $data, function ($m) use ($user) {
                 $m->to($user->email, $user->first_name . ' ' . $user->last_name);
-                $m->subject('Automatic reminder ending loan period asset');
+                $m->subject('Automatic reminder loan period ended!');
             });
         }
     }
 
+//De student zal een email ontvangen dat zijn gereserveerde item klaar ligt op de uitleendienst.
+    public function sendEmailToStudentWhenAssetIsReadyForLoan(){
+        $reservations = $this->getAllAssetsReadyForLoaning();
+        $data = array();
+
+        foreach ($reservations as $reservation) {
+            $user_id = $reservation->user_id;
+            $user = User::find($user_id);
+            $user_asset_id = $reservation->asset_id;
+            $user_asset = DB::table('assets')->where('id', $user_asset_id);
+
+            $data['first_name'] = $user->first_name;
+            $data['last_name'] = $user->last_name;
+            $data['asset_name'] = $user_asset->name;
+
+            Mail::send('emails.assetIsReadyForLoan', $data, function ($m) use ($user) {
+                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
+                $m->subject('Your asset is ready for loan!');
+            });
+        }
+    }
 }
