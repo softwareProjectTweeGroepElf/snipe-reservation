@@ -17,12 +17,16 @@ class ReservationServiceProvider extends ServiceProvider
 			require __DIR__ . '../routes/routes.php';
 		}
 
-		$this->loadMigrationsFrom(__DIR__ . '../migrations');
-        $this->loadViewsFrom(__DIR__ . '../views', 'Reservation');
+        $this->loadViewsFrom(__DIR__ . '/../views', 'Reservation');
 
 		$this->publishes([
-			__DIR__ . '../config/reservation.php' => config_path('reservation.php'),
-		]);
+			__DIR__ . '/../config/reservation.php' => config_path('reservation.php'),
+		]); // CONFIG FILE
+
+		$this->publishes([
+			__DIR__ . '/../migrations' => database_path('migrations'),
+		]); // MIGRATIONS
+
 	}
 
 
