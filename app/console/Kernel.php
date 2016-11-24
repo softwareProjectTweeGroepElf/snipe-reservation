@@ -23,11 +23,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        /*$schedule->call(function () {
-            DB::table('recent_users')->delete();
-        })->daily();
-        $schedule->call('\App\Http\Controllers\CronController@getPublish')->cron('* * * * *');*/
-
-        $schedule->call('app\controllers\ReservationController@sendDailyOverviewToHeadOfTheLendingService')->daily();
+        $schedule->call('app\controllers\ReservationController@sendDailyOverviewToHeadOfTheLendingService')->dailyAt('06:00');
+        $schedule->call('app\controllers\ReservationController@sendReminderMailToUsers')->dailyAt('06:00');
+        $schedule->call('app\controllers\ReservationController@sendSecondReminderMailToUsers')->dailyAt('06:00');
+        $schedule->call('app\controllers\ReservationController@sendEmailToStudentWhenAssetIsReadyForLoan')->dailyAt('06:00');
     }
 }
