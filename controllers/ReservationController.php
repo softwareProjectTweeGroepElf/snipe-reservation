@@ -74,11 +74,6 @@ class ReservationController extends Controller
         DB::table('reservation_requests')->where('id', $request->reservation_id)->delete();
     }
 
-    /*public function checkEndDateReservation(){
-        $today = getdate();
-        $reservation = DB::table('reservation_assets')->where('id');
-    }*/
-
     public function getAllAssetsReadyForLoaning(){
         $today = getdate();
         $reservations = DB::table('reservation_assets')
@@ -131,8 +126,7 @@ class ReservationController extends Controller
     }
 
     public function sendDailyOverviewToHeadOfTheLendingService(){
-        $today = getdate();
-        $reservations = DB::table('reservation_assets')->where('from', $today)->get();
+        $reservations = $this->getAllAssetsReadyForLoaning();
         $reservation_asset = null;
         $reservation_user = null;
         /*foreach ($reservations as $reservation)
@@ -142,8 +136,8 @@ class ReservationController extends Controller
             $reservation_user_id = $reservation->user_id;
             $reservation_user = DB::table('users')->where('id', $reservation_user_id);
             $data['first_name'] .= $reservation_user->first_name;
-            $data['last_name'] = $reservation_user->last_name;
-            $data['asset_name'] = $reservation_asset->name;
+            $data['last_name'] .= $reservation_user->last_name;
+            $data['asset_name'] .= $reservation_asset->name;
         }*/
 
         Mail::send('emails.overviewDailyLendableAssets', $reservations ,function ($m) use ($reservation_user) {
