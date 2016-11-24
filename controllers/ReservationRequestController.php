@@ -54,10 +54,6 @@ use Gate;
 
 class ReservationRequestController extends Controller
 {
-    public function getReservationRequest($assetId)
-    {
-        return View::make('reservationRequest/ReservationRequest')-with('asset_Id',$assetId);
-    }
 
     public function getIndex()
     {
@@ -65,313 +61,158 @@ class ReservationRequestController extends Controller
         return View::make('reservationRequest/ReservationRequest');
     }
 
-    public function getCreate($assetId = null)
+    public function getCreate($userId=NULL,$assetId = null)
     {
-        // Prepare Asset Maintenance Type List
-        $reservationRequest = [
-                '' => 'Select an Reservation Request type',
-            ] + AssetMaintenance::getImprovementOptions();
-        // Mark the selected asset, if it came in
-        $selectedAsset = $assetId;
-
+        $selectedassetId = $assetId;
+        $selecteduserId=$userId;
         $assets = Helper::detailedAssetList();
 
-        $supplier_list = Helper::suppliersList();
-
-        // Render the view
         return View::make('asset_maintenances/edit')
             ->with('asset_list', $assets)
-            ->with('selectedAsset', $selectedAsset)
-            ->with('supplier_list', $supplier_list)
-            ->with('assetMaintenanceType', $assetMaintenanceType)
-            ->with('assetMaintenance', new AssetMaintenance);
+            ->with('assetId', $selectedassetId)
+            ->with('user_id', $selecteduserId)
+            ->with('ReservationRequest', new ReservationRequest);
     }
 
-    /**
-     *  Validates and stores the new asset maintenance
-     *
-     * @see AssetMaintenancesController::getCreate() method for the form
-     * @author  Vincent Sposato <vincent.sposato@gmail.com>
-     * @version v1.0
-     * @since [v1.8]
-     * @return mixed
-     */
     public function postCreate()
     {
 
-        // get the POST data
         $new = Input::all();
 
-        // create a new model instance
-        $assetMaintenance = new AssetMaintenance();
+       $reservationRequest = new ReseervationRequest();
 
 
-        if (e(Input::get('supplier_id')) == '') {
-            $assetMaintenance->supplier_id = null;
-        } else {
-            $assetMaintenance->supplier_id = e(Input::get('supplier_id'));
-        }
+        $reservationRequest = ReservationRequest::find(e(Input::get('id')));
 
-        if (e(Input::get('is_warranty')) == '') {
-            $assetMaintenance->is_warranty = 0;
-        } else {
-            $assetMaintenance->is_warranty = e(Input::get('is_warranty'));
-        }
+        $reservationRequest->id               = e(Input::get('id'));
+        $reservationRequest->user_id = e(Input::get('user_id'));
+        $reservationRequest->asset_id                  = e(Input::get('asset_id'));
+        $reservationRequest->start_date             = e(Input::get('start_date'));
+        $reservationRequest->end_date        = e(Input::get('end_date'));
 
-        if (e(Input::get('cost')) == '') {
-            $assetMaintenance->cost = '';
-        } else {
-            $assetMaintenance->cost =  Helper::ParseFloat(e(Input::get('cost')));
-        }
-
-        if (e(Input::get('notes')) == '') {
-            $assetMaintenance->notes = null;
-        } else {
-            $assetMaintenance->notes = e(Input::get('notes'));
-        }
-
-        $asset = Asset::find(e(Input::get('asset_id')));
-
-        if (!Company::isCurrentUserHasAccess($asset)) {
-            return static::getInsufficientPermissionsRedirect();
-        }
-
-        // Save the asset maintenance data
-        $assetMaintenance->asset_id               = e(Input::get('asset_id'));
-        $assetMaintenance->asset_maintenance_type = e(Input::get('asset_maintenance_type'));
-        $assetMaintenance->title                  = e(Input::get('title'));
-        $assetMaintenance->start_date             = e(Input::get('start_date'));
-        $assetMaintenance->completion_date        = e(Input::get('completion_date'));
-        $assetMaintenance->user_id                = Auth::user()->id;
-
-        if (( $assetMaintenance->completion_date == "" )
-            || ( $assetMaintenance->completion_date == "0000-00-00" )
+        if (( $reservationRequest->end_date == "" )
+            || ( $reservationRequest->end_date == "0000-00-00" )
         ) {
-            $assetMaintenance->completion_date = null;
+            $reservationRequest->end_date = null;
         }
 
-        if (( $assetMaintenance->completion_date !== "" )
-            && ( $assetMaintenance->completion_date !== "0000-00-00" )
-            && ( $assetMaintenance->start_date !== "" )
-            && ( $assetMaintenance->start_date !== "0000-00-00" )
+        if (( $reservationRequest->end_date !== "" )
+            && ( $reservationRequest->end_date !== "0000-00-00" )
+            && ( $reservationRequest->start_date !== "" )
+            && ( $reservationRequest->start_date !== "0000-00-00" )
         ) {
-            $startDate                                = Carbon::parse($assetMaintenance->start_date);
-            $completionDate                           = Carbon::parse($assetMaintenance->completion_date);
-            $assetMaintenance->asset_maintenance_time = $completionDate->diffInDays($startDate);
+            $startDate                                = Carbon::parse($reservationRequest->start_date);
+            $endDate                           = Carbon::parse($reservationRequest->end_date);
+            $reservationRequest->reservation_request_time = $endDate->diffInDays($startDate);
         }
 
-        // Was the asset maintenance created?
-        if ($assetMaintenance->save()) {
+        if ($reservationRequest->save()) {
 
-            // Redirect to the new asset maintenance page
-            return redirect()->to("admin/asset_maintenances")
-                ->with('success', trans('admin/asset_maintenances/message.create.success'));
+            return redirect()->to("reservation_request")
+                ->with('success', trans('reservation_request/message.create.success'));
         }
 
-        return redirect()->back()->withInput()->withErrors($assetMaintenance->getErrors());
+        return redirect()->back()->withInput()->withErrors($reservationRequest->getErrors());
 
 
 
 
     }
 
-    /**
-     *  Returns a form view to edit a selected asset maintenance.
-     *
-     * @see AssetMaintenancesController::postEdit() method that stores the data
-     * @author  Vincent Sposato <vincent.sposato@gmail.com>
-     * @param int $assetMaintenanceId
-     * @version v1.0
-     * @since [v1.8]
-     * @return mixed
-     */
-    public function getEdit($assetMaintenanceId = null)
+
+    public function getEdit($assetId = null)
     {
-        // Check if the asset maintenance exists
-        if (is_null($assetMaintenance = AssetMaintenance::find($assetMaintenanceId))) {
-            // Redirect to the improvement management page
-            return redirect()->to('admin/asset_maintenances')
-                ->with('error', trans('admin/asset_maintenances/message.not_found'));
-        } elseif (!Company::isCurrentUserHasAccess($assetMaintenance->asset)) {
-            return static::getInsufficientPermissionsRedirect();
+        if (is_null($reservationRequest = reservationRequest::find($assetId))) {
+             return redirect()->to('reservation_request')
+                ->with('error', trans('reservation_request/message.not_found'));
         }
 
-        if ($assetMaintenance->completion_date == '0000-00-00') {
-            $assetMaintenance->completion_date = null;
+        if ($reservationRequest->end_date == '0000-00-00') {
+            $reservationRequest->end_date = null;
         }
 
-        if ($assetMaintenance->start_date == '0000-00-00') {
-            $assetMaintenance->start_date = null;
+        if ($reservationRequest->start_date == '0000-00-00') {
+            $reservationRequest->start_date = null;
         }
 
-        if ($assetMaintenance->cost == '0.00') {
-            $assetMaintenance->cost = null;
-        }
-
-        // Prepare Improvement Type List
-        $assetMaintenanceType = [
-                '' => 'Select an improvement type',
-            ] + AssetMaintenance::getImprovementOptions();
-
-        $assets = Company::scopeCompanyables(Asset::with('model','assignedUser')->get(), 'assets.company_id')->lists('detailed_name', 'id');
-        // Get Supplier List
-        $supplier_list = Helper::suppliersList();
-
-        // Render the view
-        return View::make('asset_maintenances/edit')
-            ->with('asset_list', $assets)
-            ->with('selectedAsset', null)
-            ->with('supplier_list', $supplier_list)
-            ->with('assetMaintenanceType', $assetMaintenanceType)
-            ->with('assetMaintenance', $assetMaintenance);
+        return View::make('reservation_request/edit')
+            ->with('asset_list', $assetId)
+            ->with('selectedReservationRequest', null)
+            ->with('reservationRequest', $reservationRequest);
 
     }
 
-    /**
-     *  Validates and stores an update to an asset maintenance
-     *
-     * @see AssetMaintenancesController::postEdit() method that stores the data
-     * @author  Vincent Sposato <vincent.sposato@gmail.com>
-     * @param int $assetMaintenanceId
-     * @version v1.0
-     * @since [v1.8]
-     * @return mixed
-     */
-    public function postEdit($assetMaintenanceId = null)
+
+    public function postEdit($assetId = null)
     {
 
-        // get the POST data
         $new = Input::all();
 
-        // Check if the asset maintenance exists
-        if (is_null($assetMaintenance = AssetMaintenance::find($assetMaintenanceId))) {
-            // Redirect to the asset maintenance management page
-            return redirect()->to('admin/asset_maintenances')
-                ->with('error', trans('admin/asset_maintenances/message.not_found'));
-        } elseif (!Company::isCurrentUserHasAccess($assetMaintenance->asset)) {
-            return static::getInsufficientPermissionsRedirect();
-        }
-
-
-
-        if (e(Input::get('supplier_id')) == '') {
-            $assetMaintenance->supplier_id = null;
-        } else {
-            $assetMaintenance->supplier_id = e(Input::get('supplier_id'));
-        }
-
-        if (e(Input::get('is_warranty')) == '') {
-            $assetMaintenance->is_warranty = 0;
-        } else {
-            $assetMaintenance->is_warranty = e(Input::get('is_warranty'));
-        }
-
-        if (e(Input::get('cost')) == '') {
-            $assetMaintenance->cost = '';
-        } else {
-            $assetMaintenance->cost =  Helper::ParseFloat(e(Input::get('cost')));
-        }
-
-        if (e(Input::get('notes')) == '') {
-            $assetMaintenance->notes = null;
-        } else {
-            $assetMaintenance->notes = e(Input::get('notes'));
+        if (is_null($reservationRequest = reservationRequest::find($assetId))) {
+             return redirect()->to('reservation_request')
+                ->with('error', trans('reservation_request/message.not_found'));
         }
 
         $asset = Asset::find(e(Input::get('asset_id')));
 
-        if (!Company::isCurrentUserHasAccess($asset)) {
-            return static::getInsufficientPermissionsRedirect();
-        }
 
-        // Save the asset maintenance data
-        $assetMaintenance->asset_id               = e(Input::get('asset_id'));
-        $assetMaintenance->asset_maintenance_type = e(Input::get('asset_maintenance_type'));
-        $assetMaintenance->title                  = e(Input::get('title'));
-        $assetMaintenance->start_date             = e(Input::get('start_date'));
-        $assetMaintenance->completion_date        = e(Input::get('completion_date'));
+       $reservationRequest->id               = e(Input::get('id'));
+        $reservationRequest->asset_is= e(Input::get('asset_id'));
+        $reservationRequest->user_id                  = e(Input::get('user_id'));
+        $reservationRequest->start_date             = e(Input::get('start_date'));
+        $reservationRequest->end_date        = e(Input::get('end_date'));
 
-        if (( $assetMaintenance->completion_date == "" )
-            || ( $assetMaintenance->completion_date == "0000-00-00" )
+        if (( $reservationRequest->end_date == "" )
+            || ( $reservationRequest->end_date == "0000-00-00" )
         ) {
-            $assetMaintenance->completion_date = null;
-            if (( $assetMaintenance->asset_maintenance_time !== 0 )
-                || ( !is_null($assetMaintenance->asset_maintenance_time) )
+            $reservationRequest->end_date = null;
+            if (( $reservationRequest->asset_maintenance_time !== 0 )
+                || ( !is_null($reservationRequest->reservation_request_time) )
             ) {
-                $assetMaintenance->asset_maintenance_time = null;
+                $reservationRequest->reservation_request_time = null;
             }
         }
 
-        if (( $assetMaintenance->completion_date !== "" )
-            && ( $assetMaintenance->completion_date !== "0000-00-00" )
-            && ( $assetMaintenance->start_date !== "" )
-            && ( $assetMaintenance->start_date !== "0000-00-00" )
+        if (( $reservationRequest->end_date !== "" )
+            && ( $reservationRequest->end_date !== "0000-00-00" )
+            && ( $reservationRequest->start_date !== "" )
+            && ( $reservationRequest->start_date !== "0000-00-00" )
         ) {
-            $startDate                                = Carbon::parse($assetMaintenance->start_date);
-            $completionDate                           = Carbon::parse($assetMaintenance->completion_date);
-            $assetMaintenance->asset_maintenance_time = $completionDate->diffInDays($startDate);
+            $startDate                                = Carbon::parse($reservation_request->start_date);
+            $endDate                           = Carbon::parse($reservation_request->end_date);
+            $reservationRequest->reservation_request_time = $endDate->diffInDays($startDate);
         }
 
-        // Was the asset maintenance created?
-        if ($assetMaintenance->save()) {
+        if ($reservationRequest->save()) {
 
             // Redirect to the new asset maintenance page
-            return redirect()->to("admin/asset_maintenances")
-                ->with('success', trans('admin/asset_maintenances/message.create.success'));
+            return redirect()->to("reservation_request")
+                ->with('success', trans('reservation_request/message.create.success'));
         }
-        return redirect()->back() ->withInput()->withErrors($assetMaintenance->getErrors());
+        return redirect()->back() ->withInput()->withErrors($reservationRequest->getErrors());
 
 
     }
 
-    /**
-     *  Delete an asset maintenance
-     *
-     * @author  Vincent Sposato <vincent.sposato@gmail.com>
-     * @param int $assetMaintenanceId
-     * @version v1.0
-     * @since [v1.8]
-     * @return mixed
-     */
-    public function getDelete($assetMaintenanceId)
+    public function getDelete($assetId)
     {
-        // Check if the asset maintenance exists
-        if (is_null($assetMaintenance = AssetMaintenance::find($assetMaintenanceId))) {
-            // Redirect to the asset maintenance management page
-            return redirect()->to('admin/asset_maintenances')
-                ->with('error', trans('admin/asset_maintenances/message.not_found'));
-        } elseif (!Company::isCurrentUserHasAccess($assetMaintenance->asset)) {
-            return static::getInsufficientPermissionsRedirect();
+        if (is_null($reservationRequest = reservationRequest::find($assetId))) {
+            return redirect()->to('reservation_request')
+                ->with('error', trans('reservation_request/message.not_found'));
         }
 
-        // Delete the asset maintenance
-        $assetMaintenance->delete();
+        $reservationRequest->delete();
 
-        // Redirect to the asset_maintenance management page
-        return redirect()->to('admin/asset_maintenances')
-            ->with('success', trans('admin/asset_maintenances/message.delete.success'));
+        return redirect()->to('reservation_request')
+            ->with('success', trans('reservation_request/message.delete.success'));
     }
-
-    /**
-     *  View an asset maintenance
-     *
-     * @author  Vincent Sposato <vincent.sposato@gmail.com>
-     * @param int $assetMaintenanceId
-     * @version v1.0
-     * @since [v1.8]
-     * @return View
-     */
-    public function getView($assetMaintenanceId)
+    public function getView($assetId)
     {
-        // Check if the asset maintenance exists
-        if (is_null($assetMaintenance = AssetMaintenance::find($assetMaintenanceId))) {
-            // Redirect to the asset maintenance management page
+        if (is_null($reservationRequest = reservationRequest::find($assetId))) {
             return redirect()->to('admin/asset_maintenances')
                 ->with('error', trans('admin/asset_maintenances/message.not_found'));
-        } elseif (!Company::isCurrentUserHasAccess($assetMaintenance->asset)) {
-            return static::getInsufficientPermissionsRedirect();
         }
 
-        return View::make('asset_maintenances/view')->with('assetMaintenance', $assetMaintenance);
+        return View::make('reservation_request/view')->with('reservationRequest', $reservationRequest);
     }
 }
