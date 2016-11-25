@@ -30,6 +30,4 @@ class ReservationFetcher
     {
         return DB::table('reservation_assets')->get();
     }
-
-
 }

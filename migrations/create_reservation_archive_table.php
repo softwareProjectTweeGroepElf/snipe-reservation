@@ -28,7 +28,7 @@ class CreateReservationArchiveTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('reservation_requests');
+        Schema::dropIfExists('reservation_archive');
     }
 
 }
