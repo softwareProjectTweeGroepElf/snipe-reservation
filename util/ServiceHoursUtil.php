@@ -27,12 +27,12 @@ class ServiceHoursUtil
     {
         $hours_of_service = config('reservation.HOURS_OF_SERVICE');
         $now = Carbon::now();
-        $day = $now->dayOfWeek == 0 ? 6 : $now->dayOfWeek - 1;
-
+        $day = $now->dayOfWeek == 0 ? 6 : $now->dayOfWeek - 1; // Because dayOfWeek returns 0 on sunday,
+                                                                // and in our config array monday is on 0 we need to make sure we get the correct results
         $hours = explode('-', $hours_of_service[$day]);
         $hours[0] = Carbon::createFromFormat('H:m', $hours[0]);
         $hours[1] = Carbon::createFromFormat('H:m', $hours[1]);
-        
+
         return $hours;
     }
 }
