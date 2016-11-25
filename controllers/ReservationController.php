@@ -47,16 +47,17 @@ class ReservationController extends Controller
 	}
 
 
-    public function checkDate($reservation_id)
+    public function postCheckIn($reservation_id)
     {
         $until_date = Carbon::createFromFormat('Y/m/d', DB::table('reservation_assets')->select('until')->where('id', $reservation_id)->first());
+        CheckInUtil::CheckIn($reservation_id);
 
-        if (!$until_date->isPast())
-            CheckInUtil::CheckIn($reservation_id);
+        if (Carbon::now()->diffInHours($until_date) < 0)
+            return redirect()->action('ReservationController@getReservation');
         else
         {
             $fine = FineUtil::calculateFine($reservation_id);
-            return view('teLaat')->with('fine', $fine);
+            return view('overtime')->with('fine', $fine);
         }
     }
 
