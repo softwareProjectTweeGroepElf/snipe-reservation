@@ -9,7 +9,7 @@
 namespace Reservation\Util;
 
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\DB;
 
 class FineUtil
 {

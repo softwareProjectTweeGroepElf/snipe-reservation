@@ -8,21 +8,24 @@
 
 namespace Reservation\Util;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class CheckInUtil
 {
-        public static function CheckIn($assetId)
+        public static function CheckIn($reservation_id)
         {
-            $AssetStatus=DB::select('select checked_in from assets where id=$assetId');
-            if($assetId==true)
-            {
-                DB::update('update assets set checked_in=FALSE where id=$assetId');
-            }
-            else
-            {
-                return "Asset already checked in.";
-            }
+            $reservation = DB::table('reservation_assets')->where('id', $reservation_id)->first();
 
+            DB::table('reservation_archive')->insert([
+                'user_id' => $reservation->user_id,
+                'asset_id' => $reservation->asset_id,
+                'from' => $reservation->from,
+                'until' => $reservation->until,
+                'checked_in' => Carbon::now(),
+                'status' => 'ACCEPTED'
+            ]);
 
+            DB::table('reservation_assets')->where('id', $reservation_id)->delete();
         }
 }
