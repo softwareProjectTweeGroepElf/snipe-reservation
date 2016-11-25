@@ -20,6 +20,7 @@ class CreateReservationArchiveTable extends Migration
             $table->integer('asset_id');
             $table->dateTime('from');
             $table->dateTime('until');
+            $table->dateTime('checked_in');
             $table->enum('status', [ 'ACCEPTED', 'DENIED' ] );
             $table->timestamps();
         });
