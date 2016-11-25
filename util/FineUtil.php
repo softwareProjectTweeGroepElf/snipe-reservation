@@ -8,7 +8,7 @@
 
 namespace Reservation\Util;
 
-use Carbon;
+use Carbon\Carbon;
 
 
 class FineUtil

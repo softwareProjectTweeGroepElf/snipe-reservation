@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Reservation\Fetchers\ReservationFetcher;
 use Reservation\Util\CheckInUtil;
 use Reservation\Util\RoleUtil;
+use Reservation\Util\FineUtil;
 use App\Models\Asset;
 use App\Models\User;
+use Carbon\Carbon;
 
 class ReservationController extends Controller
 {
@@ -45,39 +47,15 @@ class ReservationController extends Controller
 	}
 
 
-    public function calculateFine($assetId)
+    public function checkDate($reservation_id)
     {
-        $result=DB::table('reservation_assets')->select('until')->first();
-        $currentDate= date("m.d.y");
+        $until_date = Carbon::createFromFormat('Y/m/d', DB::table('reservation_assets')->select('until')->where('id', $reservation_id)->first());
 
-        strtotime($currentDate);
-        strtotime($result);
-
-
-        $verschil=$currentDate-$result;
-
-        $verschil=$verschil/86400;
-
-        $verschil = floor($verschil);
-        return $boeteBedrag=$verschil*50;
-    }
-
-
-    public function checkDate($assetId)
-    {
-        $result=DB::select('select expected_checkin from assets where id=$assetId');
-        $currentDate= date("m.d.y");
-
-        strtotime($currentDate);
-        strtotime($result);
-
-        if ($result<$currentDate)
-        {
-            CheckInUtil::CheckIn($assetId);
-        }
+        if (!$until_date->isPast())
+            CheckInUtil::CheckIn($reservation_id);
         else
         {
-            $fine=calculateFine($assetId);
+            $fine = FineUtil::calculateFine($reservation_id);
             return view('teLaat')->with('fine', $fine);
         }
     }
