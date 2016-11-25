@@ -47,4 +47,6 @@ class RoleUtil
     {
         return !empty(array_intersect($user->groups->pluck('id')->all(), $groups));
     }
+
+
 }
