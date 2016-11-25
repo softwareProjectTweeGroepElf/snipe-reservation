@@ -30,7 +30,9 @@ class ServiceHoursUtil
         $day = $now->dayOfWeek == 0 ? 6 : $now->dayOfWeek - 1;
 
         $hours = explode('-', $hours_of_service[$day]);
-
+        $hours[0] = Carbon::createFromFormat('H:m', $hours[0]);
+        $hours[1] = Carbon::createFromFormat('H:m', $hours[1]);
+        
         return $hours;
     }
 }
