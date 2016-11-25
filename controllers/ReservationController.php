@@ -55,10 +55,7 @@ class ReservationController extends Controller
         if (Carbon::now()->diffInHours($until_date) < 0)
             return redirect()->action('ReservationController@getReservation');
         else
-        {
-            $fine = FineUtil::calculateFine($reservation_id);
-            return view('overtime')->with('fine', $fine);
-        }
+            return view('overtime')->with('fine', FineUtil::calculateFine($reservation_id));
     }
 
 
