@@ -1,17 +1,14 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<link href="sp2gr11/reservation/src/public/studentstyle.css" rel="stylesheet">
-
 <script>
 $(document).ready(function(){
    $.ajax({
     type: 'GET',
     url: '/package/initdoc',
     data: "",
-
     success:function(data){
       for (var i = 0; i < data.length; i++) {
-        $('#asset_id').append("<option value=" + data[i] + ">" + data[i] + "</option>");
+        $('#asset_id').append("<option value=" + data[i][0] + ">" + data[i][1] + "</option>");
       }
     }
   });
@@ -26,7 +23,8 @@ function callAjax() {
   data: {'asset_id' : datastring},
 
   success:function(data){
-    location.reload();
+    console.log(data);
+    //location.reload();
   }
 });
 }
@@ -40,11 +38,14 @@ body{
 }
 h1{
   font-weight: 100;
-
+}
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+     appearance: none;
 }
   #content{
-    margin-left: calc(20vw - 8.5px);
-    
+    margin-left: calc(20vw - 8.5px); 
     width: 60vw;
     box-shadow: 6px 0px 17px -5px rgba(0,0,0,0.75), -6px 0px 17px -5px rgba(0,0,0,0.75);
     height: auto;
@@ -136,90 +137,88 @@ h1{
     -moz-box-shadow: inset 0px 16px 0px -13px #939393;
     box-shadow: inset 0px 16px 0px -13px #939393;
   }
-  #footer_text{
-
-  }
 </style>
+<div id="page_body">
+  <div id="content">
+    <div id="titelbar">
+      <tekst id="titel_text">Students Page</tekst>
+    </div>
+    <div id="wrapper">
+      <div id="submitCont"> 
+        <h1>Request a loan:</h1>
+        <p>Select the asset you want to loan</p>
 
-<div id="content">
-  <div id="titelbar">
-    <tekst id="titel_text">Students Page</tekst>
-  </div>
-  <div id="wrapper">
-    <div id="submitCont"> 
-      <h1>Request a loan:</h1>
-      <p>Only use legitimate asset ID's</p>
+        <form id="submitForm">
+             {{ csrf_field() }}
+             <label>Asset: </label>
+             <select id="asset_id">
+             </select>
+             <br> <br>
+           <div class="submit_btn" onclick="callAjax()">Submit</div>
+        </form>
+      </div>
+      <hr>
 
-      <form id="submitForm">
-           {{ csrf_field() }}
-           <label>Asset ID</label>
-           <select id="asset_id">
+      <h1>List of your requests: </h1>
+
+      <div class="requested_assets_table_cont">
+        <div class="requested_assets_table_cont2">
+          <table id="requested_assets_table" class="requested_assets_table">
+
+            <tr>
+              <th>User ID</th>
+              <th>Asset ID</th>
+              <th>User name</th>
+              <th>Asset name</th>
+            </tr>
+
+          @foreach($userassets as $asset)
+            <tr> 
+             <td> {{$asset->user_id}} <br> </td>
+             <td> {{$asset->asset_id}} <br> </td>
+             <td> {{$asset->name}} <br> </td>
+             <td> {{$asset->Aname}} <br> </td>
+            </tr>
+          @endforeach
             
-           </select>
-           <br> <br>
-         <div class="submit_btn" onclick="callAjax()">Submit</div>
-      </form>
-    </div>
-    <hr>
-
-    <h1>List of your requests: </h1>
-
-    <div class="requested_assets_table_cont">
-      <div class="requested_assets_table_cont2">
-        <table id="requested_assets_table" class="requested_assets_table">
-
-          <tr>
-            <th>User ID</th>
-            <th>Asset ID</th>
-            <th>User name</th>
-            <th>Asset name</th>
-          </tr>
-
-        @foreach($userassets as $asset)
-          <tr> 
-           <td> {{$asset->user_id}} <br> </td>
-           <td> {{$asset->asset_id}} <br> </td>
-           <td> {{$asset->name}} <br> </td>
-           <td> {{$asset->Aname}} <br> </td>
-          </tr>
-        @endforeach
-          
-       </table>
+         </table>
+        </div>
       </div>
-    </div>
 
-    <br>
-    <hr>
+      <br>
+      <hr>
 
-    <h1>List of available assets: </h1>
+      <h1>List of available assets: </h1>
 
-    <div class="requested_assets_table_cont">
-      <div class="requested_assets_table_cont2">
-        <table class="requested_assets_table">
-          <tr>
-          	<th>ID</th>
-            <th>Asset name</th>
-            <th>Asset Tag</th> 
-            <th>Serial</th>
-            <th>Status</th>
-          </tr>
+      <div class="requested_assets_table_cont">
+        <div class="requested_assets_table_cont2">
+          <table class="requested_assets_table">
+            <tr>
+            	<th>ID</th>
+              <th>Asset name</th>
+              <th>Asset Tag</th> 
+              <th>Serial</th>
+              <th>Status</th>
+            </tr>
 
-          @foreach($assets as $asset)
-          <tr> 
-            <td> {{$asset->id}} <br> </td>
-            <td> {{$asset->name}} <br> </td>
-            <td> {{$asset->asset_tag}} <br>  </td>
-            <td> {{$asset->serial}} <br>  </td> 
-            <td> <?php if($asset->assigned_to == null){echo "available";}else {echo "Assigned to user with ID ".$asset->assigned_to;}?> <br>  </td> 
-          </tr>
+            @foreach($assets as $asset)
+            <tr> 
+              <td> {{$asset->id}} <br> </td>
+              <td> {{$asset->name}} <br> </td>
+              <td> {{$asset->asset_tag}} <br>  </td>
+              <td> {{$asset->serial}} <br>  </td> 
+              <td> <?php if($asset->assigned_to == null){echo "available";}else {echo "Assigned to user with ID ".$asset->assigned_to;}?> <br> </td> 
+            </tr>
             @endforeach
-        </table>
+
+          </table>
+        </div>
       </div>
     </div>
+  </div> 
+
+  <div id="footer">
+    <tekst id="footer_text">Copyright © Groep 11</tekst>
   </div>
-</div> 
-
-<div id="footer">
-  <tekst id="footer_text">Copyright © Groep 11</tekst>
+  
 </div>
-
