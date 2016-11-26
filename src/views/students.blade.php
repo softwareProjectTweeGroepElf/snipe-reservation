@@ -18,7 +18,7 @@ function callAjax() {
   var datastring = $('#asset_id').val();
   console.log("Function works");
   $.ajax({
-  type: 'POST',
+  type: 'GET',
   url: '/package/postrequestreservation',
   data: {'asset_id' : datastring},
 

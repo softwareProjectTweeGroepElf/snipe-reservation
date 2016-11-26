@@ -50,7 +50,7 @@ class ReservationController extends Controller
 	public function postReservationRequest(Request $request)
 	{
 	///__________________DE INSERT_____________________________________
-		if(DB::table('reservation_requests')->insert([
+		if(DB::table('requested_assets')->insert([
 	        'user_id'=> Auth::id(),
     	    'asset_id' => $request->asset_id 
         ])){
@@ -85,7 +85,7 @@ class ReservationController extends Controller
 	{
 		$to_delete_request_asset_id = $request->req_asset_id;
 		$to_delete_request_user_id = $request->req_user_id;
-		DB::table('reservation_requests')
+		DB::table('requested_assets')
 		->where([['user_id','=',$to_delete_request_user_id],['asset_id','=',$to_delete_request_asset_id]])
 		->delete();
 
@@ -109,7 +109,7 @@ class ReservationController extends Controller
            		'until' => date('Y-m-d', strtotime($request->input('until')))  
             ]);
 
-		DB::table('reservation_requests')->where('asset_id',$to_submit_request_id)->delete();
+		DB::table('requested_assets')->where('asset_id',$to_submit_request_id)->delete();
 
 		return "succes";
 	}
@@ -136,7 +136,7 @@ class ReservationController extends Controller
 
 	public function getUserAssets($amount = 0) {
 		
-		$reservation_requests = DB::table('reservation_requests')->get();
+		$reservation_requests = DB::table('requested_assets')->get();
 		
 		for ($i=0; $i <sizeof($reservation_requests); $i++) { 
 			
@@ -173,7 +173,7 @@ class ReservationController extends Controller
 
 	public function getRequestedAssets(){
 
-		$reservation_requests = DB::table('reservation_requests')->get();
+		$reservation_requests = DB::table('requested_assets')->get();
 
 		for ($i=0; $i <sizeof($reservation_requests); $i++) { 
 			
@@ -186,7 +186,4 @@ class ReservationController extends Controller
 		}
 		return $reservation_requests;
 	}
-	// public function postreservation(){
-		
-	// }
 }
