@@ -8,7 +8,9 @@
 
 namespace Reservation\Fetchers;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Asset;
+use App\Models\User;
 
 class ReservationFetcher
 {
@@ -23,11 +25,30 @@ class ReservationFetcher
 
     public static function getReservationRequests()
     {
-        return DB::table('reservation_requests')->get();
+        $reservation_requests = DB::table('reservation_requests')->get();
+
+        foreach ($reservation_requests as $idx => $reservation_request)
+        {
+            $reservation_requests[$idx]->asset = Asset::find($reservation_request->asset_id);
+            $reservation_requests[$idx]->user = User::find($reservation_request->user_id);
+        }
+
+        return $reservation_requests;
     }
 
-    public static function getLeasedAssets()
+    public static function getLeasedAssets($date = null)
     {
-        return DB::table('reservation_assets')->get();
+        if(!$date)
+            $reservations = DB::table('reservation_assets')->get();
+        else
+            $reservations = DB::table('reservation_assets')->where('from', $date)->get();
+
+        foreach ($reservations as $idx => $reservation)
+        {
+            $reservation[$idx]->asset = Asset::find($reservation->asset_id);
+            $reservation[$idx]->user = User::find($reservation->user_id);
+        }
+
+        return $reservations;
     }
 }
