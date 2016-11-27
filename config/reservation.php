@@ -22,4 +22,6 @@ return [
         'SATURDAY' => '12:00-17:00',
         'SUNDAY' => '12:00-17:00'
     ],
+
+    'MANAGER_EMAIL' => 'changeme@snipeit.com', // The head of the lending service's email, used for daily overviews
 ];
