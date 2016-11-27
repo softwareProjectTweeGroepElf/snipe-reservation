@@ -2,22 +2,16 @@
 use App\Models\Statuslabel;
 use App\Models\Location;
 
-  
-    Route::group([ 'prefix'  => 'api/v1' ], function() {
+
+Route::group([ 'prefix'  => 'api/v1' ], function() {
     /*--- Get All Assets Route ---*/
     Route::get('assets/all', 'ApiController@getAllAssets');
-    Route::get('assets/id/{id}', 'ApiController@getAssetsById');
-    Route::get('assets/create', 'ApiController@createAsset');
-    Route::get('assets/update/{id}', 'ApiController@updateAsset');
-    Route::get('assets/delete/{id}', 'ApiController@deleteAssetById');
-    Route::get('assets/search/{variable}/{value}', 'ApiController@getAssetsFiltered');   
-
 });
 
 /*
 |--------------------------------------------------------------------------
 | Admin API Routes
-|--------------------------------------------------------------------------ById
+|--------------------------------------------------------------------------
 */
 Route::group([ 'prefix' => 'api', 'middleware' => 'auth' ], function () {
 
@@ -1004,29 +998,7 @@ Route::group(['middleware' => 'web'], function () {
 Route::get('home', function () {
     return redirect('/');
 });
+
 Route::get('Studentloanout','StudentloansController@getIndex');
 
 
-# Request Management
-Route::group([ 'prefix' => 'reservation_request', 'middleware'=>'authorize:reservation.view'  ], function () {
-
-    Route::get(
-        'create/{assetId?}',
-        [ 'as' => 'create/reservation_request', 'uses' => 'ReservationRequestController@getCreate' ]
-    );
-    Route::post('create/{assetId?}', 'ReservationRequestController@postCreate');
-    Route::get('/', [ 'as' => 'reservation_request', 'uses' => 'ReservationRequestController@getIndex' ]);
-    Route::get(
-        '{assetId}/edit',
-        [ 'as' => 'update/reservation_request', 'uses' => 'ReservationRequestController@getEdit' ]
-    );
-    Route::post('{assetMaintenanceId}/edit', 'ReservationRequestController@postEdit');
-    Route::get(
-        '{assetId}/delete',
-        [ 'as' => 'delete/reservation_request', 'uses' => 'ReservationRequestController@getDelete' ]
-    );
-    Route::get(
-        '{assetId}/view',
-        [ 'as' => 'view/reservation_request', 'uses' => 'ReservationRequestController@getView' ]
-    );
-});
