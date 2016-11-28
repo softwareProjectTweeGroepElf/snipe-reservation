@@ -153,33 +153,6 @@
                 </form>
             </div>
             <hr>
-
-            <h1>List of your requests: </h1>
-
-            <div class="requested_assets_table_cont">
-                <div class="requested_assets_table_cont2">
-                    <table id="requested_assets_table" class="requested_assets_table">
-
-                        <tr>
-                            <th>User ID</th>
-                            <th>Asset ID</th>
-                            <th>User name</th>
-                            <th>Asset name</th>
-                        </tr>
-
-                        @foreach($userassets as $asset)
-                        <tr>
-                            <td> {{$asset->user_id}} <br> </td>
-                            <td> {{$asset->asset_id}} <br> </td>
-                            <td> {{$asset->name}} <br> </td>
-                            <td> {{$asset->Aname}} <br> </td>
-                        </tr>
-                        @endforeach
-
-                    </table>
-                </div>
-            </div>
-
             <br>
             <hr>
 

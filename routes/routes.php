@@ -1,5 +1,5 @@
 <?php
-Route::group([ 'prefix'  => 'reservation' ], function() {
+Route::group([ 'prefix'  => 'package' ], function() {
 	//Route::get('/home', 'groepelf\reservatie\Http\ReservatieController@getIndex');
     Route::get('/students', 'ReservationController@getStudent');
     Route::get('/professors', 'ReservationController@getProfessor');
