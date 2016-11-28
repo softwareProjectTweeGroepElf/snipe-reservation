@@ -16,9 +16,8 @@ class ReservationFetcher
 {
     public static function getAvailableAssets()
     {
-        $assets = Asset::select()->whereNotIn('id', function($query) {
-            $query->table('reservation_assets')->select('asset_id')->get();
-        })->get();
+        $unavailable_assets_ids = DB::table('reservation_assets')->pluck('asset_id');
+        $assets = Asset::whereNotIn('id', $unavailable_assets_ids)->get();
 
         return $assets;
     }

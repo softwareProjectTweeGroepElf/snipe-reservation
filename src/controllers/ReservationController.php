@@ -9,7 +9,7 @@ use sp2gr11\reservation\util\RoleUtil;
 use sp2gr11\reservation\util\FineUtil;
 use App\Models\Asset;
 use App\Models\User;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 class ReservationController extends Controller
 {
 	//public functions

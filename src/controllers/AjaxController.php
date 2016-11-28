@@ -17,7 +17,7 @@ use sp2gr11\reservation\util\FineUtil;
 use sp2gr11\reservation\fetchers\ReservationFetcher;
 use App\Models\User;
 use App\Models\Asset;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AjaxController extends Controller
 {
@@ -43,7 +43,12 @@ class AjaxController extends Controller
 
     public function getAssetIDandNames(){
         $free_assets = ReservationFetcher::getAvailableAssets();
-        return $free_assets->pluck('id', 'name')->all();
+        $data = array();
+
+        foreach($free_assets as $asset)
+            array_push($data, ['id' => $asset->id, 'name' => $asset->name]);
+
+        return $data;
     }
 
     public function getAllinfoLS(){

@@ -29,7 +29,10 @@ class ReservationUtil
 
     public static function createReservationRequest($user_id, $asset_id)
     {
-
+        DB::table('reservation_requests')->insert([
+            'asset_id' => $asset_id,
+            'user_id' => $user_id,
+        ]);
     }
 
     public static function acceptReservation($reservation_id)

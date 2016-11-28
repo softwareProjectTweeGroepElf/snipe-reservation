@@ -8,6 +8,7 @@ namespace sp2gr11\reservation\util;
  * Time: 1:32
  */
 
+use Illuminate\Support\Facades\Auth;
 class RoleUtil
 {
     /**
