@@ -6,7 +6,7 @@
  * Time: 1:00
  */
 
-namespace Reservation\Fetchers;
+namespace sp2gr11\reservation\fetchers;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Asset;

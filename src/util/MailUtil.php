@@ -6,7 +6,7 @@
  * Time: 15:12
  */
 
-namespace Reservation\Util;
+namespace sp2gr11\reservation\util;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;

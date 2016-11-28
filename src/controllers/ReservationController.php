@@ -1,19 +1,15 @@
 <?php
 
-namespace Reservation\Controllers;
+namespace sp2gr11\reservation\controllers;
 
 use App\Http\Controllers\Controller;
-use Reservation\Fetchers\ReservationFetcher;
-use Reservation\Util\CheckInUtil;
-use Reservation\Util\RoleUtil;
-use Reservation\Util\FineUtil;
+use sp2gr11\reservation\fetchers\ReservationFetcher;
+use sp2gr11\reservation\util\CheckInUtil;
+use sp2gr11\reservation\util\RoleUtil;
+use sp2gr11\reservation\util\FineUtil;
 use App\Models\Asset;
 use App\Models\User;
-use Carbon\Carbon;
 use Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-
 class ReservationController extends Controller
 {
 	//public functions
@@ -63,12 +59,18 @@ class ReservationController extends Controller
 
 	public function getProfessor()
 	{
-		return view('reservation::requestreview')->with('requestedassets', ReservationFetcher::getReservationRequests());
+		if(RoleUtil::isUserReviewer())
+			return view('reservation::requestreview')->with('requestedassets', ReservationFetcher::getReservationRequests());
+		else
+			return redirect()->back();
 	}
 
 	public function getLeasingService()
 	{
-		return view('reservation::lendingservice')->with('assets', ReservationFetcher::getAvailableAssets());
+		if(RoleUtil::isUserLeasingService())
+			return view('reservation::lendingservice')->with('assets', ReservationFetcher::getAvailableAssets());
+		else
+			return redirect()->back();
 	}
 
 
