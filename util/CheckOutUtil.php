@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class CheckOutUtil
 {
-    public static function checkOut($reservation_id)
+   /* public static function checkOut($reservation_id)
     {
         $reservation = DB::table('reservation_requests')->where('id', $reservation_id)->first();
         $until_date = Carbon::now()->addWeek();
@@ -26,6 +26,11 @@ class CheckOutUtil
         ]);
 
         DB::table('reservation_requests')->where('id', $reservation_id)->delete();
+    }*/
+
+    public static function checkOutByAssetId($asset_id)
+    {
+        DB::table('reservation_assets')->where('asset_id', $asset_id)->update(['checked_out' => true]);
     }
 
 }

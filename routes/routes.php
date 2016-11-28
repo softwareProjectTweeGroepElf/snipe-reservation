@@ -6,10 +6,10 @@ Route::group([ 'prefix'  => 'package' ], function() {
     Route::get('/lendingservice', 'ReservationController@getLservice');
 
     // USED BY AJAX CALLS
-    Route::get('/lsaction', 'ReservationController@lsaction');
-    Route::get('/initdoc', 'ReservationController@getAssetIDandNames');
-    Route::get('/initdoclendservice', 'ReservationController@getAllinfoLS');
-    Route::get('/postreservation', 'ReservationController@postreservation');
-    Route::get('/rejectreservation', 'ReservationController@rejectedReservation');
-    Route::get('/postrequestreservation', 'ReservationController@postReservationRequest');
+    Route::get('/lsaction', 'AjaxController@lsaction');
+    Route::get('/initdoc', 'AjaxController@getAssetIDandNames');
+    Route::get('/initdoclendservice', 'AjaxController@getAllinfoLS');
+    Route::get('/postreservation', 'AjaxController@postreservation');
+    Route::get('/rejectreservation', 'AjaxController@rejectedReservation');
+    Route::get('/postrequestreservation', 'AjaxController@postReservationRequest');
 });

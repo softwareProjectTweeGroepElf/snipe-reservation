@@ -8,7 +8,8 @@
  */
 
 use Illuminate\Database\Migrations\Migration;
-
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 class CreateReservationArchiveTable extends Migration
 {
 
@@ -21,7 +22,6 @@ class CreateReservationArchiveTable extends Migration
             $table->dateTime('from');
             $table->dateTime('until');
             $table->dateTime('checked_in');
-            $table->enum('status', [ 'ACCEPTED', 'DENIED' ] );
             $table->timestamps();
         });
     }

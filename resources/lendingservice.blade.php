@@ -8,10 +8,10 @@
             success:function(data){
                 console.log(data);
                 for (var i = 0; i < data[0].length; i++) {
-                    $('#asset_id').append("<option value=" + data[0][i][0] + ">" + data[0][i][1] + "</option>");
+                    $('#asset_id').append("<option value=" + data['assets'][i][0] + ">" + data['assets'][i][1] + "</option>");
                 }
                 for (var i = 0; i < data[1].length; i++) {
-                    $('#user_id').append("<option value=" + data[1][i][0] + ">" + data[1][i][1] + "</option>");
+                    $('#user_id').append("<option value=" + data['users'][i][0] + ">" + data['users'][i][1] + "</option>");
                 }
             }
         });
