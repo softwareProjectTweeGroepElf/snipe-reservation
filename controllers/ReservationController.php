@@ -46,7 +46,6 @@ class ReservationController extends Controller
 		]); // will add more variables to send
 	}
 
-
     public function postCheckIn($reservation_id)
     {
         $until_date = Carbon::createFromFormat('Y/m/d', DB::table('reservation_assets')->select('until')->where('id', $reservation_id)->first());
@@ -57,7 +56,5 @@ class ReservationController extends Controller
         else
             return view('overtime')->with('fine', FineUtil::calculateFine($reservation_id));
     }
-
-
 
 }
