@@ -22,7 +22,7 @@ class ReservationController extends Controller
 		$this->middleware('auth');
 	}
 
-	public function getReservation()
+/*	public function getReservation()
 	{
 		return view('reservation')->with('assets', ReservationFetcher::getAvailableAssets());
 	}
@@ -43,7 +43,7 @@ class ReservationController extends Controller
 		return view('leasingservice')->with([
 			['leasedAssets' => ReservationFetcher::getLeasedAssets()],
 		]); // will add more variables to send
-	}
+	}*/
 
     /*public function postCheckIn($reservation_id)
     {
@@ -58,7 +58,17 @@ class ReservationController extends Controller
 
 	public function getStudent()
 	{
-		return view('requestreservation')->with('assets', ReservationFetcher::getAvailableAssets());
+		return view('reservation::requestreservation')->with('assets', ReservationFetcher::getAvailableAssets());
+	}
+
+	public function getProfessor()
+	{
+		return view('reservation::requestreview')->with('requestedassets', ReservationFetcher::getReservationRequests());
+	}
+
+	public function getLeasingService()
+	{
+		return view('reservation::lendingservice')->with('assets', ReservationFetcher::getAvailableAssets());
 	}
 
 
