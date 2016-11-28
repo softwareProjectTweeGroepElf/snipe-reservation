@@ -9,6 +9,12 @@
         "laravel/framework": "5.2.*"
     },
 
+    "autoload": {
+        "psr-4": {
+            "sp2gr11\\reservation\\": "src/"
+        }
+    },
+
     "authors": [
         {
             "name": "Deleu Tanguy",
