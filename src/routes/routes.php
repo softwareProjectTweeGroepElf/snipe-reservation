@@ -12,4 +12,8 @@ Route::group([ 'prefix'  => 'package' ], function() {
     Route::get('/postreservation', 'AjaxController@postreservation');
     Route::get('/rejectreservation', 'AjaxController@rejectedReservation');
     Route::get('/postrequestreservation', 'AjaxController@postReservationRequest');
+
+    // USED FOR CRON JOB
+    Route::get('/cronjob', 'CronjobController@schedule');
+
 });
