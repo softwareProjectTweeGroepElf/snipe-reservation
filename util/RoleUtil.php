@@ -1,6 +1,6 @@
 <?php
 
-namespace Reservation\Util;
+namespace sp2gr11\reservation\util;
 /**
  * Created by PhpStorm.
  * User: Tanguy
@@ -8,6 +8,7 @@ namespace Reservation\Util;
  * Time: 1:32
  */
 
+use Illuminate\Support\Facades\Auth;
 class RoleUtil
 {
     /**
@@ -47,4 +48,6 @@ class RoleUtil
     {
         return !empty(array_intersect($user->groups->pluck('id')->all(), $groups));
     }
+
+
 }

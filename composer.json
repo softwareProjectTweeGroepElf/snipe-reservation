@@ -2,13 +2,17 @@
     "name": "sp2gr11/reservation",
     "description": "Reservation package for SnipeIT project.",
     "license": "MIT",
+<<<<<<< HEAD
     "minimum-stability": "dev",
+=======
+>>>>>>> 2a25a16278434e82f75146d9b93ef053c3d804c6
     "minimum-stability": "stable",
     "type": "library",
     "require": {
         "php": ">=5.6.4",
         "laravel/framework": "5.2.*"
     },
+<<<<<<< HEAD
 
 
     "autoload": {
@@ -16,16 +20,31 @@
             "sp2gr11\\reservation\\": "src/"
         }
     },
+=======
+
+    "autoload": {
+        "psr-4": {
+            "sp2gr11\\reservation\\": "src/"
+        }
+    },
+
+>>>>>>> 2a25a16278434e82f75146d9b93ef053c3d804c6
     "authors": [
         {
             "name": "Deleu Tanguy",
             "email": "tanguy.deleu@student.ehb.be"
+<<<<<<< HEAD
         },
+=======
+        }
+    ,
+>>>>>>> 2a25a16278434e82f75146d9b93ef053c3d804c6
         {
             "name": "Bomans Tristan",
             "email": "tristan.bomans@student.ehb.be",
             "role": "Developer"
         }
+<<<<<<< HEAD
         ,
         {
             "name": "Saccasyn Tom",
@@ -35,3 +54,7 @@
     ]
 }
 
+=======
+    ]
+}
+>>>>>>> 2a25a16278434e82f75146d9b93ef053c3d804c6
