@@ -6,12 +6,17 @@ use App\Models\Location;
 Route::group([ 'prefix'  => 'api/v1' ], function() {
     /*--- Get All Assets Route ---*/
     Route::get('assets/all', 'ApiController@getAllAssets');
+    Route::get('assets/{id}', 'ApiController@getAssetsById');
+    Route::get('create/asset', 'ApiController@createAsset');
+    Route::get('update/asset/{id}', 'ApiController@updateAsset');
+    Route::get('assets/delete/{assetId}', 'ApiController@deleteAssetById');
+    Route::get('assets/search/{variable}/{waarde}', 'ApiController@getAssetsFiltered');   
 });
 
 /*
 |--------------------------------------------------------------------------
 | Admin API Routes
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------ById
 */
 Route::group([ 'prefix' => 'api', 'middleware' => 'auth' ], function () {
 
@@ -998,7 +1003,6 @@ Route::group(['middleware' => 'web'], function () {
 Route::get('home', function () {
     return redirect('/');
 });
-
-Route::get('Studentloanout','StudentloansController@getIndex');
-
-
+Route::get('GoogleCalendar', 'UsersController@getGoogleCalendar');
+Route::get('JavascriptCalender', 'UsersController@getJavascriptCalender');
+Route::get('/JavascriptCalAjax', 'AssetsController@getDatatable');
