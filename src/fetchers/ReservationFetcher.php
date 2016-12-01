@@ -8,6 +8,7 @@
 
 namespace sp2gr11\reservation\fetchers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Asset;
 use App\Models\User;
@@ -48,6 +49,32 @@ class ReservationFetcher
             $reservation[$idx]->user = User::find($reservation->user_id);
         }
 
+        return $reservations;
+    }
+
+    public static function getAllAssetsReadyForLoaning(){
+        $now = Carbon::now();
+        $date_string = $now->toDateString();
+        $reservations = DB::table('reservation_assets')
+            ->whereDate('from', $date_string)
+            ->get();
+        return $reservations;
+    }
+
+    public static function getAllReservations1DayBeforeEndDate(){
+        $yesterday = Carbon::yesterday();
+        $date_string = $yesterday->toDateString();
+        $reservations = DB::table('reservation_assets')
+            ->whereDate('until', $date_string)
+            ->get();
+        return $reservations;
+    }
+    public static function getAllEndDateReservations(){
+        $today = Carbon::now();
+        $date_string = $today->toDateString();
+        $reservations = DB::table('reservation_assets')
+            ->whereDate('until', $date_string)
+            ->get();
         return $reservations;
     }
 }

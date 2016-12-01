@@ -20,7 +20,7 @@ class CreateReservationRequestsTable extends Migration
             $table->integer('user_id');
             $table->integer('asset_id');
             $table->string('subject', 40);
-            $table->bool('checked_out');
+            $table->boolean('checked_out');
             $table->timestamps();
         });
     }

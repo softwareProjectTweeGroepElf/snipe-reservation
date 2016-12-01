@@ -16,4 +16,6 @@ Route::group([ 'prefix'  => 'package' ], function() {
     // USED FOR CRON JOB
     Route::get('/cronjob', 'CronjobController@schedule');
 
+
+    Route::get('/test', 'MailUtil@sendReminderMail');
 });

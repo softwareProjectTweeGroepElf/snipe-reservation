@@ -10,8 +10,10 @@ namespace sp2gr11\reservation\util;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Reservation\Fetchers\ReservationFetcher;
+use sp2gr11\reservation\fetchers\ReservationFetcher;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Asset;
+use App\Models\User;
 
 class MailUtil
 {
@@ -64,7 +66,7 @@ class MailUtil
     }
 
     public function sendReminderMail(){
-        $reservations = $this->getAllReservations1DayBeforeEndDate();
+        $reservations = ReservationFetcher::getAllReservations1DayBeforeEndDate();
         $data = array();
         foreach ($reservations as $reservation) {
             $user_id = $reservation->user_id;
@@ -77,7 +79,8 @@ class MailUtil
             $data['asset_name'] = $user_asset->name;
 
             Mail::send('emails.reminderMailUser', $data, function ($m) use ($user) {
-                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
+                $m->to('sam.van.roy@student.ehb.be');
+                //$m->to($user->email, $user->first_name . ' ' . $user->last_name);
                 $m->subject('Automatic reminder ending loan period asset');
             });
         }
@@ -86,7 +89,7 @@ class MailUtil
     //2e herinnering voor te zeggen dat het te laat is & dat er een boete volgt.
 
     public function sendSecondReminderMail(){
-        $reservations = $this->getAllEndDateReservations();
+        $reservations = ReservationFetcher::getAllEndDateReservations();
         $data = array();
         foreach ($reservations as $reservation) {
             $user_id = $reservation->user_id;
@@ -107,7 +110,7 @@ class MailUtil
 
 //De student zal een email ontvangen dat zijn gereserveerde item klaar ligt op de uitleendienst.
     public function sendEmailWhenAssetIsLendable(){
-        $reservations = $this->getAllAssetsReadyForLoaning();
+        $reservations = ReservationFetcher::getAllAssetsReadyForLoaning();
         $data = array();
 
         foreach ($reservations as $reservation) {
