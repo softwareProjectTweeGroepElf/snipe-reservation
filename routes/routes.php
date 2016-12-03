@@ -1005,4 +1005,4 @@ Route::get('home', function () {
 });
 Route::get('GoogleCalendar', 'UsersController@getGoogleCalendar');
 Route::get('JavascriptCalender', 'UsersController@getJavascriptCalender');
-Route::get('/JavascriptCalAjax', 'AssetsController@getDatatable');
+Route::get('/JavascriptCalAjax', 'UsersController@getAllAssets');
