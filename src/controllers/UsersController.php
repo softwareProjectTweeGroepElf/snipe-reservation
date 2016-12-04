@@ -35,6 +35,7 @@ use View;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Gate;
+use Carbon\Carbon;
 
 /**
  * This controller handles all actions related to Users for
@@ -1277,8 +1278,9 @@ class UsersController extends Controller
 
         $free_assets =  Asset::all();
         $free_asset_combo = Array();
-        $free_asset_name_id = Array();
-
+        /*$expected_checkin=Array();
+        $last_checkout=Array();
+        */$free_asset_name_id = Array();
         $all_users = User::all();
         $free_users_combo = Array();
         $free_users_name_id = Array();
@@ -1287,10 +1289,17 @@ class UsersController extends Controller
 
         for ($i=0; $i <sizeof($free_assets) ; $i++) {
 
-            unset($free_asset_combo);
+            $last_checkout=Carbon::parse($free_assets[$i]["last_checkout"]);
+            $expected_checkin=Carbon::parse($free_assets[$i]["expected_checkin"]);
+
+           unset($free_asset_combo);
             $free_asset_combo = Array();
-            array_push($free_asset_combo, $free_assets[$i]["id"], $free_assets[$i]["name"],$free_assets[$i]["last_checkout"],$free_assets[$i]["expected_checkin"]);
-            array_push($free_asset_name_id, $free_asset_combo);
+            if($last_checkout->whereNotNull()) {
+                     array_push($free_asset_combo, $free_assets[$i]["id"], $free_assets[$i]["name"], $free_assets[$i]["last_checkout"], $free_assets[$i]["expected_checkin"]);
+                     array_push($last_checkout,$expected_checkin);
+                     array_push($free_asset_name_id, $free_asset_combo);
+
+            }
 
         }
 
@@ -1307,6 +1316,16 @@ class UsersController extends Controller
 
         return $return_array;
     }
+    public function AjaxcallAssetsCompareDatums($last_checkout,$expected_checkin)
+    {
+        $today=Carbon::today();
 
+
+
+
+
+
+
+    }
 
 }
