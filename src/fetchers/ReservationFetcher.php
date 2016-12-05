@@ -8,6 +8,7 @@
 
 namespace sp2gr11\reservation\fetchers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Asset;
 use App\Models\User;
@@ -49,5 +50,20 @@ class ReservationFetcher
         }
 
         return $reservations;
+
+    }
+
+    public static function getLeasedAssetsExceptOvertime()
+    {
+        $assets = DB::table('reservation_assets')->whereNotNull('from')->get();
+
+        $assets_on_schedule = array();
+        foreach($assets as $asset)
+        {
+            if(Carbon::parse($asset->from)->isFuture())
+                $assets_on_schedule[] = $asset;
+        }
+
+        return $assets_on_schedule;
     }
 }
