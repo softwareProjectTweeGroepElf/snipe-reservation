@@ -77,8 +77,6 @@ class ReservationFetcher
 
         $assets = DB::table('reservation_requests')->where('user_id', $user_id)->get();
 
-        $assets->asset = Asset::find($assets->asset_id);
-
         return $assets;
     }
 }

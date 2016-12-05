@@ -75,7 +75,4 @@ class ReservationController extends Controller
 		else
 			return redirect()->back();
 	}
-
-
-
 }
