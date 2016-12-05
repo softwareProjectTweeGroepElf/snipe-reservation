@@ -60,7 +60,7 @@ class ReservationFetcher
         $assets_on_schedule = array();
         foreach($assets as $asset)
         {
-            if(Carbon::parse($asset->from)->isFuture())
+            if(Carbon::parse($asset->until)->isFuture())
                 $assets_on_schedule[] = $asset;
         }
 
