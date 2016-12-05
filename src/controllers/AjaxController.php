@@ -56,8 +56,8 @@ class AjaxController extends Controller
         foreach($available_assets as $asset)
             array_push($asset_data, $asset->id, $asset->name);
 
-        foreach($lent_assets as $asset)
-            array_push($asset_data, $asset->id,  $asset->asset->name);
+        // foreach($lent_assets as $asset)
+        //     array_push($asset_data, $asset->id,  $asset->asset->name);
 
         foreach ($users as $user)
             array_push($free_users_combo, $user->id, $user->first_name." ". $user->last_name);
