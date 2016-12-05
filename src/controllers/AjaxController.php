@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AjaxController extends Controller
 {
+    /*
+     * Lending Service AJAX
+     */
     public function lsaction(Request $request){
         $asset_id = $request->asset_id;
         $action =  $request->asset_action;
@@ -39,16 +42,6 @@ class AjaxController extends Controller
         }
 
         return "select a legitimate action!";
-    }
-
-    public function getAssetIDandNames(){
-        $free_assets = ReservationFetcher::getAvailableAssets();
-        $data = array();
-
-        foreach($free_assets as $asset)
-            array_push($data, ['id' => $asset->id, 'name' => $asset->name]);
-
-        return $data;
     }
 
     public function getAllinfoLS(){
@@ -71,14 +64,37 @@ class AjaxController extends Controller
         return ['assets' => $asset_data, 'users' => $free_users_combo];
     }
 
-    public function postReservation(Request $request)
+    /*
+     * Student AJAX
+     */
+    public function getAssetIDandNames()
     {
-        $reservation_id = ReservationUtil::getRequestIdForUserAsset($request->req_asset_id, $request->req_user_id);
-        ReservationUtil::acceptReservation($reservation_id);
+        $free_assets = ReservationFetcher::getAvailableAssets();
+        $data = array();
+
+        foreach($free_assets as $asset)
+            array_push($data, ['id' => $asset->id, 'name' => $asset->name]);
+
+        return $data;
     }
 
     public function postReservationRequest(Request $request){
         ReservationUtil::createReservationRequest(Auth::user()->id, $request->asset_id);
         return true;
     }
+
+    /*
+     * Request Reviewer AJAX
+     */
+    public function postReservation(Request $request)
+    {
+        $reservation_id = ReservationUtil::getRequestIdForUserAsset($request->req_asset_id, $request->req_user_id);
+        ReservationUtil::acceptReservation($reservation_id);
+    }
+
+    public function rejectedReservation(Request $request)
+    {
+        ReservationUtil::rejectReservation(ReservationUtil::getRequestIdForUserAsset($request->req_asset_id, $request->req_user_id));
+    }
+
 }

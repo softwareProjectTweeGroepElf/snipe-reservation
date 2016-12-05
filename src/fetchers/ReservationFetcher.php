@@ -66,4 +66,25 @@ class ReservationFetcher
 
         return $assets_on_schedule;
     }
+
+    /**
+     * @param User|int $user
+     * @return A list of reservation requests made by the user
+     */
+    public static function getRequestedAssetsForUser($user)
+    {
+        $user_id = is_int($user) ? $user : $user->id;
+
+        $requested_assets = DB::table('reservation_requests')->where('user_id', $user_id)->get();
+
+        $user_requested_assets = array();
+        foreach($requested_assets as $idx => $requested_asset)
+        {
+            $user_requested_assets[$idx] = $requested_assets[$idx];
+            $user_requested_assets[$idx]->asset = Asset::find($requested_assets[$idx]->asset_id);
+            $user_requested_assets[$idx]->user = is_int($user) ? User::find($user) : $user;
+        }
+
+        return $user_requested_assets;
+    }
 }
