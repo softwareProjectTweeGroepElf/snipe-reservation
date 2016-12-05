@@ -1,22 +1,15 @@
 <?php
-Route::group([ 'prefix'  => 'package' ], function() {
+Route::group([ 'prefix'  => 'reservation' ], function() {
+	//Route::get('/home', 'groepelf\reservatie\Http\ReservatieController@getIndex');
+    Route::get('/students', 'sp2gr11\reservation\controllers\ReservationController@getStudent');
+    Route::get('/professors', 'sp2gr11\reservation\controllers\ReservationController@getProfessor');
+    Route::get('/lendingservice', 'sp2gr11\reservation\controllers\ReservationController@getLeasingService');
 
-	// TESTS: ROUTE TEST & CONTROLLER TEST
-	Route::get('/test', function(){return "it works";});
-	Route::get('/test2', 'sp2gr11\reservation\controllers\ReservationController@getIndex');
-
-	// MAIN ROUTES
-	Route::get('/students', 'sp2gr11\reservation\controllers\ReservationController@getStudent');
-	Route::get('/professors', 'sp2gr11\reservation\controllers\ReservationController@getProfessor');
-	Route::get('/lendingservice', 'sp2gr11\reservation\controllers\ReservationController@getLservice');
-
-	// USED BY AJAX CALLS
-	Route::get('/lsaction', 'sp2gr11\reservation\controllers\ReservationController@lsaction');
-	Route::get('/initdoc', 'sp2gr11\reservation\controllers\ReservationController@getAssetIDandNames');
-	Route::get('/initdoclendservice', 'sp2gr11\reservation\controllers\ReservationController@getAllinfoLS');		
-	Route::get('/postreservation', 'sp2gr11\reservation\controllers\ReservationController@postreservation');
-	Route::get('/rejectreservation', 'sp2gr11\reservation\controllers\ReservationController@rejectedReservation');
-	Route::get('/postrequestreservation', 'sp2gr11\reservation\controllers\ReservationController@postReservationRequest');
-
-
+    // USED BY AJAX CALLS
+    Route::get('/lsaction', 'sp2gr11\reservation\controllers\AjaxController@lsaction'); // lending service
+    Route::get('/initdoc', 'sp2gr11\reservation\controllers\AjaxController@getAssetIDandNames'); // student
+    Route::get('/initdoclendservice', 'sp2gr11\reservation\controllers\AjaxController@getAllinfoLS'); // lending service
+    Route::get('/postreservation', 'sp2gr11\reservation\controllers\AjaxController@postreservation'); // docent
+    Route::get('/rejectreservation', 'sp2gr11\reservation\controllers\AjaxController@rejectedReservation'); // docent
+    Route::get('/postrequestreservation', 'sp2gr11\reservation\controllers\AjaxController@postReservationRequest'); // student
 });
