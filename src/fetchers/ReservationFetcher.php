@@ -75,8 +75,16 @@ class ReservationFetcher
     {
         $user_id = is_int($user) ? $user : $user->id;
 
-        $assets = DB::table('reservation_requests')->where('user_id', $user_id)->get();
+        $requested_assets = DB::table('reservation_requests')->where('user_id', $user_id)->get();
 
-        return $assets;
+        $user_requested_assets = array();
+        foreach($requested_assets as $idx => $requested_asset)
+        {
+            $user_requested_assets[$idx] = $requested_assets[$idx];
+            $user_requested_assets[$idx]->asset = Asset::find($requested_assets[$idx]->asset_id);
+            $user_requested_assets[$idx]->user = is_int($user) ? User::find($user) : $user;
+        }
+
+        return $user_requested_assets;
     }
 }
