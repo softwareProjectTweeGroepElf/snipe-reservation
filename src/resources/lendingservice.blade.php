@@ -19,6 +19,7 @@
         var asset_id = $('#asset_id').val();
         var asset_action = $('#asset_action').val();
         var user_id = $('#user_id').val();
+        console.log(asset_id);
         console.log("Function works");
         $.ajax({
             type: 'GET',

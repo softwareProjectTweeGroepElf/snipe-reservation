@@ -31,8 +31,9 @@ class CheckInUtil
 
         public static function checkInByAssetId($asset_id)
         {
+            var_dump($asset_id);
             $reservation = DB::table('reservation_assets')->where('asset_id', $asset_id)->first();
-
+            var_dump($reservation);
             DB::table('reservation_archive')->insert([
                 'asset_id' => $reservation->asset_id,
                 'user_id' => $reservation->user_id,

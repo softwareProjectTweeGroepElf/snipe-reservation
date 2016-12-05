@@ -45,7 +45,8 @@ class AjaxController extends Controller
     }
 
     public function getAllinfoLS(){
-        $available_assets = ReservationFetcher::getAvailableAssets();
+        //$available_assets = ReservationFetcher::getAvailableAssets();
+        $available_assets = ReservationFetcher::getAllAssets();
         $lent_assets = ReservationFetcher::getLeasedAssets();
         $users = User::all();
         $free_users_combo = Array();

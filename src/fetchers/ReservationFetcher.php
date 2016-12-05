@@ -15,6 +15,11 @@ use App\Models\User;
 
 class ReservationFetcher
 {
+    public static function getAllAssets()
+    {
+        return Asset::all();
+    }
+
     public static function getAvailableAssets()
     {
         $unavailable_assets_ids = DB::table('reservation_assets')->pluck('asset_id');
