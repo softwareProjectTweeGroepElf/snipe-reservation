@@ -38,7 +38,7 @@
             success: function(data) {
 
                 for (var i = 0; i < data[0].length; i++) {
-                    var $name = data[0][i][1];
+                    var $name = data[0][i][3];
 
                     $(".outputJavascript").append("<option value='$name'>" + $name + "</option>")
 
@@ -55,10 +55,10 @@
 
 
             this.CurrentYear = this.CurrentYear + 1;
-         } else {
+        } else {
 
             this.CurrentMonth = this.CurrentMonth + 1;
-         }
+        }
 
         this.showCurrent();
 
@@ -86,7 +86,7 @@
 
 
             this.CurrentYear = this.CurrentYear - 1;
-         } else {
+        } else {
 
             this.CurrentMonth = this.CurrentMonth - 1;
         }
@@ -169,7 +169,7 @@
     Calendar.prototype.Calendar = function(y,m) {
         typeof(y) == 'number' ? this.CurrentYear = y : null;
 
-       typeof(y) == 'number' ? this.CurrentMonth = m : null;
+        typeof(y) == 'number' ? this.CurrentMonth = m : null;
 
 
         var EersteDagVanDeMaand = new Date(y, m, 1).getDay();
@@ -216,7 +216,7 @@
 
 
                 if (d < 1){
-                      cellvalue = LaatsteDagVanDeLaatsteMaand - EersteDagVanDeMaand + p++;
+                    cellvalue = LaatsteDagVanDeLaatsteMaand - EersteDagVanDeMaand + p++;
 
 
 
@@ -237,7 +237,7 @@
 
                     p = 1;
 
-               }
+                }
 
                 if (i % 7 == 6 && d >= LaatsteDagVanDeMaand) {
 
