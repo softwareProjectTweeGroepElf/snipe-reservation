@@ -55,7 +55,7 @@ class ReservationFetcher
 
     public static function getLeasedAssetsExceptOvertime()
     {
-        $assets = DB::table('reservation_assets')->whereNotNull('from')->get();
+        $assets = DB::table('reservation_assets')->whereNotNull('checked_out')->get();
 
         $assets_on_schedule = array();
         foreach($assets as $asset)
