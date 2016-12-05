@@ -8,7 +8,8 @@
  */
 
 use Illuminate\Database\Migrations\Migration;
-
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 class CreateReservationRequestsTable extends Migration
 {
 
@@ -19,6 +20,7 @@ class CreateReservationRequestsTable extends Migration
             $table->integer('user_id');
             $table->integer('asset_id');
             $table->string('subject', 40);
+            $table->bool('checked_out');
             $table->timestamps();
         });
     }

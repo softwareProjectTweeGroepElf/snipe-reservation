@@ -1,6 +1,6 @@
 <?php
 
-namespace Reservation\Util;
+namespace sp2gr11\reservation\util;
 /**
  * Created by PhpStorm.
  * User: Tanguy
@@ -8,6 +8,7 @@ namespace Reservation\Util;
  * Time: 1:32
  */
 
+use Illuminate\Support\Facades\Auth;
 class RoleUtil
 {
     /**
@@ -43,8 +44,14 @@ class RoleUtil
      * @param array An array of group IDs to check if the User is part of any of them
      * @return True if the user is part of any of the groups, false if not
      */
-    public static function isUserPartOfGroup($user, array $groups)
+    public static function isUserPartOfGroup($user, array $required_group_ids)
     {
-        return !empty(array_intersect($user->groups->pluck('id')->all(), $groups));
+        $user_group_ids = array();
+        foreach($user->groups as $group)
+            $group_ids[] = $group->id;
+
+        return !empty(array_intersect($user_group_ids, $required_group_ids));
     }
+
+
 }
