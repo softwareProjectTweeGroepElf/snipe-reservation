@@ -27,9 +27,9 @@ class AjaxController extends Controller
     public function lsaction(Request $request){
         $asset_id = $request->asset_id;
         $action =  $request->asset_action;
-
         if($action == "checkout"){
             CheckOutUtil::checkOutByAssetId($asset_id);
+             return "Succesfully checked asset with ID ". $asset_id." out.";
         }
         elseif ($action == "checkin") {
             CheckInUtil::checkInByAssetId($asset_id);
