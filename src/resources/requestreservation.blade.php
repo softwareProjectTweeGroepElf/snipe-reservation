@@ -3,7 +3,7 @@
     $(document).ready(function(){
         $.ajax({
             type: 'GET',
-            url: '/package/initdoc',
+            url: '/reservation/initdoc',
             data: "",
             success:function(data){
                 for (var i = 0; i < data.length; i++) {
@@ -17,7 +17,7 @@
         console.log("Function works");
         $.ajax({
             type: 'GET',
-            url: '/package/postrequestreservation',
+            url: '/reservation/postrequestreservation',
             data: {'asset_id' : datastring},
             success:function(data){
                 console.log(data);
