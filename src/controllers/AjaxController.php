@@ -67,7 +67,8 @@ class AjaxController extends Controller
     /*
      * Student AJAX
      */
-    public function getAssetIDandNames(){
+    public function getAssetIDandNames()
+    {
         $free_assets = ReservationFetcher::getAvailableAssets();
         $data = array();
 
@@ -75,23 +76,6 @@ class AjaxController extends Controller
             array_push($data, ['id' => $asset->id, 'name' => $asset->name]);
 
         return $data;
-    }
-
-    public function getUserAssets()
-    {
-        $user = Auth::user();
-        $requested_assets = ReservationFetcher::getRequestedAssetsForUser($user);
-
-        $user_reservation_requests = array();
-        foreach($requested_assets as $idx => $asset)
-        {
-            $user_reservation_requests[$idx]->asset_id = $requested_assets->asset->id;
-            $user_reservation_requests[$idx]->asset_name = $requested_assets->asset->name;
-            $user_reservation_requests[$idx]->user_id = $user->id;
-            $user_reservation_requests[$idx]->user_name = $user->first_name . ' ' . $user->last_name;
-        }
-
-        return $user_reservation_requests;
     }
 
     public function postReservationRequest(Request $request){

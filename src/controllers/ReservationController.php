@@ -54,7 +54,10 @@ class ReservationController extends Controller
 
 	public function getStudent()
 	{
-		return view('Reservation::requestreservation')->with('assets', ReservationFetcher::getAvailableAssets());
+		return view('Reservation::requestreservation')->with([
+			'assets' => ReservationFetcher::getAvailableAssets(),
+			'userassets' => ReservationFetcher::getRequestedAssetsForUser(Auth::user())
+		]);
 	}
 
 	public function getProfessor()
