@@ -4,7 +4,7 @@ Route::group([ 'prefix'  => 'reservation' ], function() {
     Route::get('/students', 'sp2gr11\reservation\controllers\ReservationController@getStudent');
     Route::get('/professors', 'sp2gr11\reservation\controllers\ReservationController@getProfessor');
     Route::get('/lendingservice', 'sp2gr11\reservation\controllers\ReservationController@getLeasingService');
-    Route::get('/JavascriptCalAjax', 'sp2gr11\reservation\controllers\ReservationController@getLeasedAssetsExceptOvertime');
+    Route::get('/JavascriptCalAjax', 'sp2gr11\reservation\controllers\AjaxController@getLeasedAssetsExceptOvertime');
     Route::get('/JavascriptCalender','sp2gr11\reservation\controllers\JavascriptCalenderController@getJavascriptCalender');
     
     // USED BY AJAX CALLS

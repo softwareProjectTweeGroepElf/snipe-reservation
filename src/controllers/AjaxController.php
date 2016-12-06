@@ -96,5 +96,8 @@ class AjaxController extends Controller
     {
         ReservationUtil::rejectReservation(ReservationUtil::getRequestIdForUserAsset($request->req_asset_id, $request->req_user_id));
     }
-
+    public function getLeasedAssetsExceptOvertime()
+    {
+        return ReservationFetcher::getLeasedAssetsExceptOvertime();
+    }
 }

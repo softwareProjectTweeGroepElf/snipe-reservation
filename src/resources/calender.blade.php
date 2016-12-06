@@ -37,9 +37,9 @@
             url: "/JavascriptCalAjax",
             success: function(data) {
 
-                for (var i = 0; i < data[0].length; i++) {
-                    var $name = data[0][i][3];
-
+                for (var i = 0; i < data.length; i++) {
+                    var $name = data[i][1];
+                    console.log($name);
                     $(".outputJavascript").append("<option value='$name'>" + $name + "</option>")
 
                 }
@@ -68,9 +68,10 @@
             success: function(data) {
 
                 for (var i = 0; i < data[0].length; i++) {
-                    var $name = data[0][i][1];
+                    var $asset_id = data[0][i][2];
 
-                    $(".outputJavascript").append("<option value='$name'>" + $name + "</option>")
+
+                    $(".outputJavascript").append("<option value='$asset_id'>" + $asset_id + "</option>")
 
                 }
             }

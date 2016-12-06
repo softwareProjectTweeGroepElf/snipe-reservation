@@ -55,7 +55,7 @@ class ReservationController extends Controller
 	public function getStudent()
 	{
 
-		var_dump(ReservationFetcher::getRequestedAssetsForUser(Auth::user())[0]->user->first_name);
+		//var_dump(ReservationFetcher::getRequestedAssetsForUser(Auth::user())[0]->user->first_name);
 		return view('Reservation::requestreservation')->with([
 			'assets' => ReservationFetcher::getAvailableAssets(),
 			'userassets' => ReservationFetcher::getRequestedAssetsForUser(Auth::user())
@@ -77,4 +77,5 @@ class ReservationController extends Controller
 		else
 			return redirect()->back();
 	}
+
 }
