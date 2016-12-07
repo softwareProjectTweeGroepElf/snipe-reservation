@@ -34,11 +34,10 @@
 
         $.ajax({
             type:"GET",
-            url: "/JavascriptCalAjax",
+            url: "/reservation/JavascriptCalAjax",
             success: function(data) {
-
                 for (var i = 0; i < data.length; i++) {
-                    var $name = data[i][1];
+                    var $name = data[i]["asset_id"];
                     console.log($name);
                     $(".outputJavascript").append("<option value='$name'>" + $name + "</option>")
 

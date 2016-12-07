@@ -57,16 +57,23 @@ class ReservationFetcher
     public static function getLeasedAssetsExceptOvertime()
     {
         $assets = DB::table('reservation_assets')->whereNotNull('from')->get();
+        $assets_name = DB::table('assets')->get();
 
         $assets_on_schedule = Array();
-        var_dump($assets_on_schedule);
         foreach($assets as $asset)
         {
             if(Carbon::parse($asset->until)->isFuture())
                 $assets_on_schedule[] = $asset;
-            var_dump($assets_on_schedule);
-        }
 
+        }
+        foreach($assets_name as $asset_name)
+        {
+            var_dump($asset_name);
+            /*if ($assets_on_schedule["asset_id"]==$asset_name["id"])
+            {
+                $assets_on_schedule[][8]=$asset_name["name"];
+            }*/
+        }
 
         return $assets_on_schedule;
     }
