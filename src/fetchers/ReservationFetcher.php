@@ -63,18 +63,20 @@ class ReservationFetcher
         foreach($assets as $asset)
         {
             if(Carbon::parse($asset->until)->isFuture())
-                $assets_on_schedule[] = $asset;
-
-        }
-        foreach($assets_name as $asset_name)
-        {
-            var_dump($asset_name);
-            /*if ($assets_on_schedule["asset_id"]==$asset_name["id"])
+                $assets_on_schedule[]=$asset;
+            foreach($assets_name as $asset_name)
             {
-                $assets_on_schedule[][8]=$asset_name["name"];
-            }*/
+                //var_dump($asset->id);
+                //var_dump($asset_name->name);
+                if ($asset->asset_id==$asset_name->id)
+                {
+                    $assets_on_schedule[]=$asset_name->name;
+                }
+            }
+
         }
 
+var_dump($assets_on_schedule);
         return $assets_on_schedule;
     }
 

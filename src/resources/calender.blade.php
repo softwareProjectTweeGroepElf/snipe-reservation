@@ -36,8 +36,9 @@
             type:"GET",
             url: "/reservation/JavascriptCalAjax",
             success: function(data) {
+                console.log(data);
                 for (var i = 0; i < data.length; i++) {
-                    var $name = data[i]["asset_id"];
+                    var $name = data[i]["name"];
                     console.log($name);
                     $(".outputJavascript").append("<option value='$name'>" + $name + "</option>")
 
