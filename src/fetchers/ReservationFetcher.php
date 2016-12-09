@@ -45,8 +45,8 @@ class ReservationFetcher
 
         foreach ($reservations as $idx => $reservation)
         {
-            $reservation[$idx]->asset = Asset::find($reservation->asset_id);
-            $reservation[$idx]->user = User::find($reservation->user_id);
+            $reservations[$idx]->asset = Asset::find($reservation->asset_id);
+            $reservations[$idx]->user = User::find($reservation->user_id);
         }
 
         return $reservations;
@@ -56,7 +56,7 @@ class ReservationFetcher
         $now = Carbon::now();
         $date_string = $now->toDateString();
         $reservations = DB::table('reservation_assets')
-            ->whereDate('from', $date_string)
+            ->where('from', $date_string)
             ->get();
         return $reservations;
     }
@@ -65,7 +65,7 @@ class ReservationFetcher
         $yesterday = Carbon::yesterday();
         $date_string = $yesterday->toDateString();
         $reservations = DB::table('reservation_assets')
-            ->whereDate('until', $date_string)
+            ->where('until', $date_string)
             ->get();
         return $reservations;
     }
@@ -73,7 +73,7 @@ class ReservationFetcher
         $today = Carbon::now();
         $date_string = $today->toDateString();
         $reservations = DB::table('reservation_assets')
-            ->whereDate('until', $date_string)
+            ->where('until', $date_string)
             ->get();
         return $reservations;
     }

@@ -17,7 +17,7 @@ use App\Models\User;
 
 class MailUtil
 {
-    public function sendDailyOverview()
+    /*public function sendDailyOverview()
     {
         $now = Carbon::now();
         $new_reservations = ReservationFetcher::getLeasedAssets($now->toDateString());
@@ -39,13 +39,31 @@ class MailUtil
             $message->to(config('reservation.MANAGER_EMAIL'));
         });
 
+    }*/
+
+    public function sendDailyOverview(){
+        $now = Carbon::now();
+        $reservations = ReservationFetcher::getLeasedAssets($now);
+        $data=null;
+
+        foreach ($reservations as $idx => $reservation)
+        {
+            $data[$idx]['first_name'] .= $reservation->user->first_name;
+            $data[$idx]['last_name'] .= $reservation->user->last_name;
+            $data[$idx]['asset_name'] .= $reservation->asset->name;
+        }
+
+        Mail::send('emails.overviewDailyLendableAssets', $data ,function ($m) {
+            $m->to(config('mail.from.address'), config('mail.from.name'));
+            $m->subject('Overview today \'s lendable assets');
+        });
     }
 
     public static function sendResultDecisionTeacher($decision, $reservation){
         $student_id = $reservation->user_id;
-        $student = User::find($student_id);
+        $student = User::findOrFail($student_id);
         $student_asset_id = $reservation->asset_id;
-        $student_asset = DB::table('assets')->where('id', $student_asset_id);
+        $student_asset = Asset::findOrFail($student_asset_id);
 
         $data = array();
         $data['first_name'] = $student->first_name;
@@ -70,7 +88,7 @@ class MailUtil
         $data = array();
         foreach ($reservations as $reservation) {
             $user_id = $reservation->user_id;
-            $user = User::find($user_id);
+            $user = User::findOrFail($user_id);
             $user_asset_id = $reservation->asset_id;
             $user_asset = DB::table('assets')->where('id', $user_asset_id);
 
@@ -78,9 +96,11 @@ class MailUtil
             $data['last_name'] = $user->last_name;
             $data['asset_name'] = $user_asset->name;
 
-            Mail::send('emails.reminderMailUser', $data, function ($m) use ($user) {
-                $m->to('sam.van.roy@student.ehb.be');
-                //$m->to($user->email, $user->first_name . ' ' . $user->last_name);
+            $test = DB::table('users')->where('id', 1);
+
+            Mail::send('emails.reminderMailUser', $data, function ($m) use ($test) {
+
+                $m->to($test->email, $test->first_name . ' ' . $test->last_name);
                 $m->subject('Automatic reminder ending loan period asset');
             });
         }
@@ -93,7 +113,7 @@ class MailUtil
         $data = array();
         foreach ($reservations as $reservation) {
             $user_id = $reservation->user_id;
-            $user = User::find($user_id);
+            $user = User::findOrFail($user_id);
             $user_asset_id = $reservation->asset_id;
             $user_asset = DB::table('assets')->where('id', $user_asset_id);
 
@@ -115,7 +135,7 @@ class MailUtil
 
         foreach ($reservations as $reservation) {
             $user_id = $reservation->user_id;
-            $user = User::find($user_id);
+            $user = User::findOrFail($user_id);
             $user_asset_id = $reservation->asset_id;
             $user_asset = DB::table('assets')->where('id', $user_asset_id);
 
