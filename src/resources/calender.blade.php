@@ -36,12 +36,11 @@
             type:"GET",
             url: "/reservation/JavascriptCalAjax",
             success: function(data) {
-                console.log(data);
                 for (var i = 0; i < data.length; i++) {
-                    var $name = data[i]["name"];
+                    var $name = data[i+1];
                     console.log($name);
-                    $(".outputJavascript").append("<option value='$name'>" + $name + "</option>")
-
+                    $(".outputJavascript").append("<option>" + $name + "</option>")
+                    i++;
                 }
             }
 
@@ -64,15 +63,13 @@
 
         $.ajax({
             type:"GET",
-            url: "/JavascriptCalAjax",
+            url: "/reservation/JavascriptCalAjax",
             success: function(data) {
-
-                for (var i = 0; i < data[0].length; i++) {
-                    var $asset_id = data[0][i][2];
-
-
-                    $(".outputJavascript").append("<option value='$asset_id'>" + $asset_id + "</option>")
-
+                for (var i = 0; i < data.length; i++) {
+                    var $name = data[i+1];
+                    console.log($name);
+                    $(".outputJavascript").append("<option>" + $name + "</option>")
+                    i++;
                 }
             }
 
@@ -97,14 +94,13 @@
 
         $.ajax({
             type:"GET",
-            url: "/JavascriptCalAjax",
+            url: "/reservation/JavascriptCalAjax",
             success: function(data) {
-
-                for (var i = 0; i < data[0].length; i++) {
-                    var $name = data[0][i][1];
-
-                    $(".outputJavascript").append("<option value='$name'>" + $name + "</option>")
-
+                for (var i = 0; i < data.length; i++) {
+                    var $name = data[i+1];
+                    console.log($name);
+                    $(".outputJavascript").append("<option>" + $name + "</option>")
+                    i++;
                 }
             }
 
@@ -120,17 +116,15 @@
         this.showCurrent();
 
 
-
         $.ajax({
             type:"GET",
-            url: "/JavascriptCalAjax",
+            url: "/reservation/JavascriptCalAjax",
             success: function(data) {
-
-                for (var i = 0; i < data[0].length; i++) {
-                    var $name = data[0][i][1];
-
-                    $(".outputJavascript").append("<option value='$name'>" + $name + "</option>")
-
+                for (var i = 0; i < data.length; i++) {
+                    var $name = data[i+1];
+                    console.log($name);
+                    $(".outputJavascript").append("<option>" + $name + "</option>")
+                    i++;
                 }
             }
 
@@ -147,14 +141,13 @@
 
         $.ajax({
             type:"GET",
-            url: "/JavascriptCalAjax",
+            url: "/reservation/JavascriptCalAjax",
             success: function(data) {
-
-                for (var i = 0; i < data[0].length; i++) {
-                    var $name = data[0][i][1];
-
-                    $(".outputJavascript").append("<option value='$name'>" + $name + "</option>")
-
+                for (var i = 0; i < data.length; i++) {
+                    var $name = data[i+1];
+                    console.log($name);
+                    $(".outputJavascript").append("<option>" + $name + "</option>")
+                    i++;
                 }
             }
 

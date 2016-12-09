@@ -66,9 +66,7 @@ class ReservationFetcher
                 $assets_on_schedule[]=$asset;
             foreach($assets_name as $asset_name)
             {
-                //var_dump($asset->id);
-                //var_dump($asset_name->name);
-                if ($asset->asset_id==$asset_name->id)
+               if ($asset->asset_id==$asset_name->id)
                 {
                     $assets_on_schedule[]=$asset_name->name;
                 }
