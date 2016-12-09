@@ -44,7 +44,7 @@ class ReservationUtil
         DB::table('reservation_assets')->insert([
             'asset_id' => $reservation_request->asset_id,
             'user_id' => $reservation_request->user_id,
-            'from' => $now,
+            'from' => null,
             'until' => $now->addWeek()
         ]);
 

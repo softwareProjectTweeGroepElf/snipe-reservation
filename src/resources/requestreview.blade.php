@@ -5,7 +5,7 @@
         console.log(asset_id);
         $.ajax({
             type: 'GET',
-            url: '/package/postreservation',
+            url: '/reservation/postreservation',
             data: {'req_asset_id' : asset_id},
             success:function(data){
                 alert("Reservation was added succesfully");
@@ -17,7 +17,7 @@
     function submitRjctAjax(asset_id, user_id) {
         $.ajax({
             type: 'GET',
-            url: '/package/rejectreservation',
+            url: '/reservation/rejectreservation',
             data: {'req_asset_id' : asset_id, 'req_user_id' : user_id},
             success:function(data){
                 alert("Reservation was rejected succesfully");

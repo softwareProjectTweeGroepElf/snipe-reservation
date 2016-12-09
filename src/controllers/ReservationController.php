@@ -54,13 +54,18 @@ class ReservationController extends Controller
 
 	public function getStudent()
 	{
-		return view('reservation::requestreservation')->with('assets', ReservationFetcher::getAvailableAssets());
+
+		var_dump(ReservationFetcher::getRequestedAssetsForUser(Auth::user())[0]->user->first_name);
+		return view('Reservation::requestreservation')->with([
+			'assets' => ReservationFetcher::getAvailableAssets(),
+			'userassets' => ReservationFetcher::getRequestedAssetsForUser(Auth::user())
+		]);
 	}
 
 	public function getProfessor()
 	{
 		if(RoleUtil::isUserReviewer())
-			return view('reservation::requestreview')->with('requestedassets', ReservationFetcher::getReservationRequests());
+			return view('Reservation::requestreview')->with('requestedassets', ReservationFetcher::getReservationRequests());
 		else
 			return redirect()->back();
 	}
@@ -68,9 +73,8 @@ class ReservationController extends Controller
 	public function getLeasingService()
 	{
 		if(RoleUtil::isUserLeasingService())
-			return view('reservation::lendingservice')->with('assets', ReservationFetcher::getAvailableAssets());
+			return view('Reservation::lendingservice')->with('assets', ReservationFetcher::getAvailableAssets());
 		else
 			return redirect()->back();
 	}
-
 }

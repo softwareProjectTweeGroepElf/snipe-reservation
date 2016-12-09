@@ -30,7 +30,7 @@ class CheckOutUtil
 
     public static function checkOutByAssetId($asset_id)
     {
-        DB::table('reservation_assets')->where('asset_id', $asset_id)->update(['checked_out' => true]);
+        DB::table('reservation_assets')->where('asset_id', $asset_id)->update(['from' => new Carbon()]);
     }
 
 }

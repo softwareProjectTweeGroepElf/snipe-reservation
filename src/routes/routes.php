@@ -1,21 +1,15 @@
 <?php
-Route::group([ 'prefix'  => 'package' ], function() {
+Route::group([ 'prefix'  => 'reservation' ], function() {
 	//Route::get('/home', 'groepelf\reservatie\Http\ReservatieController@getIndex');
-    Route::get('/students', 'ReservationController@getStudent');
-    Route::get('/professors', 'ReservationController@getProfessor');
-    Route::get('/lendingservice', 'ReservationController@getLeasingService');
+    Route::get('/students', 'sp2gr11\reservation\controllers\ReservationController@getStudent');
+    Route::get('/professors', 'sp2gr11\reservation\controllers\ReservationController@getProfessor');
+    Route::get('/lendingservice', 'sp2gr11\reservation\controllers\ReservationController@getLeasingService');
 
     // USED BY AJAX CALLS
-    Route::get('/lsaction', 'AjaxController@lsaction');
-    Route::get('/initdoc', 'AjaxController@getAssetIDandNames');
-    Route::get('/initdoclendservice', 'AjaxController@getAllinfoLS');
-    Route::get('/postreservation', 'AjaxController@postreservation');
-    Route::get('/rejectreservation', 'AjaxController@rejectedReservation');
-    Route::get('/postrequestreservation', 'AjaxController@postReservationRequest');
-
-    // USED FOR CRON JOB
-    Route::get('/cronjob', 'CronjobController@schedule');
-
-
-    Route::get('/test', 'MailUtil@sendReminderMail');
+    Route::get('/lsaction', 'sp2gr11\reservation\controllers\AjaxController@lsaction'); // lending service
+    Route::get('/initdoc', 'sp2gr11\reservation\controllers\AjaxController@getAssetIDandNames'); // student
+    Route::get('/initdoclendservice', 'sp2gr11\reservation\controllers\AjaxController@getAllinfoLS'); // lending service
+    Route::get('/postreservation', 'sp2gr11\reservation\controllers\AjaxController@postreservation'); // docent
+    Route::get('/rejectreservation', 'sp2gr11\reservation\controllers\AjaxController@rejectedReservation'); // docent
+    Route::get('/postrequestreservation', 'sp2gr11\reservation\controllers\AjaxController@postReservationRequest'); // student
 });
