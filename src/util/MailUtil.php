@@ -17,45 +17,23 @@ use App\Models\User;
 
 class MailUtil
 {
-    /*public function sendDailyOverview()
-    {
-        $now = Carbon::now();
-        $new_reservations = ReservationFetcher::getLeasedAssets($now->toDateString());
-
-        $day_date_time = $now->toDayDateTimeString();
-
-        $mail_content = 'Assets Lent Today\n\n';
-        foreach($new_reservations as $reservation)
-        {
-            $lent_time = Carbon::createFromTimestamp($reservation->from);
-            $mail_content = $mail_content . 'Lent ' . $reservation->asset->name .
-                ' to ' . $reservation->user->first_name . ' ' . $reservation->user->last_name .
-                ' at ' . $lent_time->toTimeString();
-        }
-
-        Mail::send('emails.overview', ['content' => $mail_content, 'date_time' => $day_date_time], function($message) {
-            $message->subject('Overview of ' . $date_time);
-            $message->from('noreply@snipeit.com', 'SnipeIT');
-            $message->to(config('reservation.MANAGER_EMAIL'));
-        });
-
-    }*/
-
     public function sendDailyOverview(){
-        $now = Carbon::now();
-        $reservations = ReservationFetcher::getLeasedAssets($now);
+        $date = Carbon::today();
+        $reservations = ReservationFetcher::getLeasedAssets($date);
         $data=null;
+        $formatted_date_string = $date->toFormattedDateString();
 
-        foreach ($reservations as $idx => $reservation)
-        {
-            $data[$idx]['first_name'] .= $reservation->user->first_name;
-            $data[$idx]['last_name'] .= $reservation->user->last_name;
-            $data[$idx]['asset_name'] .= $reservation->asset->name;
+        for ($x = 0; $x < count($reservations); $x++) {
+            $data[$x]['first_name'] = $reservations[$x]->user->first_name;
+            $data[$x]['last_name'] = $reservations[$x]->user->last_name;
+            $data[$x]['asset_name'] = $reservations[$x]->asset->name;
+            $data2['data'] = $data;
+            $data2['count'] = count($data);
+            $data2['today'] = $formatted_date_string;
         }
-
-        Mail::send('emails.overviewDailyLendableAssets', $data ,function ($m) {
+        Mail::send('emails.overviewDailyLendableAssets', $data2 ,function ($m) use($formatted_date_string) {
             $m->to(config('mail.from.address'), config('mail.from.name'));
-            $m->subject('Overview today \'s lendable assets');
+            $m->subject('Overview of ' . $formatted_date_string);
         });
     }
 
