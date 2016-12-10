@@ -93,26 +93,21 @@ class MailUtil
             $data['last_name'] = $reservations[$x]->user->last_name;
             $data['asset_name'] = $reservations[$x]->asset->name;
             Mail::send('emails.reminderMailUser', $data , function ($m) use ($user) {
-                $m->to($user->email);
+                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
                 $m->subject('Automatic reminder ending loan period asset');
             });
         }
     }
 
-    //2e herinnering voor te zeggen dat het te laat is & dat er een boete volgt.
-
     public function sendSecondReminderMail(){
-        $reservations = ReservationFetcher::getAllEndDateReservations();
-        $data = array();
-        foreach ($reservations as $reservation) {
-            $user_id = $reservation->user_id;
-            $user = User::findOrFail($user_id);
-            $user_asset_id = $reservation->asset_id;
-            $user_asset = DB::table('assets')->where('id', $user_asset_id);
+        $date = Carbon::yesterday();
+        $reservations = ReservationFetcher::getEndDateLeasedAssets($date->toDateTimeString());
 
-            $data['first_name'] = $user->first_name;
-            $data['last_name'] = $user->last_name;
-            $data['asset_name'] = $user_asset->name;
+        for ($x = 0; $x < count($reservations); $x++) {
+            $user = $reservations[$x]->user;
+            $data['first_name'] = $reservations[$x]->user->first_name;
+            $data['last_name'] = $reservations[$x]->user->last_name;
+            $data['asset_name'] = $reservations[$x]->asset->name;
 
             Mail::send('emails.secondReminderMailUser', $data, function ($m) use ($user) {
                 $m->to($user->email, $user->first_name . ' ' . $user->last_name);
@@ -121,20 +116,15 @@ class MailUtil
         }
     }
 
-//De student zal een email ontvangen dat zijn gereserveerde item klaar ligt op de uitleendienst.
     public function sendEmailWhenAssetIsLendable(){
-        $reservations = ReservationFetcher::getAllAssetsReadyForLoaning();
-        $data = array();
+        $date = Carbon::today();
+        $reservations = ReservationFetcher::getLeasedAssets($date->toDateTimeString());
 
-        foreach ($reservations as $reservation) {
-            $user_id = $reservation->user_id;
-            $user = User::findOrFail($user_id);
-            $user_asset_id = $reservation->asset_id;
-            $user_asset = DB::table('assets')->where('id', $user_asset_id);
-
-            $data['first_name'] = $user->first_name;
-            $data['last_name'] = $user->last_name;
-            $data['asset_name'] = $user_asset->name;
+        for ($x = 0; $x < count($reservations); $x++) {
+            $user = $reservations[$x]->user;
+            $data['first_name'] = $reservations[$x]->user->first_name;
+            $data['last_name'] = $reservations[$x]->user->last_name;
+            $data['asset_name'] = $reservations[$x]->asset->name;
 
             Mail::send('emails.assetIsReadyForLoan', $data, function ($m) use ($user) {
                 $m->to($user->email, $user->first_name . ' ' . $user->last_name);
