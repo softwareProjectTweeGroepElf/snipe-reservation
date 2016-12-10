@@ -36,9 +36,14 @@
             type:"GET",
             url: "/reservation/JavascriptCalAjax",
             success: function(data) {
+                //$(".test").append("<option>"+data[1]["id"]+"</option>");
                 for (var i = 0; i < data.length; i++) {
+                    var $obj=new Array();
+                    var $from=data[i]["from"];
+                    var $until=data[i]["until"];
                     var $name = data[i+1];
-                    console.log($name);
+                    //$(".test").append($name);
+                    //console.log($name);
                     $(".outputJavascript").append("<option>" + $name + "</option>")
                     i++;
                 }
@@ -321,6 +326,7 @@
             <a id="btnNextYr" href="#" title="Next Year"><span>>></span></a>
         </div>
     </div>
+    <!--<select class="test"></select>-->
     <div id="divcalendartable"></div>
 
 </body>
