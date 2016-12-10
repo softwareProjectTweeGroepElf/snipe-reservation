@@ -6,7 +6,7 @@
  * Time: 19:10
  */
 
-namespace sp2gr11\reservation\controllers;
+namespace Reservation\controllers;
 
 use App\Http\Controllers\Controller;
 use DB;

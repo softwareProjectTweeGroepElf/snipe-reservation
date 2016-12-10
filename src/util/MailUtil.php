@@ -6,7 +6,7 @@
  * Time: 15:12
  */
 
-namespace sp2gr11\reservation\util;
+namespace Reservation\util;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -84,23 +84,16 @@ class MailUtil
     }
 
     public function sendReminderMail(){
-        $reservations = ReservationFetcher::getAllReservations1DayBeforeEndDate();
-        $data = array();
-        foreach ($reservations as $reservation) {
-            $user_id = $reservation->user_id;
-            $user = User::findOrFail($user_id);
-            $user_asset_id = $reservation->asset_id;
-            $user_asset = DB::table('assets')->where('id', $user_asset_id);
+        $date = Carbon::tomorrow();
+        $reservations = ReservationFetcher::getEndDateLeasedAssets($date->toDateTimeString());
 
-            $data['first_name'] = $user->first_name;
-            $data['last_name'] = $user->last_name;
-            $data['asset_name'] = $user_asset->name;
-
-            $test = DB::table('users')->where('id', 1);
-
-            Mail::send('emails.reminderMailUser', $data, function ($m) use ($test) {
-
-                $m->to($test->email, $test->first_name . ' ' . $test->last_name);
+        for ($x = 0; $x < count($reservations); $x++) {
+            $user = $reservations[$x]->user;
+            $data['first_name'] = $reservations[$x]->user->first_name;
+            $data['last_name'] = $reservations[$x]->user->last_name;
+            $data['asset_name'] = $reservations[$x]->asset->name;
+            Mail::send('emails.reminderMailUser', $data , function ($m) use ($user) {
+                $m->to($user->email);
                 $m->subject('Automatic reminder ending loan period asset');
             });
         }

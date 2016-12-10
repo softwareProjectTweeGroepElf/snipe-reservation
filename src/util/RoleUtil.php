@@ -1,6 +1,6 @@
 <?php
 
-namespace sp2gr11\reservation\util;
+namespace Reservation\util;
 /**
  * Created by PhpStorm.
  * User: Tanguy
