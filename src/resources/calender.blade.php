@@ -22,7 +22,6 @@
         this.CurrentYear = d.getFullYear();
 
 
-
         var f=o.Format;
 
         if(typeof(f) == 'string') {
@@ -30,26 +29,6 @@
         } else {
             this.f = 'M';
         }
-
-
-        $.ajax({
-            type:"GET",
-            url: "/reservation/JavascriptCalAjax",
-            success: function(data) {
-                //$(".test").append("<option>"+data[1]["id"]+"</option>");
-                for (var i = 0; i < data.length; i++) {
-                    var $obj=new Array();
-                    var $from=data[i]["from"];
-                    var $until=data[i]["until"];
-                    var $name = data[i+1];
-                    //$(".test").append($name);
-                    //console.log($name);
-                    $(".outputJavascript").append("<option>" + $name + "</option>")
-                    i++;
-                }
-            }
-
-        });
 
     };
     Calendar.prototype.nextMonth = function() {
@@ -66,19 +45,7 @@
 
         this.showCurrent();
 
-        $.ajax({
-            type:"GET",
-            url: "/reservation/JavascriptCalAjax",
-            success: function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    var $name = data[i+1];
-                    console.log($name);
-                    $(".outputJavascript").append("<option>" + $name + "</option>")
-                    i++;
-                }
-            }
 
-        });
 
     };
 
@@ -97,19 +64,6 @@
         this.showCurrent();
 
 
-        $.ajax({
-            type:"GET",
-            url: "/reservation/JavascriptCalAjax",
-            success: function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    var $name = data[i+1];
-                    console.log($name);
-                    $(".outputJavascript").append("<option>" + $name + "</option>")
-                    i++;
-                }
-            }
-
-        });
     };
 
     Calendar.prototype.previousYear = function() {
@@ -121,19 +75,6 @@
         this.showCurrent();
 
 
-        $.ajax({
-            type:"GET",
-            url: "/reservation/JavascriptCalAjax",
-            success: function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    var $name = data[i+1];
-                    console.log($name);
-                    $(".outputJavascript").append("<option>" + $name + "</option>")
-                    i++;
-                }
-            }
-
-        });
 
     };
 
@@ -144,19 +85,7 @@
 
         this.showCurrent();
 
-        $.ajax({
-            type:"GET",
-            url: "/reservation/JavascriptCalAjax",
-            success: function(data) {
-                for (var i = 0; i < data.length; i++) {
-                    var $name = data[i+1];
-                    console.log($name);
-                    $(".outputJavascript").append("<option>" + $name + "</option>")
-                    i++;
-                }
-            }
 
-        });
 
     };
 
@@ -166,6 +95,8 @@
     };
 
     Calendar.prototype.Calendar = function(y,m) {
+
+
         typeof(y) == 'number' ? this.CurrentYear = y : null;
 
         typeof(y) == 'number' ? this.CurrentMonth = m : null;
@@ -218,7 +149,6 @@
                     cellvalue = LaatsteDagVanDeLaatsteMaand - EersteDagVanDeMaand + p++;
 
 
-
                     html += '<td id="prevmonthdates">' +
                             '<span id="cellvaluespan">' + (cellvalue) + '</span><br/></td>';
 
@@ -230,11 +160,50 @@
                 } else {
 
 
-                    html += '<td id="currentmonthdates">' + (d)+'<br/><br/>'+'<select class="outputJavascript""></select>' + '</td>';
+
+                    html += '<td id="currentmonthdates">' + (d)+'<br/><br/>'+'<select class="outputJavascript"></select>' + '</td>';
 
 
 
                     p = 1;
+
+
+                    var CurrentMonth=this.CurrentMonth+1;
+                    var CurrentYear = this.CurrentYear;
+
+                    $.ajax({
+                        type:"GET",
+                        url: "/reservation/JavascriptCalAjax",
+                        data:d+p,
+                        success: function(data) {
+                            console.log(p);
+                            for (var i = 0; i < data.length; i++) {
+                                var $from = data[i]["from"];
+                                var $until = data[i]["until"];
+                                var $name = data[i + 1];
+                                /*console.log($name);
+                                 console.log(CurrentYear);
+                                 console.log(CurrentMonth);
+                                 */
+                                if (data[i]==$name) {
+
+                                }
+                                else
+                                {
+
+
+                                    if (($from < CurrentYear + "-" + CurrentMonth + d + " " + "00:00:01") && ($until > CurrentYear + "-" + CurrentMonth + d + " " + "00:00:01")) {
+                                        if ($(".outputJavascript").children($name)) {
+                                            $(".outputJavascript").append("<option>" + $name + "</option>")
+                                        }
+                                    }
+
+                                    i++;
+                                }
+                            }
+                        }
+
+                    });
 
                 }
 
@@ -243,13 +212,13 @@
                     z0 = 10;
                 }
 
-
                 i++;
 
             }
 
             html += '</tr>';
         }
+
 
 
         html += '</table>';
@@ -326,7 +295,6 @@
             <a id="btnNextYr" href="#" title="Next Year"><span>>></span></a>
         </div>
     </div>
-    <!--<select class="test"></select>-->
     <div id="divcalendartable"></div>
 
 </body>

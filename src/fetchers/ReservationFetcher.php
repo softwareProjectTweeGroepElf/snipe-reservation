@@ -73,8 +73,6 @@ class ReservationFetcher
             }
 
         }
-
-var_dump($assets_on_schedule);
         return $assets_on_schedule;
     }
 
