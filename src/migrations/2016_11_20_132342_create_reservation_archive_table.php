@@ -6,7 +6,7 @@
  * Date: 17/11/2016
  * Time: 23:53
  */
-
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateReservationArchiveTable extends Migration
@@ -14,7 +14,7 @@ class CreateReservationArchiveTable extends Migration
 
     public function up()
     {
-        Schema::create('reservation_archive', function(Blueprint $table) {
+        Schema::create('reservation_archive', function($table) {
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('asset_id');

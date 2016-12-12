@@ -13,7 +13,7 @@ class CreateRolesTable extends Migration
 {
     public function up()
     {
-        Schema::create('reservation_roles', function (Blueprint $table) {
+        Schema::create('reservation_roles', function ($table) {
             $table->increments('id');
             $table->string('title');
             $table->timestamps();
