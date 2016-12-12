@@ -1,12 +1,12 @@
 <?php
 
-namespace Reservation\controllers;
+namespace sp2gr11\reservation\controllers;
 
 use App\Http\Controllers\Controller;
-use Reservation\fetchers\ReservationFetcher;
-use Reservation\util\CheckInUtil;
-use Reservation\util\RoleUtil;
-use Reservation\util\FineUtil;
+use sp2gr11\reservation\fetchers\ReservationFetcher;
+use sp2gr11\reservation\util\CheckInUtil;
+use sp2gr11\reservation\util\RoleUtil;
+use sp2gr11\reservation\util\FineUtil;
 use App\Models\Asset;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;

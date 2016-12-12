@@ -6,7 +6,7 @@
  * Time: 15:12
  */
 
-namespace Reservation\util;
+namespace sp2gr11\reservation\util;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -38,15 +38,10 @@ class MailUtil
     }
 
     public static function sendResultDecisionTeacher($decision, $reservation){
-        $student_id = $reservation->user_id;
-        $student = User::findOrFail($student_id);
-        $student_asset_id = $reservation->asset_id;
-        $student_asset = Asset::findOrFail($student_asset_id);
-
-        $data = array();
-        $data['first_name'] = $student->first_name;
-        $data['last_name'] = $student->last_name;
-        $data['asset_name'] = $student_asset->name;
+        $user = $reservation[0]->user;
+        $data['first_name'] = $reservation[0]->user->first_name;
+        $data['last_name'] = $reservation[0]->user->last_name;
+        $data['asset_name'] = $reservation[0]->asset->name;
         if($decision)
         {
             $data['decision'] = 'accepted';
@@ -54,8 +49,8 @@ class MailUtil
         else {
             $data['decision'] = 'denied';
         }
-        Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($student) {
-            $m->to($student->email, $student->first_name . ' ' . $student->last_name);
+        Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($user) {
+            $m->to($user->email, $user->first_name . ' ' . $user->last_name);
             $m->subject('Decision teacher about your asset');
         });
 

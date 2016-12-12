@@ -6,7 +6,7 @@
  * Time: 1:00
  */
 
-namespace Reservation\fetchers;
+namespace sp2gr11\reservation\fetchers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
