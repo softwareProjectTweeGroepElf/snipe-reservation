@@ -30,7 +30,8 @@ class CheckOutUtil
 
     public static function checkOutByAssetId($asset_id)
     {
-        DB::table('reservation_assets')->where('asset_id', $asset_id)->update(['from' => new Carbon()]);
+        $now = new Carbon();
+        DB::table('reservation_assets')->where('asset_id', $asset_id)->update(['from' => $now, 'until' => $now->addMonth()]);
     }
 
 }

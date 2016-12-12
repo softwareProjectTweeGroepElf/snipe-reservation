@@ -45,7 +45,7 @@ class ReservationUtil
             'asset_id' => $reservation_request->asset_id,
             'user_id' => $reservation_request->user_id,
             'from' => null,
-            'until' => $now->addWeek()
+            'until' => null
         ]);
 
         DB::table('reservation_requests')->where('id', $reservation_id)->delete();

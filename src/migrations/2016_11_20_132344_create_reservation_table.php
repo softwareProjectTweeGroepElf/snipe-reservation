@@ -18,7 +18,7 @@ class CreateReservationTable extends Migration
             $table->integer('user_id');
             $table->integer('asset_id');
             $table->dateTime('from')->nullable();
-            $table->dateTime('until');
+            $table->dateTime('until')->nullable();
         });
     }
 
