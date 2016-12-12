@@ -52,8 +52,7 @@ class AjaxController extends Controller
             }
             case 'overtime':
             {
-                $check_in_util->checkInByAssetId($asset_id);
-                $fine_util->calculateFine($this->reservation_util->getReservationIdForAsset($asset_id));
+                $fine_util->fine($check_in_util->checkInByAssetId($asset_id));
                 break;
             }
         }

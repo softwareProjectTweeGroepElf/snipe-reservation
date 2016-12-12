@@ -16,6 +16,7 @@ class CreateFinesTable
             $table->integer('user_id');
             $table->integer('reservation_id');
             $table->float('amount');
+            $table->boolean('paid');
         });
     }
 

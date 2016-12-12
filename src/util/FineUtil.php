@@ -19,14 +19,19 @@ class FineUtil
 
     public function __construct(Connection $connection)
     {
-        $this->connection = connection;
+        $this->connection = $connection;
     }
 
-    public function calculateFine($reservation_id)
+    public function fine($reservation_id)
     {
-        $until_date = Carbon::createFromFormat('Y/m/d', $this->connection->table('reservation_assets')->select('until')->where('id', $reservation_id)->first());
-        $diff = Carbon::now()->diffInHours($until_date);
+        $reservation = Carbon::createFromFormat('Y/m/d', $this->connection->table('reservation_archive')->where('id', $reservation_id)->first());
+        $diff = Carbon::now()->diffInHours($reservation->until);
 
-        return round($diff * 0.20, 2);
+        return $this->connection->table('users_fines')->insertGetId([
+            'user_id' => $reservation->user_id,
+            'reservation_id' => $reservation_id,
+            'amount' => (round($diff * 0.20)),
+            'paid' => 0,
+        ]);
     }
 }

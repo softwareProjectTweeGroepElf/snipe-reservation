@@ -27,7 +27,7 @@ class CheckInUtil
     public function checkInByAssetId($asset_id)
     {
         $reservation = $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->first();
-        $this->connection->table('reservation_archive')->insert([
+        $insert_id = $this->connection->table('reservation_archive')->insertGetId([
             'asset_id'   => $reservation->asset_id,
             'user_id'    => $reservation->user_id,
             'from'       => $reservation->from,
@@ -36,5 +36,7 @@ class CheckInUtil
         ]);
 
         $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->delete();
+
+        return $insert_id;
     }
 }
