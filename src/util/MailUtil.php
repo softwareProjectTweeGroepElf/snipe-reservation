@@ -24,7 +24,7 @@ class MailUtil
     {
         $this->reservation_fetcher = $reservation_fetcher;
     }
-    
+
     public function sendDailyOverview(){
         $date = Carbon::today();
         $reservations = $this->reservation_fetcher->getLeasedAssets($date);
@@ -79,7 +79,7 @@ class MailUtil
             $data['last_name'] = $reservations[$x]->user->last_name;
             $data['asset_name'] = $reservations[$x]->asset->name;
             Mail::send('emails.reminderMailUser', $data , function ($m) use ($user) {
-                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
+                $m->to(config('reservation.MANAGER_EMAIL'), $user->first_name . ' ' . $user->last_name);
                 $m->subject('Automatic reminder ending loan period asset');
             });
         }
@@ -96,7 +96,7 @@ class MailUtil
             $data['asset_name'] = $reservations[$x]->asset->name;
 
             Mail::send('emails.secondReminderMailUser', $data, function ($m) use ($user) {
-                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
+                $m->to(config('reservation.MANAGER_EMAIL'), $user->first_name . ' ' . $user->last_name);
                 $m->subject('Automatic reminder loan period ended!');
             });
         }
@@ -113,7 +113,7 @@ class MailUtil
             $data['asset_name'] = $reservations[$x]->asset->name;
 
             Mail::send('emails.assetIsReadyForLoan', $data, function ($m) use ($user) {
-                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
+                $m->to(config('reservation.MANAGER_EMAIL'), $user->first_name . ' ' . $user->last_name);
                 $m->subject('Your asset is ready for loan!');
             });
         }

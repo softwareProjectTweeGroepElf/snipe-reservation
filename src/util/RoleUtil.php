@@ -28,9 +28,9 @@ class RoleUtil
         $reviewerIds = config('reservation.REVIEWER_ROLE_ID');
 
         if($user)
-            return (RoleUtil::isUserPartOfGroup($user, $reviewerIds));
+            return ($this->isUserPartOfGroup($user, $reviewerIds));
         else
-            return (RoleUtil::isUserPartOfGroup(Auth::user(), $reviewerIds));
+            return ($this->isUserPartOfGroup(Auth::user(), $reviewerIds));
     }
 
     /**
@@ -42,9 +42,9 @@ class RoleUtil
         $leasingServiceIds = config('reservation.LEASING_SERVICE_ROLE_ID');
 
         if($user)
-            return (RoleUtil::isUserPartOfGroup($user, $leasingServiceIds));
+            return ($this->isUserPartOfGroup($user, $leasingServiceIds));
         else
-            return (RoleUtil::isUserPartOfGroup(Auth::user(), $leasingServiceIds));
+            return ($this->isUserPartOfGroup(Auth::user(), $leasingServiceIds));
     }
 
     /**

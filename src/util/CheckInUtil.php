@@ -10,7 +10,6 @@ namespace Reservation\util;
 
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
-use Illuminate\Support\Facades\DB;
 
 class CheckInUtil
 {
@@ -36,6 +35,6 @@ class CheckInUtil
             'checked_in' => Carbon::now(),
         ]);
 
-        DB::table('reservation_assets')->where('asset_id', $asset_id)->delete();
+        $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->delete();
     }
 }
