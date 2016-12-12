@@ -8,14 +8,22 @@ namespace Reservation\util;
  * Time: 1:32
  */
 
+use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\Auth;
 class RoleUtil
 {
+
+    private $connection;
+
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
     /**
      * @param The user to check for, if not given will check the authenticated user instead
      * @return True if the user is able to review reservation requests, false if not
      */
-    public static function isUserReviewer($user = null)
+    public function isUserReviewer($user = null)
     {
         $reviewerIds = config('reservation.REVIEWER_ROLE_ID');
 
@@ -29,7 +37,7 @@ class RoleUtil
      * @param The user to check for, if not given will check the authenticated user instead
      * @return True if the user is part of the leasing service, false if not
      */
-    public static function isUserLeasingService($user = null)
+    public function isUserLeasingService($user = null)
     {
         $leasingServiceIds = config('reservation.LEASING_SERVICE_ROLE_ID');
 
@@ -44,7 +52,7 @@ class RoleUtil
      * @param array An array of group IDs to check if the User is part of any of them
      * @return True if the user is part of any of the groups, false if not
      */
-    public static function isUserPartOfGroup($user, array $required_group_ids)
+    public function isUserPartOfGroup($user, array $required_group_ids)
     {
         $user_group_ids = array();
         foreach($user->groups as $group)

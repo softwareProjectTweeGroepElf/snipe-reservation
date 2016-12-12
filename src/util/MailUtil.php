@@ -10,16 +10,24 @@ namespace Reservation\util;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use sp2gr11\reservation\fetchers\ReservationFetcher;
+use Reservation\fetchers\ReservationFetcher;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Asset;
 use App\Models\User;
 
 class MailUtil
 {
+
+    private $reservation_fetcher;
+
+    public function __construct(ReservationFetcher $reservation_fetcher)
+    {
+        $this->reservation_fetcher = $reservation_fetcher;
+    }
+    
     public function sendDailyOverview(){
         $date = Carbon::today();
-        $reservations = ReservationFetcher::getLeasedAssets($date);
+        $reservations = $this->reservation_fetcher->getLeasedAssets($date);
         $data=null;
         $formatted_date_string = $date->toFormattedDateString();
 
@@ -63,7 +71,7 @@ class MailUtil
 
     public function sendReminderMail(){
         $date = Carbon::tomorrow();
-        $reservations = ReservationFetcher::getEndDateLeasedAssets($date->toDateTimeString());
+        $reservations = $this->reservation_fetcher->getEndDateLeasedAssets($date->toDateTimeString());
 
         for ($x = 0; $x < count($reservations); $x++) {
             $user = $reservations[$x]->user;
@@ -79,7 +87,7 @@ class MailUtil
 
     public function sendSecondReminderMail(){
         $date = Carbon::yesterday();
-        $reservations = ReservationFetcher::getEndDateLeasedAssets($date->toDateTimeString());
+        $reservations = $this->reservation_fetcher->getEndDateLeasedAssets($date->toDateTimeString());
 
         for ($x = 0; $x < count($reservations); $x++) {
             $user = $reservations[$x]->user;
@@ -96,7 +104,7 @@ class MailUtil
 
     public function sendEmailWhenAssetIsLendable(){
         $date = Carbon::today();
-        $reservations = ReservationFetcher::getLeasedAssets($date->toDateTimeString());
+        $reservations = $this->reservation_fetcher->getLeasedAssets($date->toDateTimeString());
 
         for ($x = 0; $x < count($reservations); $x++) {
             $user = $reservations[$x]->user;

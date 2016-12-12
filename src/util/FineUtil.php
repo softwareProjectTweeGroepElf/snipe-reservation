@@ -9,13 +9,22 @@
 namespace Reservation\util;
 
 use Carbon\Carbon;
+use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\DB;
 
 class FineUtil
 {
-    public static function calculateFine($reservation_id)
+
+    private $connection;
+
+    public function __construct(Connection $connection)
     {
-        $until_date = Carbon::createFromFormat('Y/m/d', DB::table('reservation_assets')->select('until')->where('id', $reservation_id)->first());
+        $this->connection = connection;
+    }
+
+    public function calculateFine($reservation_id)
+    {
+        $until_date = Carbon::createFromFormat('Y/m/d', $this->connection->table('reservation_assets')->select('until')->where('id', $reservation_id)->first());
         $diff = Carbon::now()->diffInHours($until_date);
 
         return round($diff * 0.20, 2);
