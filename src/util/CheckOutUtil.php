@@ -6,13 +6,30 @@
  * Time: 21:24
  */
 
-namespace sp2gr11\reservation\util;
+namespace Reservation\util;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Builder;
 
 class CheckOutUtil
 {
+
+    /**
+     * @var Connection
+     */
+    private $connection;
+
+    /**
+     * CheckOutUtil constructor.
+     * @param Builder $builder
+     */
+    public function __construct(Connection  $connection)
+    {
+
+        $this->connection = $connection;
+    }
+
    /* public static function checkOut($reservation_id)
     {
         $reservation = DB::table('reservation_requests')->where('id', $reservation_id)->first();
@@ -28,9 +45,11 @@ class CheckOutUtil
         DB::table('reservation_requests')->where('id', $reservation_id)->delete();
     }*/
 
-    public static function checkOutByAssetId($asset_id)
+    public function checkOutByAssetId($asset_id)
     {
-        DB::table('reservation_assets')->where('asset_id', $asset_id)->update(['from' => new Carbon()]);
+        $now = new Carbon();
+
+        $this->connection->table('')->where('asset_id', $asset_id)->update(['from' => $now, 'until' => $now->addMonth()]);
     }
 
 }

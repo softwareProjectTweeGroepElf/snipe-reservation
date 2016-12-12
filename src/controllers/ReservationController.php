@@ -1,79 +1,46 @@
 <?php
 
-namespace sp2gr11\reservation\controllers;
+namespace Reservation\controllers;
 
 use App\Http\Controllers\Controller;
-use sp2gr11\reservation\fetchers\ReservationFetcher;
-use sp2gr11\reservation\util\CheckInUtil;
-use sp2gr11\reservation\util\RoleUtil;
-use sp2gr11\reservation\util\FineUtil;
+use Reservation\fetchers\ReservationFetcher;
+use Reservation\util\CheckInUtil;
+use Reservation\util\RoleUtil;
+use Reservation\util\FineUtil;
 use App\Models\Asset;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 class ReservationController extends Controller
 {
-	//public functions
-	public function __construct()
+    private $reservation_fetcher;
+    private $role_util;
+
+	public function __construct(ReservationFetcher $reservation_fetcher, RoleUtil $role_util)
 	{
 		$this->middleware('auth');
+		$this->reservation_fetcher = $reservation_fetcher;
 	}
-
-/*	public function getReservation()
-	{
-		return view('reservation')->with('assets', ReservationFetcher::getAvailableAssets());
-	}
-
-	public function getReservationRequests()
-	{
-		if (!RoleUtil::isUserReviewer())
-			return redirect()->back();
-		else
-			return view('reservationrequests')->with('requests', ReservationFetcher::getReservationRequests());
-	}
-
-	public function getLeasingService()
-	{
-		if (!RoleUtil::isUserLeasingService())
-			return redirect()->back();
-		else
-		return view('leasingservice')->with([
-			['leasedAssets' => ReservationFetcher::getLeasedAssets()],
-		]); // will add more variables to send
-	}*/
-
-    /*public function postCheckIn($reservation_id)
-    {
-        $until_date = Carbon::createFromFormat('Y/m/d', DB::table('reservation_assets')->select('until')->where('id', $reservation_id)->first());
-        CheckInUtil::CheckIn($reservation_id);
-
-        if (Carbon::now()->diffInHours($until_date) < 0)
-            return redirect()->action('ReservationController@getReservation');
-        else
-            return view('overtime')->with('fine', FineUtil::calculateFine($reservation_id));
-    }*/
 
 	public function getStudent()
 	{
-
-		var_dump(ReservationFetcher::getRequestedAssetsForUser(Auth::user())[0]->user->first_name);
 		return view('Reservation::requestreservation')->with([
-			'assets' => ReservationFetcher::getAvailableAssets(),
-			'userassets' => ReservationFetcher::getRequestedAssetsForUser(Auth::user())
+			'assets' => $this->reservation_fetcher->getAvailableAssets(),
+			'userassets' => $this->reservation_fetcher->getRequestedAssetsForUser(Auth::user())
 		]);
 	}
 
 	public function getProfessor()
 	{
-		if(RoleUtil::isUserReviewer())
-			return view('Reservation::requestreview')->with('requestedassets', ReservationFetcher::getReservationRequests());
+		if($this->role_util->isUserReviewer())
+			return view('Reservation::requestreview')->with('requestedassets', $this->reservation_fetcher->getReservationRequests());
 		else
 			return redirect()->back();
 	}
 
 	public function getLeasingService()
 	{
-		if(RoleUtil::isUserLeasingService())
-			return view('Reservation::lendingservice')->with('assets', ReservationFetcher::getAvailableAssets());
+		if($this->role_util->isUserLeasingService())
+			return view('Reservation::lendingservice')->with('assets', $this->reservation_fetcher->getAvailableAssets());
 		else
 			return redirect()->back();
 	}

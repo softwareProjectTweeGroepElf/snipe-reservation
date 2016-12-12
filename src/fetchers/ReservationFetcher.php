@@ -6,26 +6,35 @@
  * Time: 1:00
  */
 
-namespace sp2gr11\reservation\fetchers;
+namespace Reservation\fetchers;
 
 use Carbon\Carbon;
+use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Asset;
 use App\Models\User;
 
 class ReservationFetcher
 {
-    public static function getAvailableAssets()
+
+    private $connection;
+
+    public function __construct(Connection $connection)
     {
-        $unavailable_assets_ids = DB::table('reservation_assets')->pluck('asset_id');
+        $this->connection = $connection;
+    }
+
+    public function getAvailableAssets()
+    {
+        $unavailable_assets_ids = $this->connection->table('reservation_assets')->pluck('asset_id');
         $assets = Asset::whereNotIn('id', $unavailable_assets_ids)->get();
 
         return $assets;
     }
 
-    public static function getReservationRequests()
+    public function getReservationRequests()
     {
-        $reservation_requests = DB::table('reservation_requests')->get();
+        $reservation_requests = $this->connection->table('reservation_requests')->get();
 
         foreach ($reservation_requests as $idx => $reservation_request)
         {
@@ -36,31 +45,47 @@ class ReservationFetcher
         return $reservation_requests;
     }
 
-    public static function getLeasedAssets($date = null)
+    public function getLeasedAssets($date = null)
     {
         if(!$date)
-            $reservations = DB::table('reservation_assets')->get();
+            $reservations = $this->connection->table('reservation_assets')->get();
         else
-            $reservations = DB::table('reservation_assets')->where('from', $date)->get();
+            $reservations = $this->connection->table('reservation_assets')->where('from', $date)->get();
 
         foreach ($reservations as $idx => $reservation)
         {
-            $reservation[$idx]->asset = Asset::find($reservation->asset_id);
-            $reservation[$idx]->user = User::find($reservation->user_id);
+            $reservations[$idx]->asset = Asset::find($reservation->asset_id);
+            $reservations[$idx]->user = User::find($reservation->user_id);
         }
 
         return $reservations;
 
     }
 
-    public static function getLeasedAssetsExceptOvertime()
+    public function getEndDateLeasedAssets($date = null)
     {
-        $assets = DB::table('reservation_assets')->whereNotNull('from')->get();
+        if(!$date)
+            $reservations = $this->connection->table('reservation_assets')->get();
+        else
+            $reservations = $this->connection->table('reservation_assets')->where('until', $date)->get();
+
+        foreach ($reservations as $idx => $reservation)
+        {
+            $reservations[$idx]->asset = Asset::find($reservation->asset_id);
+            $reservations[$idx]->user = User::find($reservation->user_id);
+        }
+
+        return $reservations;
+    }
+
+    public function getLeasedAssetsExceptOvertime()
+    {
+        $assets = $this->connection->table('reservation_assets')->whereNotNull('from')->get();
 
         $assets_on_schedule = array();
         foreach($assets as $asset)
         {
-            if(Carbon::parse($asset->from)->isFuture())
+            if(Carbon::parse($asset->until)->isFuture())
                 $assets_on_schedule[] = $asset;
         }
 
@@ -71,11 +96,11 @@ class ReservationFetcher
      * @param User|int $user
      * @return A list of reservation requests made by the user
      */
-    public static function getRequestedAssetsForUser($user)
+    public function getRequestedAssetsForUser($user)
     {
         $user_id = is_int($user) ? $user : $user->id;
 
-        $requested_assets = DB::table('reservation_requests')->where('user_id', $user_id)->get();
+        $requested_assets = $this->connection->table('reservation_requests')->where('user_id', $user_id)->get();
 
         $user_requested_assets = array();
         foreach($requested_assets as $idx => $requested_asset)
