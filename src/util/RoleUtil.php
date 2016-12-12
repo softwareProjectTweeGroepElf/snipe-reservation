@@ -60,6 +60,4 @@ class RoleUtil
 
         return !empty(array_intersect($user_group_ids, $required_group_ids));
     }
-
-
 }
