@@ -7,7 +7,7 @@
             data: "",
             success:function(data){
                 for (var i = 0; i < data.length; i++) {
-                    $('#asset_id').append("<option value=" + data[i][0] + ">" + data[i][1] + "</option>");
+                    $('#asset_id').append("<option value=" + data[i]['id'] + ">" + data[i]['name'] + "</option>");
                 }
             }
         });
@@ -153,6 +153,32 @@
                 </form>
             </div>
             <hr>
+
+              <h1>List of your requests: </h1>
+
+              <div class="requested_assets_table_cont">
+                <div class="requested_assets_table_cont2">
+                  <table id="requested_assets_table" class="requested_assets_table">
+
+                    <tr>
+                      <th>User ID</th>
+                      <th>Asset ID</th>
+                      <th>User name</th>
+                      <th>Asset name</th>
+                    </tr>
+
+                  @foreach($userassets as $asset)
+                    <tr> 
+                     <td> {{$asset->user_id}} <br> </td>
+                     <td> {{$asset->asset_id}} <br> </td>
+                     <td>  {{$asset->user->first_name . " ". $asset->user->last_name}}<br> </td>
+                     <td> {{$asset->asset->name}} <br> </td>
+                    </tr>
+                  @endforeach
+                    
+                 </table>
+                </div>
+              </div>
             <br>
             <hr>
 

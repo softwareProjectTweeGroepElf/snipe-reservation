@@ -6,7 +6,7 @@
  * Time: 1:00
  */
 
-namespace sp2gr11\reservation\fetchers;
+namespace Reservation\fetchers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -45,12 +45,28 @@ class ReservationFetcher
 
         foreach ($reservations as $idx => $reservation)
         {
-            $reservation[$idx]->asset = Asset::find($reservation->asset_id);
-            $reservation[$idx]->user = User::find($reservation->user_id);
+            $reservations[$idx]->asset = Asset::find($reservation->asset_id);
+            $reservations[$idx]->user = User::find($reservation->user_id);
         }
 
         return $reservations;
 
+    }
+
+    public static function getEndDateLeasedAssets($date = null)
+    {
+        if(!$date)
+            $reservations = DB::table('reservation_assets')->get();
+        else
+            $reservations = DB::table('reservation_assets')->where('until', $date)->get();
+
+        foreach ($reservations as $idx => $reservation)
+        {
+            $reservations[$idx]->asset = Asset::find($reservation->asset_id);
+            $reservations[$idx]->user = User::find($reservation->user_id);
+        }
+
+        return $reservations;
     }
 
     public static function getLeasedAssetsExceptOvertime()
