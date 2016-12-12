@@ -96,7 +96,7 @@
 
     Calendar.prototype.Calendar = function(y,m) {
 
-
+var dagen=Array();
         typeof(y) == 'number' ? this.CurrentYear = y : null;
 
         typeof(y) == 'number' ? this.CurrentMonth = m : null;
@@ -161,49 +161,13 @@
 
 
 
-                    html += '<td id="currentmonthdates">' + (d)+'<br/><br/>'+'<select class="outputJavascript"></select>' + '</td>';
+                    html += '<td id="currentmonthdates">' + (d)+'<br/><br/>'+'<div class="outputJavascript" color:"green"></div>' + '</td>';
 
 
 
                     p = 1;
+                  dagen[d]=d;
 
-
-                    var CurrentMonth=this.CurrentMonth+1;
-                    var CurrentYear = this.CurrentYear;
-
-                    $.ajax({
-                        type:"GET",
-                        url: "/reservation/JavascriptCalAjax",
-                        data:d+p,
-                        success: function(data) {
-                            console.log(p);
-                            for (var i = 0; i < data.length; i++) {
-                                var $from = data[i]["from"];
-                                var $until = data[i]["until"];
-                                var $name = data[i + 1];
-                                /*console.log($name);
-                                 console.log(CurrentYear);
-                                 console.log(CurrentMonth);
-                                 */
-                                if (data[i]==$name) {
-
-                                }
-                                else
-                                {
-
-
-                                    if (($from < CurrentYear + "-" + CurrentMonth + d + " " + "00:00:01") && ($until > CurrentYear + "-" + CurrentMonth + d + " " + "00:00:01")) {
-                                        if ($(".outputJavascript").children($name)) {
-                                            $(".outputJavascript").append("<option>" + $name + "</option>")
-                                        }
-                                    }
-
-                                    i++;
-                                }
-                            }
-                        }
-
-                    });
 
                 }
 
@@ -221,10 +185,38 @@
 
 
 
+
         html += '</table>';
 
 
+        var CurrentMonth=this.CurrentMonth+1;
+        var CurrentYear = this.CurrentYear;
 
+        $.ajax({
+            type: "GET",
+            url: "/reservation/JavascriptCalAjax",
+            data: dagen,
+            success: function (data) {
+
+                for (var i = 0; i < data.length; i++) {
+                    var $from = data[i]["from"];
+                    var $until = data[i]["until"];
+                    var $name = data[i + 1];
+                    console.log($name);
+                    console.log($from);
+                    console.log($until);
+                    console.log(CurrentYear);
+                    console.log(CurrentMonth);
+                    console.log(dagen);
+                    if (($from <= CurrentYear + "-" + CurrentMonth + dagen + " " + "00:00:01") && ($until >= CurrentYear + "-" + CurrentMonth + dagen + " " + "00:00:01")) {
+                        $(".outputJavascript").append("<p style='color: red'>" + $name + "</p>")
+
+                    }
+
+                    i++;
+                }
+            }
+        });
 
         document.getElementById("monthandyear").innerHTML = MaandenJaarhtml;
         document.getElementById(this.divId).innerHTML = html;
