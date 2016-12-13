@@ -1,4 +1,6 @@
 
+/* This Javascript has been taken from http://codereview.stackexchange.com/questions/85254/calendar-in-html-css-js  */
+
 var Calendar = function(o) {
 	this.divId = o.ParentID;
 	this.DaysOfWeek = o.DaysOfWeek;
