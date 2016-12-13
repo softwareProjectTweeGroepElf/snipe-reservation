@@ -201,7 +201,6 @@
                             <th>Asset name</th>
                             <th>Asset Tag</th>
                             <th>Serial</th>
-                            <th>Status</th>
                         </tr>
                         
                         @foreach($assets as $asset)
@@ -211,7 +210,6 @@
                                 <td> {{$asset->asset_tag}} <br>  </td>
                                 <td> {{$asset->serial}} <br>  </td>
                                 
-                                <td> <?php if($asset->assigned_to == null){echo "available";}else {echo "Assigned to user with ID ".$asset->assigned_to;}?> <br> </td>
                             </tr>
                         @endforeach
                     
