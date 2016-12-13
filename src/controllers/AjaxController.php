@@ -50,11 +50,11 @@ class AjaxController extends Controller
                 break;
             }
             case 'checkin': {
-                $check_in_util->checkInByAssetId($asset_id);
-                break;
-            }
-            case 'overtime': {
-                $fine_util->fine($check_in_util->checkInByAssetId($asset_id));
+                $reservation_archive_id = $check_in_util->checkInByAssetId($asset_id);
+
+                if($this->reservation_util->isAssetOvertime($asset_id))
+                    $fine_util->fine($reservation_archive_id);
+
                 break;
             }
         }
