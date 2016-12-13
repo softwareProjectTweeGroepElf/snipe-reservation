@@ -6,7 +6,7 @@
  * Time: 9:16
  */
 
-namespace Reservation\util;
+namespace sp2gr11\reservation\util;
 
 use Carbon\Carbon;
 use Illuminate\Database\Connection;

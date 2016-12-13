@@ -6,15 +6,15 @@
  * Time: 11:09
  */
 
-namespace Reservation\controllers;
+namespace sp2gr11\reservation\controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Reservation\util\CheckOutUtil;
-use Reservation\util\CheckInUtil;
-use Reservation\util\ReservationUtil;
-use Reservation\util\FineUtil;
-use Reservation\fetchers\ReservationFetcher;
+use sp2gr11\reservation\util\CheckInUtil;
+use sp2gr11\reservation\util\CheckOutUtil;
+use sp2gr11\reservation\util\ReservationUtil;
+use sp2gr11\reservation\util\FineUtil;
+use sp2gr11\reservation\fetchers\ReservationFetcher;
 use App\Models\User;
 use App\Models\Asset;
 use Illuminate\Support\Facades\Auth;

@@ -6,7 +6,7 @@
  * Time: 17:21
  */
 
-namespace Reservation\util;
+namespace sp2gr11\reservation\util;
 use Carbon\Carbon;
 
 class ServiceHoursUtil

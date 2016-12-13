@@ -1,5 +1,5 @@
 <?php
-namespace Reservation\providers;
+namespace sp2gr11\reservation\providers;
 
 use Illuminate\Support\ServiceProvider;
 
