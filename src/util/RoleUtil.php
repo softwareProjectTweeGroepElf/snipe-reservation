@@ -56,7 +56,7 @@ class RoleUtil
     {
         $user_group_ids = array();
         foreach($user->groups as $group)
-            $group_ids[] = $group->id;
+            $user_group_ids[] = $group->id;
 
         return !empty(array_intersect($user_group_ids, $required_group_ids));
     }
