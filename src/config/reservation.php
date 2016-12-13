@@ -24,4 +24,6 @@ return [
     ],
 
     'MANAGER_EMAIL' => 'changeme@snipeit.com', // The head of the lending service's email, used for daily overviews
+
+    'MAX_LOAN_DURATION' => 30 // The maximum amount of days an asset can be lended
 ];
