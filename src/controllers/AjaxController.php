@@ -114,6 +114,6 @@ class AjaxController extends Controller
     }
     public function getLeasedAssetsExceptOvertime()
     {
-        return ReservationFetcher::getLeasedAssetsExceptOvertime();
+        return $this->reservation_fetcher->getLeasedAssetsExceptOvertime();
     }
 }
