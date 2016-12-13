@@ -110,4 +110,27 @@ class ReservationFetcher
 
         return $user_requested_assets;
     }
+
+
+    public function getReservationsForMonth($asset_id, $month = null)
+    {
+        $time = new Carbon();
+
+        if($month)
+            $time->month = $month;
+
+        $reservations = $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->get();
+
+        $reservations_month = array();
+        foreach($reservations as $reservation)
+        {
+            $from = Carbon::parse($reservation->from);
+            $until = Carbon::parse($reservation->until);
+
+            if($from->between($time->startOfMonth(), $time->endOfMonth()) || $until->between($time->startOfMonth(), $time->endOfMonth()))
+                $reservations_month[] = $reservation;
+        }
+
+        return $reservations_month;
+    }
 }
