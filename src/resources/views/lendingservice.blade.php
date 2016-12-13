@@ -1,36 +1,40 @@
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $.ajax({
-            type: 'GET',
-            url: '/reservation/initdoclendservice',
-            data: "",
-            success:function(data){
-                console.log(data);
-                for (var i = 0; i < data[0].length; i++) {
-                    $('#asset_id').append("<option value=" + data['assets'][i][0] + ">" + data['assets'][i][1] + "</option>");
-                }
-                for (var i = 0; i < data[1].length; i++) {
-                    $('#user_id').append("<option value=" + data['users'][i][0] + ">" + data['users'][i][1] + "</option>");
-                }
-            }
-        });
-    });
-    function ajaxLenService() {
-        var asset_id = $('#asset_id').val();
-        var asset_action = $('#asset_action').val();
-        var user_id = $('#user_id').val();
-        console.log("Function works");
-        $.ajax({
-            type: 'GET',
-            url: '/reservation/lsaction',
-            data: {'asset_id' : asset_id, 'asset_action' : asset_action, 'user_id': user_id},
-            success:function(data){
-                alert(data);
-                location.reload();
-            }
-        });
-    }
+	$(document).ready(function(){
+		$.ajax({
+			type: 'GET',
+			url: '/package/initdoclendservice',
+			data: "",
+			success:function(data){
+				console.log(data);
+				for (var i = 0; i < data[0].length; i++) {
+					$('#asset_id').append("<option value=" + data[0][i][0] + ">" + data[0][i][1] + "</option>");
+				}
+				for (var i = 0; i < data[1].length; i++) {
+					$('#user_id').append("<option value=" + data[1][i][0] + ">" + data[1][i][1] + "</option>");
+				}
+			}
+		});
+	});
+	function ajaxLenService() {
+		var asset_id = $('#asset_id').val();
+		var asset_tag =$('#asset_tag').val();
+		var asset_action = $('#asset_action').val();
+		var user_id = $('#user_id').val();
+		var expected_checkin = $('#expected_checkin').val();
+		console.log("Function works");
+		$.ajax({
+			type: 'GET',
+			url: '/package/lsaction',
+			data: {'asset_id' : asset_id,'asset_tag' : asset_tag, 'asset_action' : asset_action, 'user_id': user_id},
+			success:function(data){
+				alert(data);
+				location.reload();
+			}
+		});
+	}
 </script>
 
 <style type="text/css">
@@ -148,12 +152,26 @@
             <div id="submitCont">
                 <h1>Change a asset:</h1>
                 <p>Select the action you want to preform on a certain asset</p>
-
+                
+                <script>
+					//function ChooseAsset(data) {
+					//document.getElementById("asset_tag").value = data.value;}
+					$('select').on('change',function(){
+						$("select option:selected").each(function(){
+							$('#asset_tag').val('$'+ $(this).attr('asset_id'));
+						})
+					})
+                </script>
+                
+                
                 <form id="submitForm">
                     {{ csrf_field() }}
                     <div style="width: auto; Margin-left: 0; Margin-right: auto;">
                         <label>Asset: </label>
                         <select id="asset_id"></select>
+                        <br><br>
+                        <label>Asset Tag</label>
+                        <input type="text" id="asset_tag" autofocus>
                         <br><br>
                         <label style="margin-left: 0px;">Action: </label>
                         <select id="asset_action">
@@ -165,16 +183,16 @@
                         <br><br>
                         <label style="margin-left: 0px;">For user: </label>
                         <select id="user_id"></select>
-
+                    
                     </div>
                     <br> <br>
-                    <div class="submit_btn" onclick="ajaxLenService()">Submit</div>
+                    <button class="submit_btn" onclick="ajaxLenService()" type="submit">Submit</button>
                 </form>
             </div>
             <hr>
-
+            
             <h1>List of available assets: </h1>
-
+            
             <div class="requested_assets_table_cont">
                 <div class="requested_assets_table_cont2">
                     <table class="requested_assets_table">
@@ -185,23 +203,24 @@
                             <th>Serial</th>
                             <th>Status</th>
                         </tr>
-
+                        
                         @foreach($assets as $asset)
-                        <tr>
-                            <td> {{$asset->id}} <br> </td>
-                            <td> {{$asset->name}} <br> </td>
-                            <td> {{$asset->asset_tag}} <br>  </td>
-                            <td> {{$asset->serial}} <br>  </td>
-                            <td> <?php if($asset->assigned_to == null){echo "available";}else {echo "Assigned to user with ID ".$asset->assigned_to;}?> <br> </td>
-                        </tr>
+                            <tr>
+                                <td> {{$asset->id}} <br> </td>
+                                <td> {{$asset->name}} <br> </td>
+                                <td> {{$asset->asset_tag}} <br>  </td>
+                                <td> {{$asset->serial}} <br>  </td>
+                                
+                                <td> <?php if($asset->assigned_to == null){echo "available";}else {echo "Assigned to user with ID ".$asset->assigned_to;}?> <br> </td>
+                            </tr>
                         @endforeach
-
+                    
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <div id="footer">
         <tekst id="footer_text">Copyright © Groep 11</tekst>
     </div>
