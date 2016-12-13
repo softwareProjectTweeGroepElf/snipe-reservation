@@ -132,8 +132,8 @@ class AjaxController extends Controller
      * Calendar
      */
 
-    public function getAssetReservationsForMonth($asset_id, $month)
+    public function getAssetReservationsForMonth(Request $request)
     {
-        return $this->reservation_fetcher->getReservationsForMonth($asset_id, $month);
+        return $this->reservation_fetcher->getReservationsForMonth($request->asset_id, $request->month);
     }
 }
