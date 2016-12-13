@@ -25,7 +25,7 @@ class FineUtil
     public function fine($reservation_id)
     {
         $reservation = Carbon::createFromFormat('Y/m/d', $this->connection->table('reservation_archive')->where('id', $reservation_id)->first());
-        $diff = Carbon::now()->diffInHours($reservation->until);
+        $diff = Carbon::now()->diffInHours(Carbon::parse($reservation->until));
 
         return $this->connection->table('users_fines')->insertGetId([
             'user_id' => $reservation->user_id,
