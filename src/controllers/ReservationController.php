@@ -4,6 +4,7 @@ namespace sp2gr11\reservation\controllers;
 
 use App\Http\Controllers\Controller;
 use sp2gr11\reservation\fetchers\ReservationFetcher;
+use sp2gr11\reservation\util\RoleUtil;
 use App\Models\Asset;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
