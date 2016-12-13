@@ -20,7 +20,7 @@ class ReservationController extends Controller
 
 	public function getStudent()
 	{
-		return view('Reservation::requestreservation')->with([
+		return view('Reservation::views.requestreservation')->with([
 			'assets' => $this->reservation_fetcher->getAvailableAssets(),
 			'userassets' => $this->reservation_fetcher->getRequestedAssetsForUser(Auth::user())
 		]);
@@ -29,7 +29,7 @@ class ReservationController extends Controller
 	public function getProfessor()
 	{
 		if($this->role_util->isUserReviewer())
-			return view('Reservation::requestreview')->with('requestedassets', $this->reservation_fetcher->getReservationRequests());
+			return view('Reservation::views.requestreview')->with('requestedassets', $this->reservation_fetcher->getReservationRequests());
 		else
 			return redirect()->back();
 	}
@@ -37,7 +37,7 @@ class ReservationController extends Controller
 	public function getLeasingService()
 	{
 		if($this->role_util->isUserLeasingService())
-			return view('Reservation::lendingservice')->with('assets', $this->reservation_fetcher->getAvailableAssets());
+			return view('Reservation::views.lendingservice')->with('assets', $this->reservation_fetcher->getAvailableAssets());
 		else
 			return redirect()->back();
 	}
