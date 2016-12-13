@@ -161,12 +161,11 @@ var dagen=Array();
 
 
 
-                    html += '<td id="currentmonthdates">' + (d)+'<br/><br/>'+'<div class="outputJavascript" color:"green"></div>' + '</td>';
-
 
 
                     p = 1;
-                  dagen[d]=d;
+                    dagen[d]=d;
+                    html += '<td id="currentmonthdates" >' + '<p id=d>'+(d)+'</p>'+'<br/><br/>'+'<div class="outputJavascript"></div>' + '</td>';
 
 
                 }
@@ -208,13 +207,34 @@ var dagen=Array();
                     console.log(CurrentYear);
                     console.log(CurrentMonth);
                     console.log(dagen);
-                    if (($from <= CurrentYear + "-" + CurrentMonth + dagen + " " + "00:00:01") && ($until >= CurrentYear + "-" + CurrentMonth + dagen + " " + "00:00:01")) {
-                        $(".outputJavascript").append("<p style='color: red'>" + $name + "</p>")
+
+                      for (var dag= 1; dag < dagen.length; dag++) {
+                          if (CurrentMonth < 10) {
+
+                              if (($from <= CurrentYear + "-" + "0" + CurrentMonth + dagen[dag] + " " + "00:00:01") && ($until >= CurrentYear + "-" + "0" + CurrentMonth + dagen[dag] + " " + "00:00:01")) {
+
+                                  $(".outputJavascript").append("<p style='color: red'>" + $name + "</p>");
+                                  break;
+                              }
+
+                          }
+                          else {
+                              if (($from <= CurrentYear + "-" + CurrentMonth + dagen[dag] + " " + "00:00:01") && ($until >= CurrentYear + "-" + CurrentMonth + dagen[dag] + " " + "00:00:01")) {
+
+
+                                  $(".outputJavascript").append("<p style='color: red'>" + $name + "</p>");
+                                  break;
+                              }
+                          }
+
+                          if (dag == dagen.length) {
+                              break;
+                          }
 
                     }
-
-                    i++;
                 }
+                i++;
+
             }
         });
 
