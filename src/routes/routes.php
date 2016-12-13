@@ -12,7 +12,13 @@ Route::group([ 'prefix'  => 'reservation' ], function() {
     Route::get('/postreservation', 'sp2gr11\reservation\controllers\AjaxController@postreservation'); // docent
     Route::get('/rejectreservation', 'sp2gr11\reservation\controllers\AjaxController@rejectedReservation'); // docent
     Route::get('/postrequestreservation', 'sp2gr11\reservation\controllers\AjaxController@postReservationRequest'); // student
+    //Route::get('/decisionmail', 'sp2gr11\reservation\controllers\MailUtil@sendResultDecisionTeacher');
+
+    //TIJDELIJKE ROUTES VOOR MAILFUNCTIES
+    Route::get('/mailReminder', 'sp2gr11\reservation\controllers\ReservationController@getMailReminder');
+    Route::get('/mailSecondReminder', 'sp2gr11\reservation\controllers\ReservationController@getMailSecondReminder');
+    Route::get('/mailOverview', 'sp2gr11\reservation\controllers\ReservationController@getMailDailyOverview');
+    Route::get('/mailLendableAsset', 'sp2gr11\reservation\controllers\ReservationController@getMailLendableAsset');
 
 
-    Route::get('/decisionmail', 'sp2gr11\reservation\controllers\MailUtil@sendResultDecisionTeacher');
 });

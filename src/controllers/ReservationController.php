@@ -5,6 +5,7 @@ namespace sp2gr11\reservation\controllers;
 use App\Http\Controllers\Controller;
 use sp2gr11\reservation\fetchers\ReservationFetcher;
 use sp2gr11\reservation\util\CheckInUtil;
+use sp2gr11\reservation\util\MailUtil;
 use sp2gr11\reservation\util\RoleUtil;
 use sp2gr11\reservation\util\FineUtil;
 use App\Models\Asset;
@@ -77,4 +78,20 @@ class ReservationController extends Controller
 		else
 			return redirect()->back();
 	}
+
+	public function getMailReminder(){
+        MailUtil::sendReminderMail();
+    }
+
+    public function getMailSecondReminder(){
+        MailUtil::sendSecondReminderMail();
+    }
+
+    public function getMailDailyOverview(){
+        MailUtil::sendDailyOverview();
+    }
+
+    public function getMailLendableAsset(){
+        MailUtil::sendEmailWhenAssetIsLendable();
+    }
 }

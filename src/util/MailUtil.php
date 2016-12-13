@@ -17,7 +17,7 @@ use App\Models\User;
 
 class MailUtil
 {
-    public function sendDailyOverview(){
+    public static function sendDailyOverview(){
         $date = Carbon::today();
         $reservations = ReservationFetcher::getLeasedAssets($date);
         $data=null;
@@ -32,7 +32,8 @@ class MailUtil
             $data2['today'] = $formatted_date_string;
         }
         Mail::send('emails.overviewDailyLendableAssets', $data2 ,function ($m) use($formatted_date_string) {
-            $m->to(config('mail.from.address'), config('mail.from.name'));
+            $m->to('saxo4sam@gmail.com');
+            //$m->to(config('mail.from.address'), config('mail.from.name'));
             $m->subject('Overview of ' . $formatted_date_string);
         });
     }
@@ -40,8 +41,8 @@ class MailUtil
     public static function sendResultDecisionTeacher($decision, $reservation){
         $user = $reservation[0]->user;
         $data['first_name'] = $reservation[0]->user->first_name;
-        $data['last_name'] = $reservation[0]->user->last_name;
-        $data['asset_name'] = $reservation[0]->asset->name;
+        $data['last_name'] = $reservation->user->last_name;
+        $data['asset_name'] = $reservation->asset->name;
         if($decision)
         {
             $data['decision'] = 'accepted';
@@ -49,14 +50,14 @@ class MailUtil
         else {
             $data['decision'] = 'denied';
         }
-        Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($user) {
-            $m->to($user->email, $user->first_name . ' ' . $user->last_name);
+        Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($student) {
+            $m->to($student->email, $student->first_name . ' ' . $student->last_name);
             $m->subject('Decision teacher about your asset');
         });
 
     }
 
-    public function sendReminderMail(){
+    public static function sendReminderMail(){
         $date = Carbon::tomorrow();
         $reservations = ReservationFetcher::getEndDateLeasedAssets($date->toDateTimeString());
 
@@ -72,7 +73,7 @@ class MailUtil
         }
     }
 
-    public function sendSecondReminderMail(){
+    public static function sendSecondReminderMail(){
         $date = Carbon::yesterday();
         $reservations = ReservationFetcher::getEndDateLeasedAssets($date->toDateTimeString());
 
@@ -89,7 +90,7 @@ class MailUtil
         }
     }
 
-    public function sendEmailWhenAssetIsLendable(){
+    public static function sendEmailWhenAssetIsLendable(){
         $date = Carbon::today();
         $reservations = ReservationFetcher::getLeasedAssets($date->toDateTimeString());
 
