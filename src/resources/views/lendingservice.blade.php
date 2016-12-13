@@ -178,7 +178,6 @@
                             <option></option>
                             <option value="checkout">Check-out</option>
                             <option value="checkin">Check-in</option>
-                            <option value="overtime">Overtime Check-in</option>
                         </select>
                         <br><br>
                         <label style="margin-left: 0px;">For user: </label>
