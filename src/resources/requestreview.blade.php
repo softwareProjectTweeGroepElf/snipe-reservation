@@ -26,6 +26,17 @@
             }
         });
     }
+
+    function sendEmail(asset_id, user_id, decision) {
+        $.ajax({
+            type: 'GET',
+            url: '/decision',
+            data: {'req_asset_id' : asset_id, 'req_user_id' : user_id, 'req_decision' : decision},
+            success:function(res){
+                console.log(res);
+            }
+        });
+    }
 </script>
 
 <style type="text/css">
@@ -170,8 +181,8 @@
                                 <td> {{$asset->asset_id}} <br> </td>
                                 <td> {{$asset->name}} <br> </td>
                                 <td> {{$asset->Aname}} <br> </td>
-                                <td class="no_padding_td"><div class="submit_btn" onclick="submitAccptAjax({!!$asset->asset_id!!})">Accept</div></td>
-                                <td class="no_padding_td"><div class="submit_btn" onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!})">Reject</div></td>
+                                <td class="no_padding_td"><div class="submit_btn" onclick="submitAccptAjax({!!$asset->asset_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "accepted" !!})">Accept</div></td>
+                                <td class="no_padding_td"><div class="submit_btn" onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "denied" !!})">Reject</div></td>
                             </div>
                         </tr>
                         @endforeach

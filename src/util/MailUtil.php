@@ -38,25 +38,6 @@ class MailUtil
         });
     }
 
-    public static function sendResultDecisionTeacher($decision, $reservation){
-        $user = $reservation[0]->user;
-        $data['first_name'] = $reservation[0]->user->first_name;
-        $data['last_name'] = $reservation->user->last_name;
-        $data['asset_name'] = $reservation->asset->name;
-        if($decision)
-        {
-            $data['decision'] = 'accepted';
-        }
-        else {
-            $data['decision'] = 'denied';
-        }
-        Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($student) {
-            $m->to($student->email, $student->first_name . ' ' . $student->last_name);
-            $m->subject('Decision teacher about your asset');
-        });
-
-    }
-
     public static function sendReminderMail(){
         $date = Carbon::tomorrow();
         $reservations = ReservationFetcher::getEndDateLeasedAssets($date->toDateTimeString());

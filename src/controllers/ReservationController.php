@@ -94,4 +94,18 @@ class ReservationController extends Controller
     public function getMailLendableAsset(){
         MailUtil::sendEmailWhenAssetIsLendable();
     }
+
+    public static function sendResultDecisionTeacher(Request $request){
+        $req_user = User::find($request->req_user_id);
+        $req_asset = Asset::find($request->req_asset_id);
+        $data['first_name'] = $req_user->first_name;
+        $data['last_name'] = $req_user->last_name;
+        $data['asset_name'] =$req_asset->name;
+        $data['decision'] = $request->req_decision;
+
+        Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($req_user) {
+            $m->to($req_user->email, $req_user->first_name . ' ' . $req_user->last_name);
+            $m->subject('Decision teacher about your assetrequest');
+        });
+    }
 }
