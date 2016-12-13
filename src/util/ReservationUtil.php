@@ -36,6 +36,13 @@ class ReservationUtil
         ])->first()->id;
     }
 
+    public function isAssetOvertime($asset_id)
+    {
+        $reservation = $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->first();
+
+        return Carbon::parse($reservation->until)->isPast() ? true : false;
+    }
+
     public function createReservationRequest($user_id, $asset_id)
     {
         $this->connection->table('reservation_requests')->insert([
