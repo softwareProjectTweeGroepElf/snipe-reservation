@@ -43,4 +43,9 @@ class ReservationController extends Controller
 			return redirect()->back();
 	}
 
+    public function getCalendar()
+    {
+        return view('Reservation::views.calendar');
+    }
+
 }
