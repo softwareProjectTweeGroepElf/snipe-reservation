@@ -87,7 +87,6 @@ class ReservationFetcher
             if(Carbon::parse($asset->until)->isFuture())
                 $assets_on_schedule[] = $asset;
         }
-
         return $assets_on_schedule;
     }
 
