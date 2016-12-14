@@ -17,6 +17,7 @@ class ReservationController extends Controller
 	{
 		$this->middleware('auth');
 		$this->reservation_fetcher = $reservation_fetcher;
+		$this->role_util = $role_util;
 	}
 
 	public function getStudent()
