@@ -80,7 +80,7 @@ class AjaxController extends Controller
         }
 
         foreach ($lent_assets as $asset) {
-            array_push($asset_data, $asset->id, $asset->name);
+            array_push($asset_data, $asset->id, $asset->asset->name);
         }
 
         foreach ($users as $user) {
