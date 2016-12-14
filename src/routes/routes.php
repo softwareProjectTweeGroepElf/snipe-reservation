@@ -18,4 +18,12 @@ Route::group([ 'prefix'  => 'reservation' ], function() {
 
 
 
+    //TIJDELIJKE ROUTES VOOR MAILFUNCTIES
+    Route::get('/mailReminder', 'sp2gr11\reservation\controllers\ReservationController@getMailReminder');
+    Route::get('/mailSecondReminder', 'sp2gr11\reservation\controllers\ReservationController@getMailSecondReminder');
+    Route::get('/mailOverview', 'sp2gr11\reservation\controllers\ReservationController@getMailDailyOverview');
+    Route::get('/mailLendableAsset', 'sp2gr11\reservation\controllers\ReservationController@getMailLendableAsset');
+
+
+
 });

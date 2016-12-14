@@ -12,23 +12,27 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use sp2gr11\reservation\util\CheckInUtil;
 use sp2gr11\reservation\util\CheckOutUtil;
+use sp2gr11\reservation\util\MailUtil;
 use sp2gr11\reservation\util\ReservationUtil;
 use sp2gr11\reservation\util\FineUtil;
 use sp2gr11\reservation\fetchers\ReservationFetcher;
 use App\Models\User;
 use App\Models\Asset;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AjaxController extends Controller
 {
 
     private $reservation_util;
     private $reservation_fetcher;
+    private $mail_util;
 
-    public function __construct(ReservationUtil $reservation_util, ReservationFetcher $reservation_fetcher)
+    public function __construct(ReservationUtil $reservation_util, ReservationFetcher $reservation_fetcher, MailUtil $mail_util)
     {
         $this->reservation_util = $reservation_util;
         $this->reservation_fetcher = $reservation_fetcher;
+        $this->mail_util = $mail_util;
     }
 
     /*
@@ -136,4 +140,36 @@ class AjaxController extends Controller
     {
         return $this->reservation_fetcher->getReservationsForMonth($request->asset_id, $request->month);
     }
+
+    /*
+     * Mails
+     */
+
+
+    public function getMailReminder(){
+        $this->mail_util->sendReminderMail();
+    }
+    public function getMailSecondReminder(){
+        $this->mail_util->sendSecondReminderMail();
+    }
+    public function getMailDailyOverview(){
+        $this->mail_util->sendDailyOverview();
+    }
+    public function getMailLendableAsset(){
+        $this->mail_util->sendEmailWhenAssetIsLendable();
+    }
+
+    public function sendResultDecisionTeacher(Request $request){
+        $req_user = User::find($request->req_user_id);
+        $req_asset = Asset::find($request->req_asset_id);
+        $data['first_name'] = $req_user->first_name;
+        $data['last_name'] = $req_user->last_name;
+        $data['asset_name'] =$req_asset->name;
+        $data['decision'] = $request->req_decision;
+        Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($req_user) {
+            $m->to($req_user->email, $req_user->first_name . ' ' . $req_user->last_name);
+            $m->subject('Decision teacher about your assetrequest');
+        });
+    }
+}
 }
