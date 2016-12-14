@@ -49,7 +49,7 @@ class CheckOutUtil
     {
         $now = new Carbon();
 
-        $this->connection->table('')->where('asset_id', $asset_id)->update(['from' => $now, 'until' => $now->addMonth()]);
+        $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->update(['from' => $now, 'until' => $now->addMonth()]);
     }
 
 }
