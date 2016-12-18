@@ -9,9 +9,9 @@
 
 return [
 
-    'REVIEWER_ROLE_ID' => [ 2 ], // The Role Ids that can review reservation requests - default: 2
+    'REVIEWER_ROLES' => [ 'admin' ], // The Role Ids that can review reservation requests - default: 'admin'
 
-    'LEASING_SERVICE_ROLE_ID' => [ 3 ], // The Role Ids that can check in/out assets - default: 3
+    'LEASING_SERVICE_ROLES' => [ 'admin' ], // The Roles that can check in/out assets - default: 'admin'
 
     'HOURS_OF_SERVICE' => [             // Hours of service (times open per day) default: every day from 12:00 to 17:00
         'MONDAY' => '12:00-17:00',
