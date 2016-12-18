@@ -4,6 +4,7 @@ namespace sp2gr11\reservation\controllers;
 
 use App\Http\Controllers\Controller;
 use sp2gr11\reservation\fetchers\ReservationFetcher;
+use sp2gr11\reservation\util\ConfigUtil;
 use sp2gr11\reservation\util\RoleUtil;
 use App\Models\Asset;
 use App\Models\User;
@@ -47,6 +48,12 @@ class ReservationController extends Controller
     public function getCalendar()
     {
         return view('Reservation::views.calendar');
+    }
+
+    public function getConfig(ConfigUtil $config_util)
+    {
+        $config_util->initConfig();
+        return view('Reservation::views.config')->with('config', $config_util);
     }
 
 }
