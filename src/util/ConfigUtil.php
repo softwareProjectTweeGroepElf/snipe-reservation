@@ -46,6 +46,11 @@ class ConfigUtil
         return config('reservation.' . $option);
     }
 
+    public function getDescription($option)
+    {
+        return $this->config[$option . '_DESCRIPTION'];
+    }
+
     public function write(array $options_values)
     {
         foreach($options_values as $option => $value)
