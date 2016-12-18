@@ -10,6 +10,7 @@ class ConfigUtil
 {
     private $connection;
     private $config;
+    protected $table = 'reservation_config';
 
     public function __construct(Connection $connection)
     {
@@ -49,16 +50,19 @@ class ConfigUtil
     {
         foreach($options_values as $option => $value)
         {
-            $this->connection->table('reservation_config')->where('option', $option)->update(['value' => is_array($value) ? json_encode($value) : $value]);
+            if($this->connection->table($this->table)->where('option', $option)->count() > 0)
+                $this->connection->table($this->table)->where('option', $option)->update(['value' => is_array($value) ? json_encode($value) : $value]);
+            else
+                $this->connection->table($this->table)->insert(['option' => $option, 'value' => is_array($value) ? json_encode($value) : $value]);
         }
     }
 
     private function retrieveUserConfig()
     {
-        if ($this->connection->table('reservation_config')->count() == 0)
+        if ($this->connection->table($this->table)->count() == 0)
             return false;
 
-        $raw_config = $this->connection->table('reservation_config')->get();
+        $raw_config = $this->connection->table($this->table)->get();
         $user_config = array();
 
         foreach($raw_config as $option)
