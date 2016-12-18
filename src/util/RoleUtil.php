@@ -14,10 +14,13 @@ class RoleUtil
 {
 
     private $connection;
+    private $config_util;
 
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, ConfigUtil $config_util)
     {
         $this->connection = $connection;
+        $this->config_util = $config_util;
+        $this->config_util->initConfig();
     }
     /**
      * @param The user to check for, if not given will check the authenticated user instead
@@ -25,12 +28,12 @@ class RoleUtil
      */
     public function isUserReviewer($user = null)
     {
-        $reviewerIds = config('reservation.REVIEWER_ROLE_ID');
+        $reviewer_groups = $this->config_util->option('REVIEWER_ROLES');
 
         if($user)
-            return ($this->isUserPartOfGroup($user, $reviewerIds));
+            return ($this->isUserPartOfGroup($user, $reviewer_groups));
         else
-            return ($this->isUserPartOfGroup(Auth::user(), $reviewerIds));
+            return ($this->isUserPartOfGroup(Auth::user(), $reviewer_groups));
     }
 
     /**
@@ -39,12 +42,12 @@ class RoleUtil
      */
     public function isUserLeasingService($user = null)
     {
-        $leasingServiceIds = config('reservation.LEASING_SERVICE_ROLE_ID');
+        $leasing_service_groups = $this->config_util->option('LEASING_SERVICE_ROLES');
 
         if($user)
-            return ($this->isUserPartOfGroup($user, $leasingServiceIds));
+            return ($this->isUserPartOfGroup($user, $leasing_service_groups));
         else
-            return ($this->isUserPartOfGroup(Auth::user(), $leasingServiceIds));
+            return ($this->isUserPartOfGroup(Auth::user(), $leasing_service_groups));
     }
 
     /**
@@ -52,12 +55,12 @@ class RoleUtil
      * @param array An array of group IDs to check if the User is part of any of them
      * @return True if the user is part of any of the groups, false if not
      */
-    public function isUserPartOfGroup($user, array $required_group_ids)
+    public function isUserPartOfGroup($user, array $required_groups)
     {
-        $user_group_ids = array();
+        $user_groups = array();
         foreach($user->groups as $group)
-            $user_group_ids[] = $group->id;
+            $user_groups[] = $group->name;
 
-        return !empty(array_intersect($user_group_ids, $required_group_ids));
+        return !empty(array_intersect($user_groups, $required_groups));
     }
 }
