@@ -40,6 +40,11 @@ class ConfigUtil
         return $this->config[$option];
     }
 
+    public function defaultOption($option)
+    {
+        return config('reservation.' . $option);
+    }
+
     public function write(array $options_values)
     {
         foreach($options_values as $option => $value)
