@@ -14,7 +14,10 @@ class ConfigUtil
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
+    }
 
+    public function initConfig()
+    {
         if (!$this->config) {
             $this->config = config('reservation');
         }
