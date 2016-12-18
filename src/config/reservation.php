@@ -25,5 +25,18 @@ return [
 
     'MANAGER_EMAIL' => 'changeme@snipeit.com', // The head of the lending service's email, used for daily overviews
 
-    'MAX_LOAN_DURATION' => 30 // The maximum amount of days an asset can be lended
+    'MAX_LOAN_DURATION' => 30, // The maximum amount of days an asset can be lended
+
+    /**
+     *  Description of all the options
+     */
+    'REVIEWER_ROLES_DESCRIPTION' => 'De groepen die authorisatie hebben om uitleenaanvragen te bekijken en beheren.',
+
+    'LEASING_SERVICE_ROLES_DESCRIPTION' => 'De groepen die kwalificeren als uitleendienst.',
+
+    'HOURS_OF_SERVICE_DESCRIPTION' => 'Het aantal uren in een week dat de uitleendienst open is.',
+
+    'MANAGER_EMAIL_DESCRIPTION' => 'De e-mail van de hoofd van de uitleendienst.',
+
+    'MAX_LOAN_DURATION_DESCRIPTION' => 'Het maximum aantal dagen dat iets mag worden uitgeleend.'
 ];
