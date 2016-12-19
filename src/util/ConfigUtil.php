@@ -19,9 +19,7 @@ class ConfigUtil
 
     public function initConfig()
     {
-        if (!$this->config) {
-            $this->config = config('reservation');
-        }
+        $this->config = config('reservation');
 
         $user_config = $this->retrieveUserConfig();
         if ($user_config) {
