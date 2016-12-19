@@ -12,10 +12,13 @@ use Carbon\Carbon;
 class ServiceHoursUtil
 {
     private $hours_of_service;
+    private $config_util;
 
-    public function __construct()
+    public function __construct(ConfigUtil $config_util)
     {
-        $this->hours_of_service = config('reservation.HOURS_OF_SERVICE');
+        $this->config_util = $config_util;
+        $this->config_util->initConfig();
+        $this->hours_of_service = $this->config_util->option('HOURS_OF_SERVICE');
     }
     /**
      * @return bool Checks if the lending service is currently open, true if yes, false if not
