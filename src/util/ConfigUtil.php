@@ -19,7 +19,17 @@ class ConfigUtil
 
     public function initConfig()
     {
-        $this->config = config('reservation');
+        $this->config = array_map(function ($a) {
+            $result = array();
+            foreach($a as $option => $value)
+            {
+                if(!strpos('_DESCRIPTION', $option))
+                    $result[$option] = $value;
+            }
+
+            return $result;
+        }, config('reservation'));
+
 
         $user_config = $this->retrieveUserConfig();
         if ($user_config) {
@@ -60,7 +70,7 @@ class ConfigUtil
 
     public function getDescription($option)
     {
-        return $this->config[$option . '_DESCRIPTION'];
+        return config($option . '_DESCRIPTION');
     }
 
     public function write(array $options_values)
@@ -73,7 +83,7 @@ class ConfigUtil
                 $this->connection->table($this->table)->insert(['option' => $option, 'value' => is_array($value) ? json_encode($value) : $value]);
         }
     }
-
+    
     private function retrieveUserConfig()
     {
         if ($this->connection->table($this->table)->count() == 0)
