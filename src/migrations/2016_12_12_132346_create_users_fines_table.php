@@ -7,7 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
  * Date: 10-12-2016
  * Time: 15:32
  */
-class CreateFinesTable
+class CreateUsersFinesTable
 {
     public function up()
     {
