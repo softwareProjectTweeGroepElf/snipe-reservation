@@ -34,6 +34,20 @@ class ConfigUtil
         return $this->config;
     }
 
+    public function getParsedConfig()
+    {
+        $parsed_config = array();
+        foreach($this->config as $option => $value)
+        {
+            if(is_array($value))
+                $parsed_config[] = implode(',', $value);
+            else
+                $parsed_config[] = $value;
+        }
+
+        return $parsed_config;
+    }
+
     public function option($option)
     {
         return $this->config[$option];
