@@ -22,7 +22,7 @@ class ConfigUtil
         $config = config('reservation');
 
         $this->config = array_filter($config, function($key) {
-            return !strpos('_DESCRIPTION', $key);
+            return !strpos($key, 'DESCRIPTION');
         }, ARRAY_FILTER_USE_KEY);
 
 
