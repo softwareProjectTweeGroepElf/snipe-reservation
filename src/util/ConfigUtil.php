@@ -40,9 +40,9 @@ class ConfigUtil
         foreach($this->config as $option => $value)
         {
             if(is_array($value))
-                $parsed_config[] = implode(',', $value);
+                $parsed_config[$option] = implode(',', $value);
             else
-                $parsed_config[] = $value;
+                $parsed_config[$option] = $value;
         }
 
         return $parsed_config;
