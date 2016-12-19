@@ -26,7 +26,11 @@ class ServiceHoursUtil
     public function isCurrentlyOpen()
     {
         $hours_today = $this->getServiceHoursToday();
-        return (Carbon::now()->hour >= $hours_today[0]->hour && Carbon::now()->hour < $hours_today[1]->hour);
+        $current_hour = Carbon::now()->hour + (Carbon::now()->minute / 100);
+        $open_hour = $hours_today[0]->hours + ($hours_today[0]->minute / 100);
+        $closed_hour = $hours_today[1]->hours + ($hours_today[1]->minute / 100);
+
+        return ($current_hour >= $open_hour && $current_hour < $closed_hour);
     }
 
     /**
