@@ -10,7 +10,7 @@ namespace sp2gr11\reservation\util;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Reservation\fetchers\ReservationFetcher;
+use sp2gr11\reservation\fetchers\ReservationFetcher;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Asset;
 use App\Models\User;
