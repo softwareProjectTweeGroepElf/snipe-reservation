@@ -19,7 +19,7 @@ class ConfigUtil
 
     public function initConfig()
     {
-        $this->config = array_map(function ($a) {
+        $exceptDescription = function ($a) {
             $result = array();
             foreach($a as $option => $value)
             {
@@ -28,7 +28,9 @@ class ConfigUtil
             }
 
             return $result;
-        }, config('reservation'));
+        };
+
+        $this->config = array_map($exceptDescription, config('reservation'));
 
 
         $user_config = $this->retrieveUserConfig();
@@ -83,7 +85,7 @@ class ConfigUtil
                 $this->connection->table($this->table)->insert(['option' => $option, 'value' => is_array($value) ? json_encode($value) : $value]);
         }
     }
-    
+
     private function retrieveUserConfig()
     {
         if ($this->connection->table($this->table)->count() == 0)
