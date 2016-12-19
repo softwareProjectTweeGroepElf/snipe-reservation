@@ -19,7 +19,7 @@
 								<th>Beschrijving</th>
 							</tr>
 							
-							@foreach($config as $option => $value)
+							@foreach($config->getConfig() as $option => $value)
 								<tr>
 									<td> {{ $option }} </td>
 									<td> <input type="text" value="{{ $value }}"> </td>
