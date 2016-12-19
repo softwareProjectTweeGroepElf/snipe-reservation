@@ -19,18 +19,11 @@ class ConfigUtil
 
     public function initConfig()
     {
-        $exceptDescription = function ($a) {
-            $result = array();
-            foreach($a as $option => $value)
-            {
-                if(!strpos('_DESCRIPTION', $option))
-                    $result[$option] = $value;
-            }
+        $config = config('reservation');
 
-            return $result;
-        };
-
-        $this->config = array_map($exceptDescription, config('reservation'));
+        $this->config = array_filter($config, function($key) {
+            return !strpos('_DESCRIPTION', $key);
+        }, ARRAY_FILTER_USE_KEY);
 
 
         $user_config = $this->retrieveUserConfig();
