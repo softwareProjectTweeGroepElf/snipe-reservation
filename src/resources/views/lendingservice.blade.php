@@ -233,7 +233,7 @@
 			<form id="filter">
 				<label>Filteren op:</label>
 				<input type="radio" value="id">ID<br>
-				<input type="radio" value="name">Naam<br>
+				<input type="radio" value="name" checked>Naam<br>
 				<input type="radio" value="asset_tag">Tag<br>
 				<input type="radio" value="serial">Serienummer<br>
 			</form>
