@@ -171,4 +171,9 @@ class AjaxController extends Controller
             $m->subject('Decision teacher about your assetrequest');
         });
     }
+
+    public function searchAvailableAssets($text, $filter)
+    {
+        return $this->reservation_fetcher->getAvailableAssetsBy($text, $filter);
+    }
 }
