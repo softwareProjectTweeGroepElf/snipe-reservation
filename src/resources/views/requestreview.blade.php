@@ -200,7 +200,7 @@
 							<tr>
 								<div id="buttons_accept_reject">
 									<td> {{$asset->name}} </td>
-									<td> {{$asset->Aname}} </td>
+									<td> {{$asset->asset->name}} </td>
 									<td> {{$asset->subject}}</td>
 									<td> {{$asset->note}}</td>
 									<td class="no_padding_td">
