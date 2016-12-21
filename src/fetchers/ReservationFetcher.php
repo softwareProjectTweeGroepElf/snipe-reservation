@@ -92,7 +92,7 @@ class ReservationFetcher
 
     /**
      * @param User|int $user
-     * @return A list of reservation requests made by the user
+     * @return array list of reservation requests made by the user
      */
     public function getRequestedAssetsForUser($user)
     {
@@ -132,5 +132,11 @@ class ReservationFetcher
         }
 
         return $reservations_month;
+    }
+
+    public function getAvailableAssetsBy($text, $filter)
+    {
+        $unavailable_assets_ids = $this->connection->table('reservation_assets')->pluck('asset_id');
+        return Asset::whereNotIn('id', $unavailable_assets_ids)->where($filter, 'like', "*$text*")->get();
     }
 }
