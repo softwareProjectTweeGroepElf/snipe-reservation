@@ -172,8 +172,8 @@ class AjaxController extends Controller
         });
     }
 
-    public function searchAvailableAssets($text, $filter)
+    public function searchAvailableAssets(Request $request)
     {
-        return $this->reservation_fetcher->getAvailableAssetsBy($text, $filter);
+        return $this->reservation_fetcher->getAvailableAssetsBy($request->text, $request->filter);
     }
 }
