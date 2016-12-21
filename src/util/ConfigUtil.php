@@ -5,6 +5,7 @@ namespace sp2gr11\reservation\util;
 
 
 use Illuminate\Database\Connection;
+use App\Models\Group;
 
 class ConfigUtil
 {
@@ -51,6 +52,44 @@ class ConfigUtil
         }
 
         return $parsed_config;
+    }
+
+    public function getHtmlInput($option)
+    {
+        $html = "";
+
+        switch($option) {
+            case 'REVIEWER_ROLES': {
+                $html = '<select>';
+
+                foreach (Group::all() as $group) {
+                    $html = $html . "<option value=$group->id>$group->name</option>";
+                }
+
+                $html = $html . '</select>';
+
+                break;
+            }
+
+            case 'LEASING_SERVICE_ROLES': {
+                $html = '<select>';
+
+                foreach (Group::all() as $group) {
+                    $html = $html . "<option value=$group->id>$group->name</option>";
+                }
+
+                $html = $html . '</select>';
+
+                break;
+            }
+
+            case 'HOURS_OF_SERVICE':
+            {
+
+            }
+        }
+
+        return $html;
     }
 
     public function option($option)
