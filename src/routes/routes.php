@@ -16,6 +16,7 @@ Route::group([ 'prefix'  => 'reservation' ], function() {
     Route::get('/postreservation', 'sp2gr11\reservation\controllers\AjaxController@postreservation'); // docent
     Route::get('/rejectreservation', 'sp2gr11\reservation\controllers\AjaxController@rejectedReservation'); // docent
     Route::get('/postrequestreservation', 'sp2gr11\reservation\controllers\AjaxController@postReservationRequest'); // student
+    Route::get('/searchAvailableAssets', 'sp2gr11\reservation\controllers\AjaxController@searchAvailableAssets');
 
 
 
