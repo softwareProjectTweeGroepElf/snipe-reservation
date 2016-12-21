@@ -22,7 +22,7 @@
 							@foreach($config->getParsedConfig() as $option => $value)
 								<tr>
 									<td> {{ $option }} </td>
-									<td> <input type="text" value="{{ $value }}"> </td>
+									<td> {{ $config->getHtmlInput($option) }}</td>
 									<td> {{ $config->getDescription($option) }}</td>
 								</tr>
 							@endforeach
