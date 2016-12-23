@@ -174,8 +174,6 @@ class AjaxController extends Controller
 
     public function searchAvailableAssets(Request $request)
     {
-        $assets = $this->reservation_fetcher->getAvailableAssetsBy($request->text, $request->filter);
-        dd(DB::getQueryLog());
         return $this->reservation_fetcher->getAvailableAssetsBy($request->text, $request->filter);
     }
 }
