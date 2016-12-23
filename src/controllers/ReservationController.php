@@ -32,7 +32,7 @@ class ReservationController extends Controller
 	public function getProfessor()
 	{
 		if($this->role_util->isUserReviewer())
-			return view('Reservation::views.requestreview')->with('requestedassets', $this->reservation_fetcher->getReservationRequests());
+		   return view('Reservation::views.requestreview')->with('requestedassets', $this->reservation_fetcher->getReservationRequests());
 		else
 			return redirect()->back();
 	}
