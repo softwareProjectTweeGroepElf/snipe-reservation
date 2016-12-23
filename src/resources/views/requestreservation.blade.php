@@ -216,7 +216,7 @@
 								<td> {{$asset->user->first_name . " ". $asset->user->last_name}}<br></td>
 								<td> {{$asset->asset->name}} </td>
 								<td> {{$asset->subject}}</td>
-								<td> {{$asset->note}}
+								<td> {{$asset->note}}</td>
 							</tr>
 						@endforeach
 					
@@ -227,6 +227,7 @@
 			
 			<h1>Beschikbare voorwerpen: </h1>
 			<input type="text" id="search" placeholder="Zoeken..">
+			<br><br>
 			<div class="requested_assets_table_cont">
 				<div class="requested_assets_table_cont2">
 					<table class="requested_assets_table" id="search_content">
@@ -239,9 +240,11 @@
 								<td> {{$asset->name}} </td>
 							</tr>
 						@endforeach
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
-	
 	<div id="footer">
 		<tekst id="footer_text">Copyright © Groep 11</tekst>
 	</div>
