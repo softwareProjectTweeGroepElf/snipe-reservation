@@ -236,11 +236,13 @@
 								<td> {{$asset->name}} </td>
 							</tr>
 						@endforeach
+					</table>
 		</div>
 	</div>
 	
 	<div id="footer">
 		<tekst id="footer_text">Copyright © Groep 11</tekst>
 	</div>
-
+		</div>
+	</div>
 </div>
