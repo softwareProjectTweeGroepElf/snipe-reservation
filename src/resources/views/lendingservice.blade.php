@@ -50,7 +50,7 @@
 				$('#search_content tr:not(:first)').remove();
 
 				for(var i = 0; i < data.length; i++) {
-					$('#search_content').append('<tr><td>' + data[i]['name'] + '</td></tr>');
+					$('#search_content').append('<tr><td>' + data[i]['id'] + '</td><td>' + data[i]['name'] + '</td><td>' + data[i]['asset_tag'] + '</td><td>' + data[i]['serial'] + '</td></tr>');
 				}
 			}
 		});
