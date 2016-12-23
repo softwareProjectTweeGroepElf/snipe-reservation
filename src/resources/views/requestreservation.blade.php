@@ -49,7 +49,7 @@
 	}
 </script>
 
-<style type="text/css">
+<!-- <style type="text/css">
 	body {
 		font-family: Tahoma;
 		padding: 0;
@@ -172,7 +172,8 @@
 		-moz-box-shadow: inset 0px 16px 0px -13px #939393;
 		box-shadow: inset 0px 16px 0px -13px #939393;
 	}
-</style>
+</style> -->
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('reservation/css/reservation.css') }}">
 <div id="page_body">
 	<div id="content">
 		<div id="titelbar">

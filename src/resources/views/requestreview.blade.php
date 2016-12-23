@@ -39,7 +39,7 @@
 	}
 </script>
 
-<style type="text/css">
+<!-- <style type="text/css">
 	body {
 		font-family: Tahoma;
 		padding: 0;
@@ -177,7 +177,8 @@
 	.no_padding_td {
 		padding: 0px;
 	}
-</style>
+</style> -->
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('reservation/css/reservation.css') }}">
 
 <div id="page_body">
 	<div id="content">
