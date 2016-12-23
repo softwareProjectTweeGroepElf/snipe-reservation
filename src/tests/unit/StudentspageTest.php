@@ -16,28 +16,37 @@ class StudentspageTest extends TestCase
 {
 
 //->assertRedirectedToRoute($name, $parameters = [], $with = []);
-    public function testRoute()
+    public function testRouteRedirection()
     {
         //$user = factory(\App\Models\User::class, 'user')->create();
 
-        //$user = Auth::attempt(['email' => 'saxo4sam@gmail.com', 'password' => 'Faro1997']);
-        //->actingAs($user)
-        /*$this->visit('/reservation/students')
-            ->type('sam.van.roy@student.ehb.be', 'username')
-            ->type('Faro1997', 'password')
+        $this->visit('/reservation/students')
+            ->type('dummyUser', 'username')
+            ->type('dummyUser', 'password')
             ->press('Login')
-            ->see('Students Page');*/
+            ->see('Students Page');
 
         /*factory(User::class, 50)->create()->each(function ($u) {
             $u->posts()->save(factory(Post::class)->make());
         });*/
-        $user = factory(App\Models\User::class, 'valid-user')->create([
+        /*$user = factory(App\Models\User::class, 'valid-user')->create([
             'activated' => 1,
         ]);
         $this->visit('/reservation/students')
             ->type($user->username, 'username')
             ->type($user->password, 'password')
             ->press('Login')
+            ->see('Students Page');*/
+    }
+
+    public function testRoute(){
+        $this->visit('/login')
+            ->type('dummyUser', 'username')
+            ->type('dummyUser', 'password')
+            ->press('Login');
+
+        $this->visit('/reservation/students')
             ->see('Students Page');
     }
+
 }
