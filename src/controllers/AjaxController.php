@@ -165,7 +165,14 @@ class AjaxController extends Controller
         $data['first_name'] = $req_user->first_name;
         $data['last_name'] = $req_user->last_name;
         $data['asset_name'] =$req_asset->name;
-        $data['decision'] = $request->req_decision;
+        if($request->req_decision)
+        {
+            $data['decision'] = 'accepted';
+        }
+        else{
+            $data['decision'] = 'rejected';
+        }
+
         Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($req_user) {
             $m->to($req_user->email, $req_user->first_name . ' ' . $req_user->last_name);
             $m->subject('Decision teacher about your assetrequest');

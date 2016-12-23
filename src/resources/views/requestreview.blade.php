@@ -204,16 +204,16 @@
 									<td> {{$asset->subject}}</td>
 									<td> {{$asset->note}}</td>
 									<td class="no_padding_td">
-										<div class="submit_btn"
-											 onclick="submitAccptAjax({!!$asset->asset_id!!},{!!$asset->user_id!!}), sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! true !!})">
+										<button class="submit_btn"
+											 onclick="submitAccptAjax({!!$asset->asset_id!!},{!!$asset->user_id!!}); sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! 1!!})">
 											Accept
-										</div>
+										</button>
 									</td>
 									<td class="no_padding_td">
-										<div class="submit_btn"
-											 onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! false !!})">
+										<button class="submit_btn"
+											 onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!}); sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! 0 !!})">
 											Reject
-										</div>
+										</button>
 									</td>
 								</div>
 							</tr>
