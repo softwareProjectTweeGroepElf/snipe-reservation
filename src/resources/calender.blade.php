@@ -165,7 +165,8 @@ var dagen=Array();
 
                     p = 1;
                     dagen[d]=d;
-                    html += '<td id="currentmonthdates" >' + '<p id=d>'+(d)+'</p>'+'<br/><br/>'+'<div class="outputJavascript"></div>' + '</td>';
+                        html += '<td id="currentmonthdates" >' + '<p id= d>'+(d)+'</p>'+'<br/><br/>'+'<div class="outputJavascript"></div>' + '</td>';
+
 
 
                 }
@@ -210,27 +211,40 @@ var dagen=Array();
 
                       for (var dag= 1; dag < dagen.length; dag++) {
                           if (CurrentMonth < 10) {
-
-                              if (($from <= CurrentYear + "-" + "0" + CurrentMonth + dagen[dag] + " " + "00:00:01") && ($until >= CurrentYear + "-" + "0" + CurrentMonth + dagen[dag] + " " + "00:00:01")) {
-
-                                  $(".outputJavascript").append("<p style='color: red'>" + $name + "</p>");
-                                  break;
-                              }
+                                if (dagen[dag]<10) {
+                                    if (($from <= CurrentYear + "-" + "0" + CurrentMonth + "0" + dagen[dag] + " " + "00:00:01") && ($until >= CurrentYear + "-" + "0" + CurrentMonth + "0" + dagen[dag] + " " + "00:00:01")) {
+                                        $(".outputJavascript").append("<p style='color: red'>" + $name + "</p>");
+                                        break;
+                                    }
+                                }
+                                else {
+                                    if (($from <= CurrentYear + "-" + "0" + CurrentMonth + dagen[dag] + " " + "00:00:01") && ($until >= CurrentYear + "-" + "0" + CurrentMonth + dagen[dag] + " " + "00:00:01")) {
+                                        $(".outputJavascript").append("<p style='color: red'>" + $name + "</p>");
+                                        break;
+                                    }
+                                }
 
                           }
                           else {
-                              if (($from <= CurrentYear + "-" + CurrentMonth + dagen[dag] + " " + "00:00:01") && ($until >= CurrentYear + "-" + CurrentMonth + dagen[dag] + " " + "00:00:01")) {
+                              if (dagen[dag] < 10) {
+                                  if (($from <= CurrentYear + "-" + "0" + CurrentMonth + "0" + dagen[dag] + " " + "00:00:01") && ($until >= CurrentYear + "-" + "0" + CurrentMonth + "0" + dagen[dag] + " " + "00:00:01")) {
+                                      $(".outputJavascript").append("<p style='color: red'>" + $name + "</p>");
+                                      break;
+                                  }
+                              }
+                              else {
+                                  if (($from <= CurrentYear + "-" + "0" + CurrentMonth + dagen[dag] + " " + "00:00:01") && ($until >= CurrentYear + "-" + "0" + CurrentMonth + dagen[dag] + " " + "00:00:01")) {
+                                      $(".outputJavascript").append("<p style='color: red'>" + $name + "</p>");
+                                      break;
+                                  }
+                              }
+                              break;
 
 
-                                  $(".outputJavascript").append("<p style='color: red'>" + $name + "</p>");
+                              if (dag == dagen.length) {
                                   break;
                               }
                           }
-
-                          if (dag == dagen.length) {
-                              break;
-                          }
-
                     }
                 }
                 i++;
