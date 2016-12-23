@@ -24,9 +24,9 @@ class CronjobController extends Controller
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call('app\controllers\ReservationController@sendDailyOverviewToHeadOfTheLendingService')->dailyAt('06:00');
-        $schedule->call('app\controllers\ReservationController@sendReminderMailToUsers')->dailyAt('06:00');
-        $schedule->call('app\controllers\ReservationController@sendSecondReminderMailToUsers')->dailyAt('06:00');
-        $schedule->call('app\controllers\ReservationController@sendEmailToStudentWhenAssetIsReadyForLoan')->dailyAt('06:00');
+        $schedule->call('util\MailUtil@sendDailyOverviewToHeadOfTheLendingService')->dailyAt('06:00');
+        $schedule->call('util\MailUtil@sendReminderMailToUsers')->dailyAt('06:00');
+        $schedule->call('util\MailUtil@sendSecondReminderMailToUsers')->dailyAt('06:00');
+        $schedule->call('util\MailUtil@sendEmailToStudentWhenAssetIsReadyForLoan')->dailyAt('06:00');
     }
 }

@@ -9,23 +9,31 @@
 namespace sp2gr11\reservation\fetchers;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Connection;
 use App\Models\Asset;
 use App\Models\User;
 
 class ReservationFetcher
 {
-    public static function getAvailableAssets()
+
+    private $connection;
+
+    public function __construct(Connection $connection)
     {
-        $unavailable_assets_ids = DB::table('reservation_assets')->pluck('asset_id');
+        $this->connection = $connection;
+    }
+
+    public function getAvailableAssets()
+    {
+        $unavailable_assets_ids = $this->connection->table('reservation_assets')->pluck('asset_id');
         $assets = Asset::whereNotIn('id', $unavailable_assets_ids)->get();
 
         return $assets;
     }
 
-    public static function getReservationRequests()
+    public function getReservationRequests()
     {
-        $reservation_requests = DB::table('reservation_requests')->get();
+        $reservation_requests = $this->connection->table('reservation_requests')->get();
 
         foreach ($reservation_requests as $idx => $reservation_request)
         {
@@ -36,12 +44,12 @@ class ReservationFetcher
         return $reservation_requests;
     }
 
-    public static function getLeasedAssets($date = null)
+    public function getLeasedAssets($date = null)
     {
         if(!$date)
-            $reservations = DB::table('reservation_assets')->get();
+            $reservations = $this->connection->table('reservation_assets')->get();
         else
-            $reservations = DB::table('reservation_assets')->where('from', $date)->get();
+            $reservations = $this->connection->table('reservation_assets')->where('from', $date)->get();
 
         foreach ($reservations as $idx => $reservation)
         {
@@ -53,12 +61,12 @@ class ReservationFetcher
 
     }
 
-    public static function getEndDateLeasedAssets($date = null)
+    public function getEndDateLeasedAssets($date = null)
     {
         if(!$date)
-            $reservations = DB::table('reservation_assets')->get();
+            $reservations = $this->connection->table('reservation_assets')->get();
         else
-            $reservations = DB::table('reservation_assets')->where('until', $date)->get();
+            $reservations = $this->connection->table('reservation_assets')->where('until', $date)->get();
 
         foreach ($reservations as $idx => $reservation)
         {
@@ -69,34 +77,33 @@ class ReservationFetcher
         return $reservations;
     }
 
-    public static function getLeasedAssetsExceptOvertime()
+    public function getLeasedAssetsExceptOvertime()
     {
-        $assets = DB::table('reservation_assets')->whereNotNull('from')->get();
+        $assets = $this->connection->table('reservation_assets')->whereNotNull('from')->get();
 
         $assets_on_schedule = array();
         foreach($assets as $asset)
         {
-            if(Carbon::parse($asset->from)->isFuture())
+            if(Carbon::parse($asset->until)->isFuture())
                 $assets_on_schedule[] = $asset;
         }
-
         return $assets_on_schedule;
     }
 
     /**
      * @param User|int $user
-     * @return A list of reservation requests made by the user
+     * @return array list of reservation requests made by the user
      */
-    public static function getRequestedAssetsForUser($user)
+    public function getRequestedAssetsForUser($user)
     {
         $user_id = is_int($user) ? $user : $user->id;
 
-        $requested_assets = DB::table('reservation_requests')->where('user_id', $user_id)->get();
+        $requested_assets = $this->connection->table('reservation_requests')->where('user_id', $user_id)->get();
 
         $user_requested_assets = array();
         foreach($requested_assets as $idx => $requested_asset)
         {
-            $user_requested_assets[$idx] = $requested_asset[$idx];
+            $user_requested_assets[$idx] = $requested_assets[$idx];
             $user_requested_assets[$idx]->asset = Asset::find($requested_assets[$idx]->asset_id);
             $user_requested_assets[$idx]->user = is_int($user) ? User::find($user) : $user;
         }
@@ -104,29 +111,32 @@ class ReservationFetcher
         return $user_requested_assets;
     }
 
-    public static function getAllAssetsReadyForLoaning(){
-        $now = Carbon::now();
-        $date_string = $now->toDateString();
-        $reservations = DB::table('reservation_assets')
-            ->where('from', $date_string)
-            ->get();
-        return $reservations;
+
+    public function getReservationsForMonth($asset_id, $month = null)
+    {
+        $time = new Carbon();
+
+        if($month)
+            $time->month = $month;
+
+        $reservations = $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->get();
+
+        $reservations_month = array();
+        foreach($reservations as $reservation)
+        {
+            $from = Carbon::parse($reservation->from);
+            $until = Carbon::parse($reservation->until);
+
+            if($from->between($time->startOfMonth(), $time->endOfMonth()) || $until->between($time->startOfMonth(), $time->endOfMonth()))
+                $reservations_month[] = $reservation;
+        }
+
+        return $reservations_month;
     }
 
-    public static function getAllReservations1DayBeforeEndDate(){
-        $yesterday = Carbon::yesterday();
-        $date_string = $yesterday->toDateString();
-        $reservations = DB::table('reservation_assets')
-            ->where('until', $date_string)
-            ->get();
-        return $reservations;
-    }
-    public static function getAllEndDateReservations(){
-        $today = Carbon::now();
-        $date_string = $today->toDateString();
-        $reservations = DB::table('reservation_assets')
-            ->where('until', $date_string)
-            ->get();
-        return $reservations;
+    public function getAvailableAssetsBy($text, $filter)
+    {
+        $unavailable_assets_ids = $this->connection->table('reservation_assets')->pluck('asset_id');
+        return Asset::whereNotIn('id', $unavailable_assets_ids)->where($filter, 'like', "*$text*")->get();
     }
 }
