@@ -129,7 +129,6 @@ class AjaxController extends Controller
 
     public function postReservationRequest(Request $request)
     {
-        // dd($request->subject.$request->note);
         $this->reservation_util->createReservationRequest(Auth::user()->id, $request->asset_id, $request->subject, $request->note);
         return "true";
     }
@@ -139,15 +138,15 @@ class AjaxController extends Controller
      */
     public function postReservation(Request $request)
     {
-        $reservation_id = $this->reservation_util->getRequestIdForUserAsset($request->req_asset_id,
-            $request->req_user_id);
-        $this->reservation_util->acceptReservation($reservation_id);
+       // return "nice";
+        // $reservation_id = $this->reservation_util->getRequestIdForUserAsset($request->req_asset_id,$request->req_user_id);
+        // $this->reservation_util->acceptReservation($reservation_id);
+        $this->reservation_util->acceptReservation($this->reservation_util->getRequestIdForUserAsset($request->req_asset_id,$request->req_user_id));
     }
 
     public function rejectedReservation(Request $request)
     {
-        $this->reservation_util->rejectReservation($this->reservation_util->getRequestIdForUserAsset($request->req_asset_id,
-            $request->req_user_id));
+        $this->reservation_util->rejectReservation($this->reservation_util->getRequestIdForUserAsset($request->req_asset_id,$request->req_user_id));
     }
 
     public function getLeasedAssetsExceptOvertime()

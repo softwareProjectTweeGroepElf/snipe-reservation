@@ -30,7 +30,7 @@ class ReservationUtil
 
     public function getRequestIdForUserAsset($asset_id, $user_id)
     {
-        return $this->connection->table('reservation_requests')->select('id')->where([
+      return $this->connection->table('reservation_requests')->select('id')->where([
             'asset_id' => $asset_id,
             'user_id' => $user_id
         ])->first()->id;

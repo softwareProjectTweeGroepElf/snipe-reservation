@@ -26,6 +26,4 @@ Route::group([ 'prefix'  => 'reservation' ], function() {
     Route::get('/mailOverview', 'sp2gr11\reservation\controllers\ReservationController@getMailDailyOverview');
     Route::get('/mailLendableAsset', 'sp2gr11\reservation\controllers\ReservationController@getMailLendableAsset');
 
-
-
 });
