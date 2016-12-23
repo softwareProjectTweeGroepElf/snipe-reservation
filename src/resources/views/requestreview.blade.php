@@ -30,7 +30,7 @@
 	function sendEmail(asset_id, user_id, decision) {
 		$.ajax({
 			type: 'GET',
-			url: '/decision',
+			url: '/reservation/decision',
 			data: { 'req_asset_id': asset_id, 'req_user_id': user_id, 'req_decision': decision },
 			success: function(res) {
 				console.log(res);
@@ -204,16 +204,16 @@
 									<td> {{$asset->subject}}</td>
 									<td> {{$asset->note}}</td>
 									<td class="no_padding_td">
-										<button class="submit_btn"
-											 onclick="submitAccptAjax({!!$asset->asset_id!!},{!!$asset->user_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "accepted" !!})">
+										<div class="submit_btn"
+											 onclick="submitAccptAjax({!!$asset->asset_id!!},{!!$asset->user_id!!}), sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! true !!})">
 											Accept
-										</button>
+										</div>
 									</td>
 									<td class="no_padding_td">
-										<button class="submit_btn"
-											 onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "denied" !!})">
+										<div class="submit_btn"
+											 onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! false !!})">
 											Reject
-										</button>
+										</div>
 									</td>
 								</div>
 							</tr>

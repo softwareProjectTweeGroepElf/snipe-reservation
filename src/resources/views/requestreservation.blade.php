@@ -192,7 +192,7 @@
 					<input type="text" id="subject" name="subject">
 					<label for="note">Extra notities</label>
 					<textarea id="note" name="note"></textarea>
-					<div class="submit_btn" onclick="callAjax()">Submit</div>
+					<button class="submit_btn" onclick="callAjax()">Submit</button>
 				</form>
 			</div>
 			<hr>
@@ -211,7 +211,7 @@
 						
 						@foreach($userassets as $asset)
 							<tr>
-								<td>  {{$asset->user->first_name . ' ' . $asset->user->last_name}}<br></td>
+								<td>  {{$asset->user->first_name . ' '. $asset->user->last_name}}<br></td>
 								<td> {{$asset->asset->name}} </td>
 								<td> {{ $asset->subject }}</td>
 							</tr>
@@ -236,13 +236,11 @@
 								<td> {{$asset->name}} </td>
 							</tr>
 						@endforeach
-					</table>
 		</div>
 	</div>
 	
 	<div id="footer">
 		<tekst id="footer_text">Copyright © Groep 11</tekst>
 	</div>
-		</div>
-	</div>
+
 </div>

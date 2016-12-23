@@ -29,6 +29,7 @@ class MailUtil
         $date = Carbon::today();
         $reservations = $this->reservation_fetcher->getLeasedAssets($date);
         $data=null;
+        $data2=null;
         $formatted_date_string = $date->toFormattedDateString();
 
         for ($x = 0; $x < count($reservations); $x++) {
@@ -45,30 +46,6 @@ class MailUtil
         });
     }
 
-    public static function sendResultDecisionTeacher($decision, $reservation){
-        $student_id = $reservation->user_id;
-        $student = User::findOrFail($student_id);
-        $student_asset_id = $reservation->asset_id;
-        $student_asset = Asset::findOrFail($student_asset_id);
-
-        $data = array();
-        $data['first_name'] = $student->first_name;
-        $data['last_name'] = $student->last_name;
-        $data['asset_name'] = $student_asset->name;
-        if($decision)
-        {
-            $data['decision'] = 'accepted';
-        }
-        else {
-            $data['decision'] = 'denied';
-        }
-        Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($student) {
-            $m->to($student->email, $student->first_name . ' ' . $student->last_name);
-            $m->subject('Decision teacher about your asset');
-        });
-
-    }
-
     public function sendReminderMail(){
         $date = Carbon::tomorrow();
         $reservations = $this->reservation_fetcher->getEndDateLeasedAssets($date->toDateTimeString());
@@ -79,7 +56,7 @@ class MailUtil
             $data['last_name'] = $reservations[$x]->user->last_name;
             $data['asset_name'] = $reservations[$x]->asset->name;
             Mail::send('emails.reminderMailUser', $data , function ($m) use ($user) {
-                $m->to(config('reservation.MANAGER_EMAIL'), $user->first_name . ' ' . $user->last_name);
+                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
                 $m->subject('Automatic reminder ending loan period asset');
             });
         }
@@ -96,7 +73,7 @@ class MailUtil
             $data['asset_name'] = $reservations[$x]->asset->name;
 
             Mail::send('emails.secondReminderMailUser', $data, function ($m) use ($user) {
-                $m->to(config('reservation.MANAGER_EMAIL'), $user->first_name . ' ' . $user->last_name);
+                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
                 $m->subject('Automatic reminder loan period ended!');
             });
         }
@@ -113,7 +90,7 @@ class MailUtil
             $data['asset_name'] = $reservations[$x]->asset->name;
 
             Mail::send('emails.assetIsReadyForLoan', $data, function ($m) use ($user) {
-                $m->to(config('reservation.MANAGER_EMAIL'), $user->first_name . ' ' . $user->last_name);
+                $m->to($user->email, $user->first_name . ' ' . $user->last_name);
                 $m->subject('Your asset is ready for loan!');
             });
         }
