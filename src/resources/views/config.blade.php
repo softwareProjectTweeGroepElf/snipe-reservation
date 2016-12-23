@@ -1,6 +1,6 @@
 <head>
 	<title>Reservaties Configuratie</title>
-	<link rel="stylesheet" type="text/css" href="{{ URL::asset('reservation/css/reservation.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/reservation.css') }}">
 </head>
 
 <body>

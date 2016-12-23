@@ -39,7 +39,7 @@
 	}
 </script>
 
-<!-- <style type="text/css">
+<style type="text/css">
 	body {
 		font-family: Tahoma;
 		padding: 0;
@@ -177,8 +177,8 @@
 	.no_padding_td {
 		padding: 0px;
 	}
-</style> -->
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('reservation/css/reservation.css') }}">
+</style>
+
 <div id="page_body">
 	<div id="content">
 		<div id="titelbar">
@@ -199,7 +199,7 @@
 						@foreach($requestedassets as $asset)
 							<tr>
 								<div id="buttons_accept_reject">
-									<td> {{$asset->asset->name}} </td>
+									<td> {{$asset->name}} </td>
 									<td> {{$asset->asset->name}} </td>
 									<td> {{$asset->subject}}</td>
 									<td> {{$asset->note}}</td>

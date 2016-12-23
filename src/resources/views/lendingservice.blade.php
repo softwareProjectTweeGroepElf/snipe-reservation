@@ -28,7 +28,7 @@
 		console.log("Function works");
 		$.ajax({
 			type: 'GET',
-			url: '/package/lsaction',
+			url: '/reservation/lsaction',
 			data: { 'asset_id': asset_id, 'asset_tag': asset_tag, 'asset_action': asset_action, 'user_id': user_id },
 			success: function(data) {
 				alert(data);
@@ -56,7 +56,7 @@
 	}
 </script>
 
-<!-- <style type="text/css">
+<style type="text/css">
 	body {
 		font-family: Tahoma;
 		padding: 0;
@@ -179,8 +179,7 @@
 		-moz-box-shadow: inset 0px 16px 0px -13px #939393;
 		box-shadow: inset 0px 16px 0px -13px #939393;
 	}
-</style> -->
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('reservation/css/reservation.css') }}">
+</style>
 <div id="page_body">
 	<div id="content">
 		<div id="titelbar">
@@ -233,7 +232,7 @@
 			<form id="filter">
 				<label>Filteren op:</label>
 				<input type="radio" value="id">ID<br>
-				<input type="radio" value="name">Naam<br>
+				<input type="radio" value="name" checked>Naam<br>
 				<input type="radio" value="asset_tag">Tag<br>
 				<input type="radio" value="serial">Serienummer<br>
 			</form>
