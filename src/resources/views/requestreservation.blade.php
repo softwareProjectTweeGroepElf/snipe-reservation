@@ -211,7 +211,7 @@
 						
 						@foreach($userassets as $asset)
 							<tr>
-								<td>  {{$asset->user->first_name . " ". $asset->user->last_name}}<br></td>
+								<td>  {{$asset->user->first_name . ' ' . $asset->user->last_name}}<br></td>
 								<td> {{$asset->asset->name}} </td>
 								<td> {{ $asset->subject }}</td>
 							</tr>

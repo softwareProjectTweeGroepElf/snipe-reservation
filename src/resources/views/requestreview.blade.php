@@ -1,12 +1,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
 <script>
-	function submitAccptAjax(asset_id) {
+	function submitAccptAjax(asset_id, user_id) {
 		console.log(asset_id);
 		$.ajax({
 			type: 'GET',
 			url: '/reservation/postreservation',
-			data: { 'req_asset_id': asset_id },
+			data: { 'req_asset_id': asset_id, 'req_user_id': user_id },
 			success: function(data) {
 				alert("Reservation was added succesfully");
 				console.log(data);
@@ -204,16 +204,16 @@
 									<td> {{$asset->subject}}</td>
 									<td> {{$asset->note}}</td>
 									<td class="no_padding_td">
-										<div class="submit_btn"
-											 onclick="submitAccptAjax({!!$asset->asset_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "accepted" !!})">
+										<button class="submit_btn"
+											 onclick="submitAccptAjax({!!$asset->asset_id!!},{!!$asset->user_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "accepted" !!})">
 											Accept
-										</div>
+										</button>
 									</td>
 									<td class="no_padding_td">
-										<div class="submit_btn"
+										<button class="submit_btn"
 											 onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "denied" !!})">
 											Reject
-										</div>
+										</button>
 									</td>
 								</div>
 							</tr>
