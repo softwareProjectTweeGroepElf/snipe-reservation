@@ -199,7 +199,7 @@
 						@foreach($requestedassets as $asset)
 							<tr>
 								<div id="buttons_accept_reject">
-									<td> {{$asset->name}} </td>
+									<td> {{$asset->user->first_name . ' ' . $asset->user->last_name}} </td>
 									<td> {{$asset->asset->name}} </td>
 									<td> {{$asset->subject}}</td>
 									<td> {{$asset->note}}</td>
