@@ -186,12 +186,12 @@
 				<form id="submitForm">
 					{{ csrf_field() }}
 					<label>Asset: </label>
-					<select id="asset_id">
+					<select id="asset_id" name="asset_list">
 					</select>
 					<label for="subject">Vak</label>
-					<input type="text" id="subject">
+					<input type="text" id="subject" name="subject">
 					<label for="note">Extra notities</label>
-					<textarea id="note"></textarea>
+					<textarea id="note" name="note"></textarea>
 					<div class="submit_btn" onclick="callAjax()">Submit</div>
 				</form>
 			</div>

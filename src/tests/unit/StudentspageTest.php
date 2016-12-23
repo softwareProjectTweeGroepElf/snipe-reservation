@@ -16,6 +16,15 @@ class StudentspageTest extends TestCase
 {
 
 //->assertRedirectedToRoute($name, $parameters = [], $with = []);
+
+    public function testRequestAsset(){
+        $this->testRoute();
+        $asset = factory(\App\Models\Asset::class, 'asset')->create();
+        $this->select($asset->name, 'asset_list')
+            ->type('blabla', 'subject')
+            ->type('blablabla', 'note')
+            ->press('Submit');
+    }
     public function testRouteRedirection()
     {
         //$user = factory(\App\Models\User::class, 'user')->create();
@@ -48,5 +57,6 @@ class StudentspageTest extends TestCase
         $this->visit('/reservation/students')
             ->see('Students Page');
     }
+
 
 }
