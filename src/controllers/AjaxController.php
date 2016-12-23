@@ -129,8 +129,9 @@ class AjaxController extends Controller
 
     public function postReservationRequest(Request $request)
     {
-        $this->reservation_util->createReservationRequest(Auth::user()->id, $request->asset_id);
-        return true;
+        // dd($request->subject.$request->note);
+        $this->reservation_util->createReservationRequest(Auth::user()->id, $request->asset_id, $request->subject, $request->note);
+        return "true";
     }
 
     /*

@@ -43,12 +43,15 @@ class ReservationUtil
         return Carbon::parse($reservation->until)->isPast() ? true : false;
     }
 
-    public function createReservationRequest($user_id, $asset_id)
+    public function createReservationRequest($user_id, $asset_id, $subject, $note)
     {
         $this->connection->table('reservation_requests')->insert([
             'asset_id' => $asset_id,
             'user_id' => $user_id,
+            'subject' => $subject,
+            'note' => $note,
         ]);
+        return "true";
     }
 
     public function acceptReservation($reservation_id)

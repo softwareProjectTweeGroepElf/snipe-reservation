@@ -23,7 +23,7 @@
 		$.ajax({
 			type: 'GET',
 			url: '/reservation/postrequestreservation',
-			data: { 'asset_id': datastring },
+			data: { 'asset_id': datastring, 'subject': subject, 'note': note},
 			success: function(data) {
 				console.log(data);
 				location.reload();
@@ -181,16 +181,16 @@
 		</div>
 		<div id="wrapper">
 			<div id="submitCont">
-				<h1>Request a loan:</h1>
-				<p>Select the asset you want to loan</p>
+				<h1>Product aanvragen:</h1>
+				<p>Selecteer het product dat je wil lenen:</p>
 				
 				<form id="submitForm">
 					{{ csrf_field() }}
 					<label>Asset: </label>
 					<select id="asset_id">
-					</select>
+					</select><br>
 					<label for="subject">Vak</label>
-					<input type="text" id="subject">
+					<input type="text" id="subject"><br>
 					<label for="note">Extra notities</label>
 					<textarea id="note"></textarea>
 					<div class="submit_btn" onclick="callAjax()">Submit</div>
@@ -208,13 +208,15 @@
 							<th>Uitlener</th>
 							<th>Voorwerp</th>
 							<th>Vak</th>
+							<th>Notitie</th>
 						</tr>
 						
 						@foreach($userassets as $asset)
 							<tr>
-								<td>  {{$asset->user->first_name . " ". $asset->user->last_name}}<br></td>
+								<td> {{$asset->user->first_name . " ". $asset->user->last_name}}<br></td>
 								<td> {{$asset->asset->name}} </td>
-								<td> {{ $asset->subject }}</td>
+								<td> {{$asset->subject}}</td>
+								<td> {{$asset->note}}
 							</tr>
 						@endforeach
 					
