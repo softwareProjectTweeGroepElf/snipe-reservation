@@ -20,6 +20,7 @@ use App\Models\User;
 use App\Models\Asset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class AjaxController extends Controller
 {
@@ -38,55 +39,31 @@ class AjaxController extends Controller
     /*
      * Lending Service AJAX
      */
-    public function lsaction(Request $request){
-
-        $asset_tag = $request->asset_tag;
-        $asset_id = DB::table('assets')->where('asset_tag',$asset_tag)->get()[0] ->asset_id;
-        $action =  $request->asset_action;
-        $user_id = $request->user_id;
-        $expected_checkin =DB::table('reservation_assets')->where('asset_tag', $asset_tag)->get()[0]->until;
-        $today = date('Y/m/d');
-        $expected= date('Y/m/d',strtotime(('+1 week')));
-        $status = DB::table('reservation_assets')->where('asset_tag', $asset_tag)->get()[0]->user_id;
-        if($status == null){
-
-            DB::table('reservation_assets')
-                ->where('asset_id', $asset_id)
-                ->update(['user_id' => $user_id,'until'=>$expected]);
-
-            $asset = DB::table('assets')->where('asset_tag', $asset_tag)->first();
-            $user = DB::table('users')->where('id',$user_id)->first();
-            return "Succesfully assigned asset ". $asset->name ." to ". $user->first_name;
+   public function lsaction(
+        Request $request,
+        CheckOutUtil $check_out_util,
+        CheckInUtil $check_in_util,
+        FineUtil $fine_util
+    ) {
+        $asset_id = $request->asset_id;
+        $action = $request->asset_action;
+        switch ($action) {
+            case 'checkout': {
+                $check_out_util->checkOutByAssetId($asset_id);
+                return "Succesfull check out!";
+                break;
+            }
+            case 'checkin': {
+                $reservation_archive_id = $check_in_util->checkInByAssetId($asset_id);
+                if($this->reservation_util->isAssetOvertime($asset_id))
+                    $fine_util->fine($reservation_archive_id);
+                return "Succesfull check in!";
+                break;
+            }
         }
-        elseif ($status != null && $expected_checkin>$today) {
-            DB::table('reservation_assets')
-                ->where('asset_id', $asset_id)
-                ->update(['user_id' => null,'until'=>null]);
-
-            $asset = DB::table('assets')->where('asset_tag', $asset_tag)->first();
-            return "Succesfully checked asset with ID ". $asset->name." in.";
-
-        }
-        elseif ($status!=null&& $expected_checkin<$today) {
-            $daysLate=round(abs(strtotime($today)-strtotime(($expected_checkin))));
-            $daysLate=$daysLate/60/60/24;
-            $fine = $daysLate*2;
-            DB::table('reservation_assets')
-                ->where('asset_id', $asset_id)
-                ->update(['user_id' => null,'until'=>null]);
-            /*
-                        DB::table('users')
-                        ->where('id',$user_id)
-                        ->update(['fine' => $fine]);
-            */
-            $asset = DB::table('assets')->where('asset_tag', $asset_tag)->first();
-            $user = DB::table('users')->where('id',$user_id)->first();
-            return "Succesfully checked asset ". $asset->name." in. The asset was too late, a fine of $fine euro  will be sent";
-        }
-        else{
-            return "select a legitimate action!";
-        }
+        return "Select a legitimate action!";
     }
+
 
     public function getAllinfoLS()
     {

@@ -32,7 +32,7 @@
 			data: { 'asset_id': asset_id, 'asset_tag': asset_tag, 'asset_action': asset_action, 'user_id': user_id },
 			success: function(data) {
 				alert(data);
-				location.reload();
+				// location.reload();
 			}
 		});
 	}
