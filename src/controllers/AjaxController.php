@@ -47,6 +47,7 @@ class AjaxController extends Controller
     ) {
         $asset_id = $request->asset_id;
         $action = $request->asset_action;
+      
         switch ($action) {
             case 'checkout': {
                 $check_out_util->checkOutByAssetId($asset_id);
@@ -79,7 +80,7 @@ class AjaxController extends Controller
         }
 
         foreach ($lent_assets as $asset) {
-            array_push($asset_data, $asset->id, $asset->asset->name);
+            array_push($asset_data, $asset->asset_id, $asset->asset->name);
         }
 
         foreach ($users as $user) {
