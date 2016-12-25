@@ -40,10 +40,11 @@
 			data: { 'text': search_text, 'filter': 'name' },
 			success: function(data) {
 				$('#search_content tr:not(:first)').remove();
-				
 				for(var i = 0; i < data.length; i++) {
 					$('#search_content').append('<tr><td>' + data[i]['name'] + '</td></tr>');
 				}
+				$('#p_resultsLookup').empty();
+				$('#p_resultsLookup').append(data.length);
 			}
 		});
 	}
@@ -110,8 +111,24 @@
 			<hr>
 			
 			<h1>Beschikbare voorwerpen: </h1>
-			<input type="text" id="search" placeholder="Zoeken..">
+			
+			<table id="lookupTable">
+				<th>
+					<div id="studentZoekForm">
+						<p>Zoek specifiek product op naam:</p>
+						<input type="text" id="search" placeholder="Zoeken..">
+					</div>
+				</th>
+				<th>
+					<div id="resultsLookup">
+						<p>Aantal producten:</p>
+						<div id="p_resultsLookup">{{count($assets)}}</div>
+					</div>
+				</th>
+			</table>
+			
 			<br><br>
+			
 			<div class="requested_assets_table_cont">
 				<div class="requested_assets_table_cont2">
 					<table class="requested_assets_table" id="search_content">

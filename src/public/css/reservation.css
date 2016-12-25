@@ -146,3 +146,29 @@ select {
 #asset_id{
 	width: 70%;
 }
+
+/*SEARCH FORM*/
+
+#formBazaar{
+	height: 75px;
+}
+#studentZoekForm{
+	width: 20vw;
+	height: 75px;
+	background-color: white;
+	padding: 10px;
+	padding-bottom: 30px;
+	box-shadow: 0px 0px 25px -5px rgba(0, 0, 0, 0.75);	
+}
+#resultsLookup{
+	width: 20vw;
+	height: 75px;
+	background-color: white;
+	padding: 10px;
+	padding-bottom: 30px;
+	box-shadow: 0px 0px 25px -5px rgba(0, 0, 0, 0.75);
+}
+#lookupTable{
+	width 90%;
+	margin: auto;
+}
