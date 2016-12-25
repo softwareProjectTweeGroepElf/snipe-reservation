@@ -65,15 +65,16 @@
 						<tr>
 							<th><label>Asset: </label></th>
 							<th><select id="asset_id">
+							<option value="" disabled selected>Selecteer hier je product</option>
 							</select><br></th>
 						</tr>
 						<tr>
 							<th><label for="subject">Vak:</label></th>
-							<th><input type="text" id="subject"><br></th>
+							<th><input type="text" id="subject" placeholder="Het vak"><br></th>
 						</tr>
 						<tr>
 							<th><label for="note">Opmerkingen:</label></th>
-							<th><textarea id="note"></textarea></th>
+							<th><textarea id="note" placeholder="Beschrijf wat je ermee wilt presteren"></textarea></th>
 						</tr>
 					</table>
 					<div class="submit_btn" onclick="callAjax()">Submit</div>
