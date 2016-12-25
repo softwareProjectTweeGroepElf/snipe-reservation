@@ -184,3 +184,14 @@ select {
 .formWidthLen{
 	width: 9vw;
 }
+#submitFormSearchLen{
+	width: 60%;
+	margin: auto;
+	background-color: white;
+	padding: 25px;
+	padding-bottom: 30px;
+	box-shadow: 0px 0px 25px -5px rgba(0, 0, 0, 0.75);
+}
+#search{
+	margin: 10px;
+}

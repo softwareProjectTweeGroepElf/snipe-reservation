@@ -121,20 +121,6 @@
 			<hr>
 			
 			<h1>Beschikbare voorwerpen: </h1>
-			<style type="text/css">
-				#submitFormSearchLen{
-					width: 60%;
-					margin: auto;
-					background-color: white;
-					padding: 25px;
-					padding-bottom: 30px;
-					box-shadow: 0px 0px 25px -5px rgba(0, 0, 0, 0.75);
-				}
-				#search{
-					margin: 10px;
-				}
-
-			</style>
 			<div id="submitFormSearchLen">
 				<b>Zoek specifiek product op een filter:</b><br>
 				<input type="text" id="search" placeholder="Zoeken"><br>
