@@ -4,7 +4,6 @@
 		$('#search').change(function() {
 			searchAvailableAssets();
 		});
-		
 		$.ajax({
 			type: 'GET',
 			url: '/reservation/initdoc',
@@ -30,7 +29,6 @@
 			}
 		});
 	}
-	
 	function searchAvailableAssets()
 	{
 		var search_text = $('#search').val();
@@ -82,9 +80,7 @@
 				</form>
 			</div>
 			<hr>
-			
 			<h1>Uw aanvragen: </h1>
-			
 			<div class="requested_assets_table_cont">
 				<div class="requested_assets_table_cont2">
 					<table id="requested_assets_table" class="requested_assets_table">
@@ -149,5 +145,4 @@
 	<div id="footer">
 		<tekst id="footer_text">Copyright © Groep 11</tekst>
 	</div>
-
 </div>
