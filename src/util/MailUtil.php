@@ -27,7 +27,7 @@ class MailUtil
 
     public function sendDailyOverview(){
         $date = Carbon::today();
-        $reservations = $this->reservation_fetcher->getLeasedAssets($date);
+        $reservations = $this->reservation_fetcher->getLeasedAssetsWithoutTime($date);
         $data=null;
         $data2=null;
         $formatted_date_string = $date->toFormattedDateString();
@@ -48,7 +48,7 @@ class MailUtil
 
     public function sendReminderMail(){
         $date = Carbon::tomorrow();
-        $reservations = $this->reservation_fetcher->getEndDateLeasedAssets($date->toDateTimeString());
+        $reservations = $this->reservation_fetcher->getEndDateLeasedAssetsWithoutTime($date);
 
         for ($x = 0; $x < count($reservations); $x++) {
             $user = $reservations[$x]->user;
@@ -64,7 +64,7 @@ class MailUtil
 
     public function sendSecondReminderMail(){
         $date = Carbon::yesterday();
-        $reservations = $this->reservation_fetcher->getEndDateLeasedAssets($date->toDateTimeString());
+        $reservations = $this->reservation_fetcher->getEndDateLeasedAssetsWithoutTime($date);
 
         for ($x = 0; $x < count($reservations); $x++) {
             $user = $reservations[$x]->user;
@@ -81,7 +81,7 @@ class MailUtil
 
     public function sendEmailWhenAssetIsLendable(){
         $date = Carbon::today();
-        $reservations = $this->reservation_fetcher->getLeasedAssets($date->toDateTimeString());
+        $reservations = $this->reservation_fetcher->getLeasedAssetsWithoutTime($date);
 
         for ($x = 0; $x < count($reservations); $x++) {
             $user = $reservations[$x]->user;
