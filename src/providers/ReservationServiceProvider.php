@@ -31,6 +31,13 @@ class ReservationServiceProvider extends ServiceProvider
 			__DIR__ . '/../migrations' => database_path('migrations'),
 		]); // MIGRATIONS
 
+        $this->publishes([
+            __DIR__ . '/../tests/unit' => base_path('/tests'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/../resources/views/emails' => base_path('/resources/views/emails'),
+        ]);
 	}
 
 

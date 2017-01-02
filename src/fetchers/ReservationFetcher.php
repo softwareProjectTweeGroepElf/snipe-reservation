@@ -58,7 +58,22 @@ class ReservationFetcher
         }
 
         return $reservations;
+    }
 
+    public function getLeasedAssetsWithoutTime($date = null)
+    {
+        if(!$date)
+            $reservations = $this->connection->table('reservation_assets')->get();
+        else
+            $reservations = $this->connection->table('reservation_assets')->whereDate('from', '=', $date)->get();
+
+        foreach ($reservations as $idx => $reservation)
+        {
+            $reservations[$idx]->asset = Asset::find($reservation->asset_id);
+            $reservations[$idx]->user = User::find($reservation->user_id);
+        }
+
+        return $reservations;
     }
 
     public function getEndDateLeasedAssets($date = null)
@@ -67,6 +82,22 @@ class ReservationFetcher
             $reservations = $this->connection->table('reservation_assets')->get();
         else
             $reservations = $this->connection->table('reservation_assets')->where('until', $date)->get();
+
+        foreach ($reservations as $idx => $reservation)
+        {
+            $reservations[$idx]->asset = Asset::find($reservation->asset_id);
+            $reservations[$idx]->user = User::find($reservation->user_id);
+        }
+
+        return $reservations;
+    }
+
+    public function getEndDateLeasedAssetsWithoutTime($date = null)
+    {
+        if(!$date)
+            $reservations = $this->connection->table('reservation_assets')->get();
+        else
+            $reservations = $this->connection->table('reservation_assets')->whereDate('until', '=', $date)->get();
 
         foreach ($reservations as $idx => $reservation)
         {

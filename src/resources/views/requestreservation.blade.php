@@ -186,13 +186,13 @@
 				<form id="submitForm">
 					{{ csrf_field() }}
 					<label>Asset: </label>
-					<select id="asset_id">
+					<select id="asset_id" name="asset_list">
 					</select>
 					<label for="subject">Vak</label>
-					<input type="text" id="subject">
+					<input type="text" id="subject" name="subject">
 					<label for="note">Extra notities</label>
-					<textarea id="note"></textarea>
-					<div class="submit_btn" onclick="callAjax()">Submit</div>
+					<textarea id="note" name="note"></textarea>
+					<button class="submit_btn" onclick="callAjax()">Submit</button>
 				</form>
 			</div>
 			<hr>
@@ -211,7 +211,7 @@
 						
 						@foreach($userassets as $asset)
 							<tr>
-								<td>  {{$asset->user->first_name . " ". $asset->user->last_name}}<br></td>
+								<td>  {{$asset->user->first_name . ' '. $asset->user->last_name}}<br></td>
 								<td> {{$asset->asset->name}} </td>
 								<td> {{ $asset->subject }}</td>
 							</tr>

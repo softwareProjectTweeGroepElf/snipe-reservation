@@ -1,12 +1,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
 <script>
-    function submitAccptAjax(asset_id, user_id) {
+    function submitAccptAjax(asset_id) {
         console.log(asset_id);
         $.ajax({
             type: 'GET',
             url: '/reservation/postreservation',
-            data: {'req_asset_id' : asset_id, 'req_user_id' : user_id},
+            data: {'req_asset_id' : asset_id},
             success:function(data){
                 alert("Reservation was added succesfully");
                 console.log(data);
@@ -23,6 +23,17 @@
                 alert("Reservation was rejected succesfully");
                 console.log(data);
                 location.reload();
+            }
+        });
+    }
+
+    function sendEmail(asset_id, user_id, decision) {
+        $.ajax({
+            type: 'GET',
+            url: '/decision',
+            data: {'req_asset_id' : asset_id, 'req_user_id' : user_id, 'req_decision' : decision},
+            success:function(res){
+                console.log(res);
             }
         });
     }
@@ -166,12 +177,12 @@
                         @foreach($requestedassets as $asset)
                         <tr>
                             <div id="buttons_accept_reject">
-                                <td> {{$asset->user->id}} <br> </td>
-                                <td> {{$asset->asset->id}} <br> </td>
-                                <td> {{$asset->user->first_name . " ". $asset->user->last_name}} <br> </td>
-                                <td> {{$asset->asset->name}} <br> </td>
-                                <td class="no_padding_td"><div class="submit_btn" onclick="submitAccptAjax({!!$asset->asset_id!!},{!!$asset->user_id!!})">Accept</div></td>
-                                <td class="no_padding_td"><div class="submit_btn" onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!})">Reject</div></td>
+                                <td> {{$asset->user_id}} <br> </td>
+                                <td> {{$asset->asset_id}} <br> </td>
+                                <td> {{$asset->name}} <br> </td>
+                                <td> {{$asset->Aname}} <br> </td>
+                                <td class="no_padding_td"><div class="submit_btn" onclick="submitAccptAjax({!!$asset->asset_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "accepted" !!})">Accept</div></td>
+                                <td class="no_padding_td"><div class="submit_btn" onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "denied" !!})">Reject</div></td>
                             </div>
                         </tr>
                         @endforeach

@@ -7,7 +7,7 @@
 		
 		$.ajax({
 			type: 'GET',
-			url: '/package/initdoclendservice',
+			url: '/reservation/initdoclendservice',
 			data: "",
 			success: function(data) {
 				console.log(data);
@@ -29,7 +29,7 @@
 		console.log("Function works");
 		$.ajax({
 			type: 'GET',
-			url: '/package/lsaction',
+			url: '/reservation/lsaction',
 			data: { 'asset_id': asset_id, 'asset_tag': asset_tag, 'asset_action': asset_action, 'user_id': user_id },
 			success: function(data) {
 				alert(data);

@@ -1,12 +1,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
 <script>
-	function submitAccptAjax(asset_id) {
+	function submitAccptAjax(asset_id, user_id) {
 		console.log(asset_id);
 		$.ajax({
 			type: 'GET',
 			url: '/reservation/postreservation',
-			data: { 'req_asset_id': asset_id },
+			data: { 'req_asset_id': asset_id, 'req_user_id': user_id },
 			success: function(data) {
 				alert("Reservation was added succesfully");
 				console.log(data);
@@ -30,7 +30,7 @@
 	function sendEmail(asset_id, user_id, decision) {
 		$.ajax({
 			type: 'GET',
-			url: '/decision',
+			url: '/reservation/decision',
 			data: { 'req_asset_id': asset_id, 'req_user_id': user_id, 'req_decision': decision },
 			success: function(res) {
 				console.log(res);
@@ -199,21 +199,21 @@
 						@foreach($requestedassets as $asset)
 							<tr>
 								<div id="buttons_accept_reject">
-									<td> {{$asset->name}} </td>
+									<td> {{$asset->user->first_name . ' ' . $asset->user->last_name}} </td>
 									<td> {{$asset->asset->name}} </td>
 									<td> {{$asset->subject}}</td>
 									<td> {{$asset->note}}</td>
 									<td class="no_padding_td">
-										<div class="submit_btn"
-											 onclick="submitAccptAjax({!!$asset->asset_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "accepted" !!})">
+										<button class="submit_btn"
+											 onclick="submitAccptAjax({!!$asset->asset_id!!},{!!$asset->user_id!!}); sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! 1!!})">
 											Accept
-										</div>
+										</button>
 									</td>
 									<td class="no_padding_td">
-										<div class="submit_btn"
-											 onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!});sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! "denied" !!})">
+										<button class="submit_btn"
+											 onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!}); sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! 0 !!})">
 											Reject
-										</div>
+										</button>
 									</td>
 								</div>
 							</tr>
