@@ -48,7 +48,10 @@ class ReservationUtil
         $this->connection->table('reservation_requests')->insert([
             'asset_id' => $asset_id,
             'user_id' => $user_id,
+            'subject' => $subject,
+            'note' => $note,
         ]);
+        return "true";
     }
 
     public function acceptReservation($reservation_id)
