@@ -45,15 +45,35 @@ class ReservationController extends Controller
 			return redirect()->back();
 	}
 
-    public function getCalendar()
-    {
-        return view('Reservation::views.calendar');
-    }
 
     public function getConfig(ConfigUtil $config_util)
     {
         $config_util->initConfig();
         return view('Reservation::views.config')->with('config', $config_util);
     }
+
+	public function postReservation(Request $request)
+	{
+		if (!RoleUtil::isUserLeasingService()){
+			return redirect()->back();
+		}
+		else{
+			if(DB::table('reservation_assets')->insert([
+			        'user_id'=> $request->input('user_id'),
+	        	    'asset_id' => $request->input('asset_id'),
+	        	    'from' => date('Y-m-d', strtotime($request->input('from'))),
+	           		'until' => date('Y-m-d', strtotime($request->input('until')))  
+	            ]))
+	        {
+	            return true;
+	        }
+			return false;
+		}
+
+		/*if (reservation_assets::create(Request::All())){
+			return true;
+		}
+		return false; */
+	}
 
 }
