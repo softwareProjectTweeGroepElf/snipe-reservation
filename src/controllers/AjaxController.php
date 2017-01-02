@@ -20,6 +20,7 @@ use App\Models\User;
 use App\Models\Asset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class AjaxController extends Controller
 {
@@ -38,7 +39,7 @@ class AjaxController extends Controller
     /*
      * Lending Service AJAX
      */
-    public function lsaction(
+   public function lsaction(
         Request $request,
         CheckOutUtil $check_out_util,
         CheckInUtil $check_in_util,
@@ -46,29 +47,28 @@ class AjaxController extends Controller
     ) {
         $asset_id = $request->asset_id;
         $action = $request->asset_action;
-
-
+      
         switch ($action) {
             case 'checkout': {
                 $check_out_util->checkOutByAssetId($asset_id);
+                return "Succesfull check out!";
                 break;
             }
             case 'checkin': {
                 $reservation_archive_id = $check_in_util->checkInByAssetId($asset_id);
-
                 if($this->reservation_util->isAssetOvertime($asset_id))
                     $fine_util->fine($reservation_archive_id);
-
+                return "Succesfull check in!";
                 break;
             }
         }
-
         return "Select a legitimate action!";
     }
 
+
     public function getAllinfoLS()
     {
-        $available_assets = $this->reservation_fetcher->getAvailableAssets();
+        $available_assets = $this->reservation_fetcher->getAllAssets();
         $lent_assets = $this->reservation_fetcher->getLeasedAssets();
         $users = User::all();
         $free_users_combo = Array();
@@ -80,7 +80,7 @@ class AjaxController extends Controller
         }
 
         foreach ($lent_assets as $asset) {
-            array_push($asset_data, $asset->id, $asset->asset->name);
+            array_push($asset_data, $asset->asset_id, $asset->asset->name);
         }
 
         foreach ($users as $user) {
@@ -107,8 +107,8 @@ class AjaxController extends Controller
 
     public function postReservationRequest(Request $request)
     {
-        $this->reservation_util->createReservationRequest(Auth::user()->id, $request->asset_id);
-        return true;
+        $this->reservation_util->createReservationRequest(Auth::user()->id, $request->asset_id, $request->subject, $request->note);
+        return "true";
     }
 
     /*
@@ -116,15 +116,15 @@ class AjaxController extends Controller
      */
     public function postReservation(Request $request)
     {
-        $reservation_id = $this->reservation_util->getRequestIdForUserAsset($request->req_asset_id,
-            $request->req_user_id);
-        $this->reservation_util->acceptReservation($reservation_id);
+       // return "nice";
+        // $reservation_id = $this->reservation_util->getRequestIdForUserAsset($request->req_asset_id,$request->req_user_id);
+        // $this->reservation_util->acceptReservation($reservation_id);
+        $this->reservation_util->acceptReservation($this->reservation_util->getRequestIdForUserAsset($request->req_asset_id,$request->req_user_id));
     }
 
     public function rejectedReservation(Request $request)
     {
-        $this->reservation_util->rejectReservation($this->reservation_util->getRequestIdForUserAsset($request->req_asset_id,
-            $request->req_user_id));
+        $this->reservation_util->rejectReservation($this->reservation_util->getRequestIdForUserAsset($request->req_asset_id,$request->req_user_id));
     }
 
     public function getLeasedAssetsExceptOvertime()
@@ -172,7 +172,6 @@ class AjaxController extends Controller
         else{
             $data['decision'] = 'rejected';
         }
-
         Mail::send('emails.resultDecisionTeacher', $data ,function ($m) use ($req_user) {
             $m->to($req_user->email, $req_user->first_name . ' ' . $req_user->last_name);
             $m->subject('Decision teacher about your assetrequest');
@@ -182,5 +181,12 @@ class AjaxController extends Controller
     public function searchAvailableAssets(Request $request)
     {
         return $this->reservation_fetcher->getAvailableAssetsBy($request->text, $request->filter);
+    }
+
+    public function getAllAssetsByFilter(Request $request){
+        return $this->reservation_fetcher->getAllAssetsByFilter($request->text, $request->filter);
+    }
+    public function getAllAssets(){
+        return $this->reservation_fetcher->getAllAssets();
     }
 }

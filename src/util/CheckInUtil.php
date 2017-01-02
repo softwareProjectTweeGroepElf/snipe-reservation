@@ -26,12 +26,22 @@ class CheckInUtil
 
     public function checkInByAssetId($asset_id)
     {
-        $reservation = $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->first();
+        $reservation = $this->connection->table('reservation_assets')->get();
+        
+        $x;
+        for ($i=0; $i < count($reservation) ; $i++) { 
+            if ($reservation[$i]->asset_id == $asset_id){
+                $x = $i;
+            }
+        }
+
+        
+
         $insert_id = $this->connection->table('reservation_archive')->insertGetId([
-            'asset_id'   => $reservation->asset_id,
-            'user_id'    => $reservation->user_id,
-            'from'       => $reservation->from,
-            'until'      => $reservation->until,
+            'asset_id'   => $reservation[$x]->asset_id,
+            'user_id'    => $reservation[$x]->user_id,
+            'from'       => $reservation[$x]->from,
+            'until'      => $reservation[$x]->until,
             'checked_in' => Carbon::now(),
         ]);
 

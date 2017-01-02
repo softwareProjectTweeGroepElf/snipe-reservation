@@ -17,15 +17,14 @@ Route::group([ 'prefix'  => 'reservation' ], function() {
     Route::get('/rejectreservation', 'sp2gr11\reservation\controllers\AjaxController@rejectedReservation'); // docent
     Route::get('/postrequestreservation', 'sp2gr11\reservation\controllers\AjaxController@postReservationRequest'); // student
     Route::get('/searchAvailableAssets', 'sp2gr11\reservation\controllers\AjaxController@searchAvailableAssets');
+    Route::get('/searchAllAssets', 'sp2gr11\reservation\controllers\AjaxController@getAllAssetsByFilter');
 
     Route::get('/decision', 'sp2gr11\reservation\controllers\AjaxController@sendResultDecisionTeacher');
 
     //TIJDELIJKE ROUTES VOOR MAILFUNCTIES
-    Route::get('/mailReminder', 'sp2gr11\reservation\controllers\AjaxController@getMailReminder');
-    Route::get('/mailSecondReminder', 'sp2gr11\reservation\controllers\AjaxController@getMailSecondReminder');
-    Route::get('/mailOverview', 'sp2gr11\reservation\controllers\AjaxController@getMailDailyOverview');
-    Route::get('/mailLendableAsset', 'sp2gr11\reservation\controllers\AjaxController@getMailLendableAsset');
-
-
+    Route::get('/mailReminder', 'sp2gr11\reservation\controllers\ReservationController@getMailReminder');
+    Route::get('/mailSecondReminder', 'sp2gr11\reservation\controllers\ReservationController@getMailSecondReminder');
+    Route::get('/mailOverview', 'sp2gr11\reservation\controllers\ReservationController@getMailDailyOverview');
+    Route::get('/mailLendableAsset', 'sp2gr11\reservation\controllers\ReservationController@getMailLendableAsset');
 
 });

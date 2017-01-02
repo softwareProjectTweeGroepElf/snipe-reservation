@@ -48,8 +48,8 @@ class CheckOutUtil
     public function checkOutByAssetId($asset_id)
     {
         $now = new Carbon();
-
-        $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->update(['from' => $now, 'until' => $now->addMonth()]);
+        $now2 = new Carbon(); 
+        $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->update(['from' => $now, 'until' => $now2->addMonth()]);
     }
 
 }

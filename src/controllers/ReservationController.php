@@ -32,7 +32,7 @@ class ReservationController extends Controller
 	public function getProfessor()
 	{
 		if($this->role_util->isUserReviewer())
-			return view('Reservation::views.requestreview')->with('requestedassets', $this->reservation_fetcher->getReservationRequests());
+		   return view('Reservation::views.requestreview')->with('requestedassets', $this->reservation_fetcher->getReservationRequests());
 		else
 			return redirect()->back();
 	}
@@ -40,11 +40,15 @@ class ReservationController extends Controller
 	public function getLeasingService()
 	{
 		if($this->role_util->isUserLeasingService())
-			return view('Reservation::views.lendingservice')->with('assets', $this->reservation_fetcher->getAvailableAssets());
+			return view('Reservation::views.lendingservice')->with('assets', $this->reservation_fetcher->getAllAssets());
 		else
 			return redirect()->back();
 	}
 
+    public function getCalendar()
+    {
+        return view('Reservation::views.calendar');
+    }
 
     public function getConfig(ConfigUtil $config_util)
     {

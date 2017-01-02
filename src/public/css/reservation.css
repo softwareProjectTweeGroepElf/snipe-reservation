@@ -129,3 +129,69 @@ select {
 .no_padding_td {
 	padding: 0px;
 }
+
+/*STUDENT PAGE */
+
+/*FORM CSS TO ALIGN*/
+
+#submitForm input {
+    width: 70%;
+    clear: both;
+}
+#submitTable{
+	width: 60%;
+	margin: auto;
+	margin-bottom: 10px;
+}
+#asset_id{
+	width: 70%;
+}
+
+/*SEARCH FORM*/
+
+#formBazaar{
+	height: 75px;
+}
+#studentZoekForm{
+	width: 20vw;
+	height: 75px;
+	background-color: white;
+	padding: 10px;
+	padding-bottom: 30px;
+	box-shadow: 0px 0px 25px -5px rgba(0, 0, 0, 0.75);	
+}
+#resultsLookup{
+	width: 20vw;
+	height: 75px;
+	background-color: white;
+	padding: 10px;
+	padding-bottom: 30px;
+	box-shadow: 0px 0px 25px -5px rgba(0, 0, 0, 0.75);
+}
+#lookupTable{
+	width 90%;
+	margin: auto;
+}
+
+/*LENDING PAGE */
+
+/*SUBM FORM*/
+
+#submitFormLen{
+	width: 70%;
+	margin: auto;
+}
+.formWidthLen{
+	width: 9vw;
+}
+#submitFormSearchLen{
+	width: 60%;
+	margin: auto;
+	background-color: white;
+	padding: 25px;
+	padding-bottom: 30px;
+	box-shadow: 0px 0px 25px -5px rgba(0, 0, 0, 0.75);
+}
+#search{
+	margin: 10px;
+}

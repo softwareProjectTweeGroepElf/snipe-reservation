@@ -6,7 +6,7 @@
 		$.ajax({
 			type: 'GET',
 			url: '/reservation/postreservation',
-			data: { 'req_asset_id': asset_id, 'req_user_id': user_id },
+			data: { 'req_asset_id': asset_id, 'req_user_id': user_id},
 			success: function(data) {
 				alert("Reservation was added succesfully");
 				console.log(data);
@@ -27,19 +27,19 @@
 		});
 	}
 
-	function sendEmail(asset_id, user_id, decision) {
-		$.ajax({
-			type: 'GET',
-			url: '/reservation/decision',
-			data: { 'req_asset_id': asset_id, 'req_user_id': user_id, 'req_decision': decision },
-			success: function(res) {
-				console.log(res);
-			}
-		});
-	}
+    function sendEmail(asset_id, user_id, decision) {
+        $.ajax({
+            type: 'GET',
+            url: '/reservation/decision',
+            data: { 'req_asset_id': asset_id, 'req_user_id': user_id, 'req_decision': decision },
+            success: function(res) {
+                console.log(res);
+            }
+        });
+    }
 </script>
 
-<style type="text/css">
+<!-- <style type="text/css">
 	body {
 		font-family: Tahoma;
 		padding: 0;
@@ -177,7 +177,8 @@
 	.no_padding_td {
 		padding: 0px;
 	}
-</style>
+</style> -->
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('reservation/css/reservation.css') }}">
 
 <div id="page_body">
 	<div id="content">
@@ -205,13 +206,13 @@
 									<td> {{$asset->note}}</td>
 									<td class="no_padding_td">
 										<button class="submit_btn"
-											 onclick="submitAccptAjax({!!$asset->asset_id!!},{!!$asset->user_id!!}); sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! 1!!})">
+												onclick="submitAccptAjax({!!$asset->asset_id!!},{!!$asset->user_id!!}); sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! 1!!})">
 											Accept
 										</button>
 									</td>
 									<td class="no_padding_td">
 										<button class="submit_btn"
-											 onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!}); sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! 0 !!})">
+												onclick="submitRjctAjax({!!$asset->asset_id!!},{!!$asset->user_id!!}); sendEmail({!!$asset->asset_id!!},{!!$asset->user_id!!},{!! 0 !!})">
 											Reject
 										</button>
 									</td>
