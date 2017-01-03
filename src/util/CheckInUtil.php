@@ -9,38 +9,34 @@
 namespace sp2gr11\reservation\util;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Connection;
 
 class CheckInUtil
 {
-        /*public static function CheckIn($reservation_id)
-        {
-            $reservation = DB::table('reservation_assets')->where('id', $reservation_id)->first();
+    private $connection;
 
-            DB::table('reservation_archive')->insert([
-                'user_id' => $reservation->user_id,
-                'asset_id' => $reservation->asset_id,
-                'from' => $reservation->from,
-                'until' => $reservation->until,
-                'checked_in' => Carbon::now(),
-                'status' => 'ACCEPTED'
-            ]);
+    /**
+     * CheckInUtil constructor.
+     * @param Connection $
+     */
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
 
-            DB::table('reservation_assets')->where('id', $reservation_id)->delete();
-        }*/
+    public function checkInByAssetId($asset_id)
+    {
+        $reservation = $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->first();
+        $insert_id = $this->connection->table('reservation_archive')->insertGetId([
+            'asset_id'   => $reservation->asset_id,
+            'user_id'    => $reservation->user_id,
+            'from'       => $reservation->from,
+            'until'      => $reservation->until,
+            'checked_in' => Carbon::now(),
+        ]);
 
-        public static function checkInByAssetId($asset_id)
-        {
-            $reservation = DB::table('reservation_assets')->where('asset_id', $asset_id)->first();
+        $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->delete();
 
-            DB::table('reservation_archive')->insert([
-                'asset_id' => $reservation->asset_id,
-                'user_id' => $reservation->user_id,
-                'from' => $reservation->from,
-                'until' => $reservation->until,
-                'checked_in' => Carbon::now(),
-            ]);
-
-            DB::table('reservation_assets')->where('asset_id', $asset_id)->delete();
-        }
+        return $insert_id;
+    }
 }

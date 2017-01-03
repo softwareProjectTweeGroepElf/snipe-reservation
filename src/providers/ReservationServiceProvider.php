@@ -20,6 +20,10 @@ class ReservationServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources', 'Reservation');
 
 		$this->publishes([
+            __DIR__ . '/../public' => public_path('reservation')
+        ]); // JS AND CSS publish
+
+		$this->publishes([
 			__DIR__ . '/../config/reservation.php' => config_path('reservation.php'),
 		]); // CONFIG FILE
 
@@ -27,6 +31,13 @@ class ReservationServiceProvider extends ServiceProvider
 			__DIR__ . '/../migrations' => database_path('migrations'),
 		]); // MIGRATIONS
 
+        $this->publishes([
+            __DIR__ . '/../tests/unit' => base_path('/tests'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/../resources/views/emails' => base_path('/resources/views/emails'),
+        ]);
 	}
 
 
