@@ -126,10 +126,10 @@
 				<input type="text" id="search" placeholder="Zoeken"><br>
 				<form id="filter">
 					<label>Filteren op:</label><br>
-					<input type="radio" value="id">ID<br>
-					<input type="radio" value="name">Naam<br>
-					<input type="radio" value="asset_tag">Tag<br>
-					<input type="radio" value="serial">Serienummer<br>
+					<input type="radio" value="id" name="filter">ID<br>
+					<input type="radio" value="name" name="filter">Naam<br>
+					<input type="radio" value="asset_tag" name="filter">Tag<br>
+					<input type="radio" value="serial" name="filter">Serienummer<br>
 				</form>
 			</div>
 			<br><br>
