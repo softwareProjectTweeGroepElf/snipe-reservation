@@ -168,7 +168,8 @@ class ReservationFetcher
     public function getAvailableAssetsBy($text, $filter)
     {
         $unavailable_assets_ids = $this->connection->table('reservation_assets')->pluck('asset_id');
-        return Asset::whereNotIn('id', $unavailable_assets_ids)->where($filter, 'like', "*$text*")->get();
+        $assets = Asset::whereNotIn('id', $unavailable_assets_ids)->where($filter, 'like', "%$text%")->get();
+        return $assets;
     }
 
     public function getAllAssets()
