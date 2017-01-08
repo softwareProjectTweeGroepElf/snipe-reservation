@@ -42,7 +42,7 @@ class CheckInUtil
             'user_id'    => $reservation[$x]->user_id,
             'from'       => $reservation[$x]->from,
             'until'      => $reservation[$x]->until,
-            'checked_in' => Carbon::now(),
+            'checked_in' => Carbon::now()->addHour(),
         ]);
 
         $this->connection->table('reservation_assets')->where('asset_id', $asset_id)->delete();
